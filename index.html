@@ -1,0 +1,1658 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="description" content="Questionnaire that estimates cumulative pain per shrimp for a farming method, country and set of welfare interventions, with ranges, sources and confidence.">
+<title>Shrimp Welfare Footprint</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: questionnaire column (sticky on wide screens) beside a results column that recomputes on every answer. */
+:root{
+  --bg:#f1f4f5; --surface:#ffffff; --surface-2:#e8eef0; --ink:#12232b; --muted:#566a73; --line:#d3dde1;
+  --accent:#17687e; --accent-ink:#ffffff; --accent-soft:#d9eaf0; --base:#74878f;
+  --i1:#cfa22a; --i2:#dd7f30; --i3:#c1402d; --i4:#7b2a63;
+  --ok:#1d6b4f; --ok-bg:#dcefe6; --mod:#17687e; --mod-bg:#d9eaf0; --warn:#85560a; --warn-bg:#f6e7c4; --bad:#9f2f29; --bad-bg:#f5dad7;
+  --f-display:'Newsreader',Georgia,'Times New Roman',serif;
+  --f-body:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0e1a20; --surface:#15252d; --surface-2:#1c303a; --ink:#e3edf0; --muted:#94a8b0; --line:#2a3f49;
+  --accent:#5db7d0; --accent-ink:#0b1a20; --accent-soft:#1b3a47; --base:#8ba1ab;
+  --i1:#e0b64a; --i2:#ec9a4a; --i3:#e8654e; --i4:#c9559a;
+  --ok:#6fd0a5; --ok-bg:#16372c; --mod:#7cc6dc; --mod-bg:#1b3a47; --warn:#e6b45a; --warn-bg:#3a2e12; --bad:#f08a82; --bad-bg:#40201e;
+  color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#0e1a20; --surface:#15252d; --surface-2:#1c303a; --ink:#e3edf0; --muted:#94a8b0; --line:#2a3f49;
+  --accent:#5db7d0; --accent-ink:#0b1a20; --accent-soft:#1b3a47; --base:#8ba1ab;
+  --i1:#e0b64a; --i2:#ec9a4a; --i3:#e8654e; --i4:#c9559a;
+  --ok:#6fd0a5; --ok-bg:#16372c; --mod:#7cc6dc; --mod-bg:#1b3a47; --warn:#e6b45a; --warn-bg:#3a2e12; --bad:#f08a82; --bad-bg:#40201e;
+  color-scheme:dark; }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);padding-inline:16px;padding-block:24px 64px}
+.wrap{max-width:1280px;margin:0 auto}
+h1,h2,h3,h4{margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--accent)}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+
+header.top{display:grid;gap:14px;margin-bottom:24px;max-width:860px}
+.eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:500 clamp(34px,5vw,52px)/1.05 var(--f-display);letter-spacing:-.01em}
+.lede{font-size:17px;max-width:68ch}
+details.status-box{border:1px solid var(--line);border-left:4px solid var(--i2);background:var(--surface);padding:12px 14px;font-size:14px;max-width:84ch}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
+@media (min-width:1060px){
+  .layout{grid-template-columns:392px minmax(0,1fr);align-items:start}
+  aside.q{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);max-height:calc(100vh - 32px);overflow:auto;padding-right:6px}
+}
+aside.q{display:grid;gap:22px;min-width:0}
+.step h2{font:600 13px/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;gap:8px;align-items:baseline;margin:0}
+.step h2 .n{color:var(--accent)}
+.step>summary,.card.sec>summary,details.status-box>summary{cursor:pointer;list-style:none;display:flex;gap:8px;align-items:baseline}
+.step>summary::-webkit-details-marker,.card.sec>summary::-webkit-details-marker,details.status-box>summary::-webkit-details-marker{display:none}
+.step>summary::before,.card.sec>summary::before,details.status-box>summary::before{content:"\25B8";color:var(--muted);flex:none;transition:transform .15s;width:12px}
+.step[open]>summary::before,.card.sec[open]>summary::before,details.status-box[open]>summary::before{transform:rotate(90deg)}
+.step[open]>summary{margin-bottom:10px}
+.card.sec>summary{flex-wrap:wrap}
+.card.sec>summary h3,.card.sec>summary .scn{margin:0}
+.card.sec[open]>summary{margin-bottom:8px}
+.sbody{min-width:0}
+details.status-box>summary{font-weight:600}
+details.status-box[open]>summary{margin-bottom:6px}
+.foldbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.foldbar .btn{padding:5px 10px;font-size:13px}
+.foldbar .lab{font:600 12px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{display:block;cursor:pointer}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt .body{display:grid;gap:4px;border:1px solid var(--line);background:var(--surface);padding:10px 12px;border-radius:6px}
+.opt:hover .body{border-color:var(--base)}
+.opt:has(input:checked) .body{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:var(--accent-soft)}
+.opt:has(input:focus-visible) .body{outline:2px solid var(--accent);outline-offset:2px}
+.opt .t{font-weight:600;display:flex;gap:8px;justify-content:space-between;align-items:baseline;flex-wrap:wrap}
+.opt .d{font-size:13px;color:var(--muted)}
+.opt .d b{color:var(--ink);font-weight:500}
+.opt .ap{font-size:12.5px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.opt.iv .box{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start}
+.opt.iv input{position:static;opacity:1;pointer-events:auto;width:16px;height:16px;margin:3px 0 0;accent-color:var(--accent)}
+.grp{font:500 12px/1.2 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:14px 0 2px}
+select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.cinfo{margin-top:10px;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:10px 12px;display:grid;gap:6px;font-size:13px}
+.cinfo .row{display:flex;gap:8px;flex-wrap:wrap;align-items:baseline}
+.cinfo .k{color:var(--muted);min-width:104px}
+details.adv{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:10px 12px}
+details.adv summary{cursor:pointer;font-weight:600}
+.field{display:grid;gap:4px;margin-top:12px}
+.field label.l{font-size:13px;font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.field input[type=range]{width:100%;accent-color:var(--accent)}
+.radiorow{display:grid;gap:6px;margin-top:6px;font-size:13.5px}
+.radiorow label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.radiorow input{margin-top:4px;accent-color:var(--accent)}
+.presets{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.presets .btn{padding:3px 8px;font-size:12.5px}
+.presets .btn[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+input[type=text],input[type=number]{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:9px 12px}
+.customBox{display:grid;gap:8px;margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.customBox label{font-size:13px;font-weight:600;display:grid;gap:4px}
+.srcs li.nourl{background:var(--bad-bg);border-radius:4px;padding:3px 6px;margin-inline:-6px}
+.sharebar{border:1px solid var(--accent);background:var(--accent-soft);border-radius:6px;padding:10px 12px;display:grid;gap:8px;margin-bottom:12px}
+.sharebar .cur{font-size:14px}
+
+/* chips */
+.chip{display:inline-block;font:500 11.5px/1 var(--f-mono);padding:4px 6px;border-radius:3px;border:1px solid transparent;white-space:nowrap}
+.c-high{background:var(--ok-bg);color:var(--ok)}
+.c-mod{background:var(--mod-bg);color:var(--mod)}
+.c-low{background:var(--warn-bg);color:var(--warn)}
+.c-vlow{background:var(--bad-bg);color:var(--bad)}
+.b{border-color:var(--line);color:var(--muted);background:transparent}
+.b.ph{border-style:dashed;color:var(--bad);border-color:var(--bad)}
+.tag{border:1px solid var(--line);background:transparent;color:var(--muted);padding:2px 5px;font-size:11px;vertical-align:middle;cursor:help}
+.tag.rp{border-color:var(--mod);color:var(--mod)}
+.tag.est{border-style:dashed;border-color:var(--bad);color:var(--bad)}
+.tag.lit{border-color:var(--ok);color:var(--ok)}
+.sref{font:400 12px var(--f-mono);color:var(--accent);cursor:help;white-space:nowrap}
+
+/* results */
+section.res{display:grid;gap:18px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px;min-width:0}
+.card h3{font:500 22px/1.2 var(--f-display);margin-bottom:4px}
+.card .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px;max-width:78ch}
+.verdict{border-color:var(--accent)}
+.verdict .scn{font:600 12px/1.2 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:12px 0}
+.big>div{border:1px solid var(--line);border-radius:6px;padding:12px;min-width:0}
+.big .lab{font-size:12.5px;color:var(--muted)}
+.big .num{font:500 34px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.big .num small{font:400 14px var(--f-body);color:var(--muted)}
+.big .rng{font:400 12.5px var(--f-mono);color:var(--muted);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.big .hl{background:var(--accent-soft);border-color:var(--accent)}
+.verdict p.txt{max-width:78ch}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:7px 12px;cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+textarea.sum{width:100%;min-height:120px;margin-top:10px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px;font:13px var(--f-mono)}
+
+.seg{display:inline-flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;border-right:1px solid var(--line);background:transparent;padding:8px 12px;cursor:pointer;font-size:13.5px}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.seg button:disabled{opacity:.45;cursor:not-allowed}
+.metricbar{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center}
+.metricbar .lab{font:600 12px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.mhelp{margin-top:-6px}
+.mhelp dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:6px 14px;margin:10px 0 0;font-size:13.5px}
+.mhelp dt{font-weight:600}
+.mhelp dd{margin:0;color:var(--muted)}
+.mhelp dt.on{color:var(--accent)}
+.mhelp dt.on+dd{color:var(--ink)}
+.mhelp p{font-size:13.5px;margin-top:10px;max-width:80ch}
+@media (max-width:560px){.mhelp dl{grid-template-columns:minmax(0,1fr)}.mhelp dd{margin-bottom:6px}}
+
+/* range plot (log axis) */
+.rp{display:grid;gap:4px}
+.rp-g{display:flex;align-items:center;gap:8px;margin-top:10px;font-weight:600}
+.sw{width:11px;height:11px;border-radius:2px;display:inline-block}
+.rp-row{display:grid;grid-template-columns:128px minmax(0,1fr) 170px;gap:10px;align-items:center;min-height:26px}
+.rp-row .l{font-size:13px;color:var(--muted)}
+.rp-row.sel .l{color:var(--ink);font-weight:600}
+.rp-row .v{font:400 12.5px var(--f-mono);text-align:right}
+.rp-track{position:relative;height:22px}
+.rp-tick{position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.rp-w{position:absolute;top:10px;height:2px}
+.rp-w::before,.rp-w::after{content:"";position:absolute;top:-4px;width:2px;height:10px;background:inherit}
+.rp-w::before{left:0}.rp-w::after{right:0}
+.rp-m{position:absolute;top:4px;width:12px;height:12px;margin-left:-6px;border-radius:50%;border:2px solid var(--surface)}
+.rp-axis{display:grid;grid-template-columns:128px minmax(0,1fr) 170px;gap:10px}
+.rp-axis .ax{position:relative;height:18px;font:400 11px var(--f-mono);color:var(--muted)}
+.rp-axis .ax span{position:absolute;transform:translateX(-50%)}
+.rp-note{font-size:12.5px;color:var(--muted);margin-top:6px}
+@media (max-width:640px){
+  .rp-row{grid-template-columns:minmax(0,1fr);gap:0;margin-bottom:6px}
+  .rp-row .v{text-align:left}
+  .rp-axis{grid-template-columns:minmax(0,1fr)}
+  .rp-axis>:first-child,.rp-axis>:last-child{display:none}
+}
+
+/* consequence list */
+.cons{display:grid;gap:8px}
+.cons details{border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.cons summary{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,.9fr);gap:12px;align-items:center;padding:10px 12px;cursor:pointer;list-style:none}
+.cons summary::-webkit-details-marker{display:none}
+.cons summary .nm{font-weight:600}
+.cons summary .nm::before{content:"\25B8";display:inline-block;margin-right:6px;color:var(--muted);transition:transform .15s}
+.cons details[open] summary .nm::before{transform:rotate(90deg)}
+.cons .bar{height:8px;background:var(--surface-2);border-radius:4px;position:relative;overflow:hidden}
+.cons .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--base)}
+.cons .bar i.s{background:var(--accent);opacity:.9;height:50%;top:50%}
+.cons .bar i.b2{height:50%}
+.cons .nums{font:400 12.5px var(--f-mono);text-align:right}
+.cons .det{padding:4px 14px 14px;display:grid;gap:12px;border-top:1px solid var(--line)}
+@media (max-width:700px){.cons summary{grid-template-columns:minmax(0,1fr)}.cons .nums{text-align:left}}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11.5px var(--f-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+details.mini>summary{cursor:pointer;color:var(--accent);font-size:12.5px}
+details.mini ul{margin:6px 0 0;padding-left:18px;font-size:12.5px;display:grid;gap:3px}
+.warnbox{border:1px solid var(--warn);background:var(--warn-bg);color:var(--ink);border-radius:6px;padding:8px 10px;font-size:13px;margin-top:6px}
+
+/* tornado */
+.tor{display:grid;gap:6px}
+.tor-row{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr);gap:10px;align-items:center}
+.tor-row .l{font-size:13px}
+.tor-track{position:relative;height:22px;background:linear-gradient(var(--line),var(--line)) center/100% 1px no-repeat}
+.tor-bar{position:absolute;top:3px;height:16px;background:var(--accent);opacity:.85;border-radius:2px}
+.tor-mid{position:absolute;top:0;bottom:0;width:2px;background:var(--ink)}
+@media (max-width:640px){.tor-row{grid-template-columns:minmax(0,1fr)}}
+
+.legend{display:flex;gap:8px 14px;flex-wrap:wrap;font-size:13px;margin-bottom:10px;align-items:center}
+.objs{display:grid;gap:16px}
+.obj{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:6px;max-width:80ch}
+.obj h4{font:600 15.5px/1.35 var(--f-body)}
+.notes{display:grid;gap:10px;max-width:80ch}
+.notes h4{font:600 14px var(--f-body);margin-top:6px}
+.notes ul{margin:4px 0 0;padding-left:20px;display:grid;gap:4px}
+code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padding:1px 4px;border-radius:3px}
+.srcs{display:grid;gap:6px;padding:0;margin:0;list-style:none}
+.srcs li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;font-size:13.5px}
+.srcs .id{font:500 12.5px var(--f-mono);color:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>html{color-scheme:light}@media (prefers-color-scheme:dark){html:not([data-theme="light"]){color-scheme:dark}}body{margin:0}</style></head><body>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Welfare Footprint Framework · working model</div>
+  <h1>Shrimp Welfare Footprint</h1>
+  <p class="lede">Choose a farming method, a country and any welfare interventions. The page estimates cumulative pain per shrimp by intensity, compares it with the same system under current practice, and shows the range, the sources and the confidence behind each number.</p>
+  <div class="foldbar"><span class="lab">Page sections</span>
+    <button type="button" class="btn" id="showAll">Show all</button>
+    <button type="button" class="btn" id="hideAll">Hide all</button></div>
+  <details class="status-box" open><summary>What the numbers rest on</summary><div role="note">
+    <p><b>Baseline pain.</b> Prevalence, daily durations and intensity splits per farming system come from Rethink Priorities (2024), the only published quantitative source for farmed shrimp. They are expert credible intervals, not measurements. The page checks itself against that report&rsquo;s published total.</p>
+    <p style="margin-top:6px"><b>Country conditions.</b> Production, species mix, harvest size, cycle length, stocking density, aeration and disease prevalence come from national statistics, peer-reviewed surveys, Seafood Watch assessments and trade data. Where sources disagree, the page uses their average and shows the spread and every source value.</p>
+    <p style="margin-top:6px"><b>Intervention effects.</b> No source quantifies how much an intervention reduces each threat in affective terms. Those effect sizes are analyst estimates, marked <span class="chip tag est">est</span>, and the supporting experiments are listed beside each one.</p></div></details>
+</header>
+
+<div class="layout">
+<aside class="q" aria-label="Questionnaire">
+  <details class="step" open>
+    <summary><h2><span class="n">1</span> Farming method</h2></summary>
+    <div class="opts" id="methods"></div>
+  </details>
+  <details class="step" open>
+    <summary><h2><span class="n">2</span> Country</h2></summary>
+    <select id="country" aria-label="Country"></select>
+    <div class="customBox" id="customBox" hidden>
+      <label for="cname"><span>Your country</span><input type="text" id="cname" list="worldlist" autocomplete="off" placeholder="Type a country name, e.g. Brazil"></label>
+      <datalist id="worldlist"></datalist>
+      <label for="cprod"><span>Annual shrimp production in tonnes (optional)</span><input type="number" id="cprod" min="0" step="1000" placeholder="Leave blank for results per 1,000 tonnes"></label>
+      <div class="small muted" id="cnote">The form picks the geographically closest of the ten modelled countries and applies its conditions.</div>
+    </div>
+    <div class="cinfo" id="cinfo"></div>
+  </details>
+  <details class="step" open>
+    <summary><h2><span class="n">3</span> Welfare interventions</h2></summary>
+    <p class="small muted" style="margin-bottom:6px">Select none to see the baseline. Selected interventions are assumed fully adopted. Where a country already uses one, only the remaining gap counts.</p>
+    <div class="opts" id="ivs"></div>
+  </details>
+  <details class="adv">
+    <summary>Assumptions</summary>
+    <div class="field">
+      <span class="l" style="font-size:13px;font-weight:600">Baseline reference</span>
+      <div class="radiorow">
+        <label><input type="radio" name="bref" value="current" checked><span>Current practice in the country, including interventions already in use</span></label>
+        <label><input type="radio" name="bref" value="none"><span>No interventions at all, even those already in use</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label class="l" for="share"><span>Share of national output in this scenario</span><span class="mono" id="shareV">100%</span></label>
+      <input type="range" id="share" min="1" max="100" step="1" value="100">
+      <div class="presets" id="sharePresets"></div>
+      <span class="small muted">Scales the population figures only. Presets show how much might change quickly; the same choice is highlighted in the scaling section.</span>
+    </div>
+    <div class="field">
+      <label class="l" for="sent"><span>Affective-capacity adjustment</span><span class="mono" id="sentV">1.00</span></label>
+      <input type="range" id="sent" min="0.01" max="1" step="0.01" value="1">
+      <div class="presets"><button type="button" class="btn" data-sent="1">1.00 none</button><button type="button" class="btn" data-sent="0.31">0.31</button><button type="button" class="btn" data-sent="0.031">0.031 RP median</button></div>
+      <span class="small muted">Optional multiplier applied after quantification and shown separately. Rethink Priorities&rsquo; welfare-range estimate for shrimp has a median of 0.031 (5th to 95th percentile 0 to 1.15); it combines sentience probability with the rate of experience, and is an advocacy-adjacent estimate. No independent numeric probability was found.</span>
+    </div>
+  </details>
+</aside>
+
+<section class="res" aria-label="Results" id="results">
+  <div id="verdict"></div>
+  <div class="metricbar">
+    <span class="lab">Count pain at</span>
+    <div class="seg" id="metric" role="group" aria-label="Pain intensity threshold">
+      <button type="button" data-m="all" aria-pressed="false">Any intensity</button>
+      <button type="button" data-m="hurtful" aria-pressed="false">Hurtful or worse</button>
+      <button type="button" data-m="disabling" aria-pressed="false">Disabling or worse</button>
+      <button type="button" data-m="excr" aria-pressed="false">Excruciating</button>
+      <button type="button" data-m="de" aria-pressed="true">Disabling-equivalent</button>
+    </div>
+  </div>
+  <details class="adv mhelp" open><summary>What the intensity buttons do</summary><div id="mhelp"></div></details>
+  <div id="out" style="display:grid;gap:18px"></div>
+</section>
+</div>
+</div>
+
+<script>
+/* ============================== HELPERS ============================== */
+const T=(a,m,b)=>[a,m,b];
+const avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+/* One source value. v = value, lo/hi = the source's own range if it gives one. */
+const E=(v,s,l,lo,hi)=>({v,s:s||[],l:l||'',lo:lo==null?v:lo,hi:hi==null?v:hi});
+/* Reconcile several source values: most likely value = average, range = lowest low to highest high.
+   A single value, or sources that all agree exactly, gets an assumed +/-15% range, flagged as an estimate. */
+function rec(entries,lim){
+  const mids=entries.map(e=>e.v),lows=entries.map(e=>e.lo),highs=entries.map(e=>e.hi);
+  let mean=avg(mids),lo=Math.min(...lows),hi=Math.max(...highs),assumed=false;
+  if(hi-lo<1e-12*Math.max(1,Math.abs(mean))){lo=mean*.85;hi=mean*1.15;assumed=true;}
+  if(lim){lo=clamp(lo,lim[0],lim[1]);hi=clamp(hi,lim[0],lim[1]);mean=clamp(mean,lo,hi);}
+  const spread=entries.length>1?(Math.max(...mids)-Math.min(...mids))/Math.max(1e-12,Math.abs(mean)):0;
+  return{tri:[lo,mean,hi],entries,n:entries.length,conflict:entries.length>1&&spread>0.1,assumed,single:entries.length===1&&assumed};
+}
+/* A judgement-based range with no source value behind its centre. */
+const J=(a,m,b,why)=>({tri:[a,m,b],entries:[],n:0,conflict:false,assumed:true,single:false,judged:true,why:why||''});
+
+const INTS=['Annoying','Hurtful','Disabling','Excruciating'];
+const ICOL=['var(--i1)','var(--i2)','var(--i3)','var(--i4)'];
+const METRICS={
+  all:{from:0,label:'any intensity'},
+  hurtful:{from:1,label:'hurtful or worse'},
+  disabling:{from:2,label:'disabling or worse'},
+  excr:{from:3,label:'excruciating'},
+  de:{de:true,label:'disabling-equivalent'}};
+const BASIS={src:'Sourced',der:'Derived',inf:'Inferred',ph:'Estimate',rp:'RP interval',lit:'Reconciled'};
+const SYS=['ext','semi','int','super','ras'];
+const SYSI={ext:0,semi:1,int:2,super:3,ras:4};
+const RPCOL={ext:0,semi:1,int:2,super:3,ras:3}; /* RP lumps biofloc and RAS into super-intensive */
+const SYSNAME={ext:'Extensive / traditional',semi:'Semi-intensive',int:'Intensive',super:'Super-intensive / biofloc',ras:'Indoor RAS'};
+const SYSSHORT={ext:'Extensive',semi:'Semi-intensive',int:'Intensive',super:'Super-intensive / BFT',ras:'Indoor RAS'};
+const RP_MIX={ext:.112,semi:.164,int:.714,super:.01}; /* RP adjusted share of shrimp by farm type */
+const RP_LIFE_D=115; /* RP mean days lived on the ongrowing farm, including deaths before harvest */
+/* disabling-equivalent weights (RP): annoying U(.002,.01), hurtful U(.02,.2), disabling 1, excruciating U(5,1000) */
+const DE_W=[[.002,.01],[.02,.2],[1,1],[5,1000]];
+
+/* ============================== SOURCES ============================== */
+/* k: kind. i: 'ind' independent of Shrimp Welfare Project, 'rp' Rethink Priorities (uses SWP survey inputs), 'adv' advocacy or SWP-linked. */
+const SRC={};
+const S_=(id,t,k,i,u)=>{SRC[id]={t,k,i,u};};
+/* the draft's own numbering */
+S_(1,'World Aquaculture Magazine, June 2020','Trade magazine','ind','https://was.org/Magazine/2020/02/20/');
+S_(2,'Borneo Journal of Marine Science and Aquaculture (UMS)','Journal','ind','https://jurcon.ums.edu.my/ojums/index.php/BJoMSA/article/download/2301/1811');
+S_(3,'Chulalongkorn University thesis (Thailand shrimp systems)','Thesis','ind','https://cuir.car.chula.ac.th/dspace/bitstream/123456789/67470/3/Pariya_nu_ch2_p.pdf');
+S_(4,'Fluminense Federal University: semi-intensive vs super-intensive BFT economics','Journal','ind','https://revistasg.uff.br/sg/article/download/1643/1291?inline=1');
+S_(5,'Global Seafood Alliance: intensive, biofloc and RAS overview','Trade publication','ind','https://www.globalseafood.org/advocate/from-the-shrimp-book-intensive-production-of-shrimp/');
+S_(6,'FURG dissertation: intensive vs super-intensive biofloc densities','Thesis','ind','https://ppgaquicultura.furg.br/en/dissertations-and-theses/dissertations/dissertacoes-de-2021/melissa-sant-anna-2021-comparison-of-zootechnical-performance-of-juvenile-pacific-white-shrimp-litopenaeus-vannamei-in-pilot-scale-grow-out-under-intensive-and-super-intensive-biofloc-systems');
+S_(7,'Aqua Culture Asia Pacific: Asian shrimp in 2025, steady supply and price volatility (Apr 2026)','Trade magazine','ind','https://aquaasiapac.com/2026/04/09/asian-shrimp-in-2025-steady-supply-and-price-volatility/');
+S_(8,'The Daily Star / bdnews: Bangladesh FY2020-21 production','News','ind');
+S_(9,'Dhaka Tribune: Bangladesh shrimp sector, Bagda figure (Nov 2025)','News','ind');
+S_(10,'Global Seafood Alliance: 2023 farmed shrimp production survey','Trade survey','ind','https://www.globalseafood.org/advocate/annual-farmed-shrimp-production-survey-a-slight-decrease-in-production-reduction-in-2023-with-hopes-for-renewed-growth-in-2024/');
+S_(11,'Wikipedia: Shrimp farming','Encyclopedia','ind');
+S_(12,'Global Seafood Alliance: Co-op shrimp sourcing commitments','Trade publication','ind','https://www.globalseafood.org/advocate/another-uk-supermarket-chain-makes-shrimp-sourcing-commitments-regarding-eyestalk-ablation-and-electrical-stunning/');
+S_(13,'EA Forum: Shrimp Welfare Project 2030 Vision and Absorbency Plans','Advocacy organisation','adv');
+S_(14,'Hatchery Feed Management: eyestalk ablation, Vietnam study','Trade publication','ind');
+S_(15,'EA Forum: SWP welfare-concern confidence ratings','Advocacy organisation','adv');
+S_(16,'EA Forum: Why we want to start a shrimp welfare charity','Advocacy organisation','adv');
+S_(17,'EA Forum: Two Years of Shrimp Welfare Project','Advocacy organisation','adv');
+S_(18,'Rethink Priorities: Quantifying and Prioritizing Shrimp Welfare Threats (McKay & McAuliffe, 2024)','Research organisation','rp','https://rethinkpriorities.org/research-area/quantifying-and-prioritizing-shrimp-welfare-threats/');
+S_(19,'Wikipedia: Eyestalk ablation','Encyclopedia','ind');
+S_(20,'EA Forum: SWP welfare-concern confidence ratings (the organisation’s own ratings)','Advocacy organisation','adv');
+S_(21,'Rethink Priorities: Quantifying and Prioritizing Shrimp Welfare Threats','Research organisation','rp','https://rethinkpriorities.org/research-area/quantifying-and-prioritizing-shrimp-welfare-threats/');
+S_(22,'Shrimp Welfare Project: Shrimp Welfare Report','Advocacy organisation','adv');
+S_(23,'Andres Jimenez Zorrilla: ALI conference presentation','Conference slides','adv');
+S_(24,'Global Seafood Alliance: Co-op shrimp sourcing commitments','Trade publication','ind');
+S_(25,'Asterisk Magazine: Yes, Shrimp Matter','Magazine commentary','adv');
+S_(26,'EA Forum: Two Years of Shrimp Welfare Project','Advocacy organisation','adv');
+/* Rethink Priorities and related */
+S_(101,'Rethink Priorities: Quantifying and prioritizing shrimp welfare threats, PDF with Table 4 and appendix Table 5 (McKay & McAuliffe, 2024)','Research organisation','rp','https://rethinkpriorities.org/wp-content/uploads/2024/06/Quantifyingandprioritizingshrimpwelfarethreats.pdf');
+S_(102,'Rethink Priorities: Methods for quantifying and prioritizing shrimp welfare threats (Quarto book and R code)','Research organisation','rp','https://rethinkpriorities.github.io/quantifying_shrimp_pain/');
+S_(103,'Rethink Priorities: Welfare considerations for farmed shrimp (2023), Table 1 on production systems','Research organisation','rp','https://rethinkpriorities.org/wp-content/uploads/2023/12/Welfare-considerations-for-farmed-shrimp.pdf');
+S_(104,'Rethink Priorities: Pre-slaughter mortality of farmed shrimp (2024)','Research organisation','rp','https://rethinkpriorities.org/wp-content/uploads/2024/03/Pre-slaughter-mortality-of-farmed-shrimp.pdf');
+S_(105,'Rethink Priorities: Welfare range estimates (Fischer, 2023)','Research organisation','rp','https://rethinkpriorities.org/research-area/welfare-range-estimates/');
+S_(106,'Shrimp Welfare Project: India scoping report, 20 farms in Andhra Pradesh','Advocacy organisation','adv','https://www.shrimpwelfareproject.org/india-scoping-report');
+S_(107,'Shrimp Welfare Project: Vietnam scoping report, 11 farms','Advocacy organisation','adv','https://www.shrimpwelfareproject.org/vietnam-scoping-report');
+S_(109,'Welfare Footprint Institute: shrimp project page (no figures published)','Research institute (SWP-commissioned)','adv','https://welfarefootprint.org/shrimp/');
+S_(110,'Shrimp Welfare Project: Humane Slaughter Initiative, list of collaborators','Advocacy organisation','adv','https://www.shrimpwelfareproject.org/humane-slaughter-initiative');
+/* independent science */
+S_(111,'Birch et al. (2021), Review of the evidence of sentience in cephalopod molluscs and decapod crustaceans, LSE report to the UK government','Government-commissioned review','ind','https://www.lse.ac.uk/News/News-Assets/PDFs/2021/Sentience-in-Cephalopod-Molluscs-and-Decapod-Crustaceans-Final-Report-November-2021.pdf');
+S_(112,'Crump et al. (2022), Sentience in decapod crustaceans: a general framework and review of the evidence, Animal Sentience 7(32)','Peer-reviewed','ind','https://doi.org/10.51291/2377-7478.1691');
+S_(113,'Weineck et al. (2018), Physiological changes as a measure of crustacean welfare under cooling and electroshock, Animals 8(9):158','Peer-reviewed','ind','https://doi.org/10.3390/ani8090158');
+S_(114,'Somerville et al. (2026), Behavioural and neurological profiles after electrical stunning and cold shock in P. vannamei, Aquaculture (abstract read)','Peer-reviewed','ind','https://doi.org/10.1016/j.aquaculture.2026.744375');
+S_(115,'Albalat et al. (2022), Welfare in farmed decapod crustaceans with reference to P. vannamei, Frontiers in Marine Science 9:886024','Peer-reviewed review','ind','https://doi.org/10.3389/fmars.2022.886024');
+S_(116,'Diggles (2019), Review of some scientific issues related to crustacean welfare, ICES J. Mar. Sci. 76(1)','Peer-reviewed review','ind','https://academic.oup.com/icesjms/article/76/1/66/5037899');
+S_(117,'Taylor et al. (2004), Minimizing stress during eyestalk ablation of L. vannamei with topical anaesthetic, Aquaculture 233','Peer-reviewed','ind');
+S_(118,'Zacarias et al. (2020/21), Increased robustness of postlarvae from non-ablated P. vannamei broodstock after AHPND and WSD challenge, Aquaculture','Peer-reviewed','ind','https://www.storre.stir.ac.uk/bitstream/1893/31966/1/Zacarias%20et%20al%202020%20AAM.pdf');
+S_(119,'Hoang & Nguyen (2026), Spawning performance of domesticated penaeids in commercial hatcheries and an eyestalk-ablation ban, Aquaculture and Fisheries 11(2) (abstract read)','Peer-reviewed','ind','https://doi.org/10.1016/j.aaf.2025.09.006');
+S_(120,'Ren et al. (2020), Quantitative genetic assessment of female reproductive traits in domesticated P. vannamei, Scientific Reports','Peer-reviewed','ind','https://pmc.ncbi.nlm.nih.gov/articles/PMC7217875/');
+S_(121,'McGraw et al. (2001), Higher minimum dissolved oxygen increases penaeid shrimp yields in earthen ponds, Aquaculture','Peer-reviewed','ind','https://doi.org/10.1016/s0044-8486(01)00530-0');
+S_(122,'Global Seafood Alliance: Dissolved oxygen concentrations in pond aquaculture (trial of 2.3, 3.0, 3.9 mg/L)','Trade article (academic content)','ind','https://www.globalseafood.org/advocate/dissolved-oxygen-concentrations-pond-aquaculture/');
+S_(123,'Araujo et al. (2024), Minimum dissolved oxygen setpoints for aeration in semi-intensive ponds, Aquaculture (USDA-ARS record)','Peer-reviewed','ind','https://www.ars.usda.gov/research/publications/publication/?seqNo115=413060');
+S_(124,'Zhang et al. (2006), Lethal dissolved oxygen levels of whiteleg shrimp, Aquaculture','Peer-reviewed','ind','https://doi.org/10.1016/j.aquaculture.2006.02.020');
+S_(125,'Lin & Chen (2001), Acute toxicity of ammonia on L. vannamei juveniles at different salinities, J. Exp. Mar. Biol. Ecol.','Peer-reviewed','ind','https://doi.org/10.1016/s0022-0981(01)00227-1');
+S_(126,'FAO / ASEAN: Manual on pond culture of penaeid shrimp, water-quality section','Intergovernmental','ind','https://www.fao.org/4/ac006e/AC006E04.htm');
+S_(127,'Tho et al. (2011), Improved extensive shrimp farming in the Mekong Delta, Aquaculture Research','Peer-reviewed','ind','https://doi.org/10.1111/j.1365-2109.2010.02750.x');
+S_(128,'Janakiram et al. (2011), Survival and production of P. monodon in modified-extensive and semi-intensive systems, Andhra Pradesh','Peer-reviewed','ind','https://eprints.cmfri.org.in/8969/1/AJES_V.25.2_2011_53-61.pdf');
+S_(129,'Said et al. (2024), Stocking density in biofloc systems, Scientific Reports','Peer-reviewed','ind','https://doi.org/10.1038/s41598-024-61328-4');
+S_(130,'Costa et al. (2016), Influence of stocking density on the behaviour of juvenile L. vannamei, Aquaculture Research','Peer-reviewed','ind','https://doi.org/10.1111/are.12550');
+S_(131,'Schveitzer et al. (2013), Artificial substrates in biofloc culture of L. vannamei, Aquacultural Engineering 54','Peer-reviewed','ind','https://doi.org/10.1016/j.aquaeng.2012.12.003');
+S_(132,'Schveitzer et al. (2018), Format and fixation of artificial substrate at high density, Aquaculture Research','Peer-reviewed','ind','https://doi.org/10.1111/are.13561');
+S_(133,'Kring et al. (2023), Stocking density and artificial substrate in greenhouse biofloc, Aquacultural Engineering','Peer-reviewed','ind','https://doi.org/10.1016/j.aquaeng.2023.102322');
+S_(134,'Fleckenstein / Tierney et al. (2020), Substrate in high-tunnel biofloc systems, Aquacultural Engineering (abstract read)','Peer-reviewed','ind','https://doi.org/10.1016/j.aquaeng.2020.102063');
+S_(135,'Sanguanrut et al. (2018), Cohort study of 196 Thai shrimp ponds and the causes of EMS, Aquaculture','Peer-reviewed','ind','https://doi.org/10.1016/j.aquaculture.2018.04.033');
+S_(136,'Patil et al. (2021), Economic loss due to diseases in Indian shrimp farming, 909 farms, Aquaculture','Peer-reviewed','ind','https://doi.org/10.1016/j.aquaculture.2020.736231');
+S_(137,'Walker & Mohan (2009), Viral disease emergence in shrimp aquaculture, Reviews in Aquaculture 1','Peer-reviewed review','ind','https://pmc.ncbi.nlm.nih.gov/articles/PMC7169130/');
+S_(138,'FAO/MARD technical workshop on EMS/AHPNS, Fisheries and Aquaculture Report No. 1053 (2013)','Intergovernmental','ind','https://www.fao.org/4/i3422e/i3422e.pdf');
+S_(139,'Shinn et al. (2018), Asian shrimp production and the economic costs of disease, Asian Fisheries Science 31S','Peer-reviewed','ind','https://www.asianfisheriessociety.org/publication/downloadfile.php?id=1223');
+/* country sources */
+S_(140,'Seafood Watch (2021), Farmed whiteleg shrimp from Ecuador, ponds, Report 27637','NGO assessment (non-advocacy)','ind','https://www.seafoodwatch.org/globalassets/sfw-data-blocks/reports/s/seafood-watch-farmed-whiteleg-shrimp-ecuador-27637.pdf');
+S_(141,'Seafood Watch (2021), Farmed giant tiger prawn and whiteleg shrimp from India, Report 731','NGO assessment (non-advocacy)','ind','https://www.seafoodwatch.org/globalassets/sfw-data-blocks/reports/s/seafood-watch-farmed-shrimp-india-731.pdf');
+S_(142,'Seafood Watch (2023), Farmed whiteleg shrimp and giant tiger prawn from Vietnam, Report 27793','NGO assessment (non-advocacy)','ind','https://www.seafoodwatch.org/globalassets/sfw-data-blocks/reports/s/seafood-watch-whiteleg-shrimp-giant-tiger-prawn-vietnam-27793.pdf');
+S_(143,'Seafood Watch (2020), Farmed whiteleg shrimp from Thailand, ponds, Report 601','NGO assessment (non-advocacy)','ind','https://www.seafoodwatch.org/globalassets/sfw-data-blocks/reports/s/seafood-watch-shrimp-thailand-601.pdf');
+S_(144,'Seafood Watch (2016), Farmed whiteleg shrimp from China, ponds, Report 202','NGO assessment (non-advocacy)','ind','https://www.seafoodwatch.org/globalassets/sfw-data-blocks/reports/s/seafood-watch-whiteleg-shrimp-china-202.pdf');
+S_(145,'Seafood Watch: Indonesia farmed shrimp assessment (read locally)','NGO assessment (non-advocacy)','ind','https://www.seafoodwatch.org/our-projects/farmed-shrimp-in-indonesia');
+S_(146,'Boyd et al. (2021), Comparison of resource use for farmed shrimp in Ecuador, India, Indonesia, Thailand and Vietnam, Aquaculture, Fish and Fisheries (farm surveys; read via summaries)','Peer-reviewed','ind','https://onlinelibrary.wiley.com/doi/full/10.1002/aff2.23');
+S_(147,'Ali et al. (2022), Economic performance of intensive P. monodon farming in Bangladesh, 53 farms, Aquaculture, Fish and Fisheries','Peer-reviewed','ind','https://doi.org/10.1002/aff2.29');
+S_(148,'Seafood Watch (2023), Warmwater shrimp social risk profile: Bangladesh','NGO assessment (non-advocacy)','ind','https://www.seafoodwatch.org/globalassets/sfw/pdf/global/ssrt-2023-bgd-wshrimp.pdf');
+S_(149,'Thakur et al. (2018), Intensive L. vannamei farming in Vietnam, 846 crops, Aquaculture Research','Peer-reviewed','ind','https://onlinelibrary.wiley.com/doi/abs/10.1111/are.13720');
+S_(150,'Nguyen et al. (2019), Shrimp farming systems in Vietnam, Sustainability 11(19):5277','Peer-reviewed review','ind','https://www.mdpi.com/2071-1050/11/19/5277');
+S_(151,'Pham et al. (2021), Efficiency of intensive white-leg shrimp farming in Vietnam, 200 Mekong farms, Aquaculture Economics & Management','Peer-reviewed','ind','https://doi.org/10.1080/13657305.2021.2003483');
+S_(152,'Patanasatienkul et al. (2023), Farm management and biosecurity on shrimp farms in Java, Frontiers in Aquaculture','Peer-reviewed','ind','https://www.frontiersin.org/journals/aquaculture/articles/10.3389/faquc.2023.1169149/full');
+S_(153,'Shrimp Insights (2025), SPF L. vannamei broodstock market update','Trade analysis','ind','https://www.shrimpinsights.com/blog/2025-update-spf-l-vannamei-broodstock-market');
+S_(154,'Shrimp Insights (2023), China’s domestic shrimp farming sector (Guo, Royal Agrifirm)','Trade analysis','ind','https://www.shrimpinsights.com/blog/unpacking-chinas-domestic-shrimp-farming-sector-and-what-it-means-global-shrimp-industry');
+S_(155,'TheFishSite: Could traditional-plus shrimp farms boost Indonesian production?','Trade press','ind','https://thefishsite.com/articles/could-traditional-plus-shrimp-farms-boost-indonesian-production');
+S_(156,'Chen et al. (2023), Pond and factory farming modes in northern China, Water 15(16):2981','Peer-reviewed','ind','https://www.mdpi.com/2073-4441/15/16/2981');
+S_(157,'Wu et al. (2025), Water quality and production in small greenhouse ponds, Guangdong, Microorganisms 13(3):546','Peer-reviewed','ind','https://pmc.ncbi.nlm.nih.gov/articles/PMC11944949/');
+S_(158,'Shen et al. (2019), EHP prevalence in Jiangsu ponds, Aquaculture International 27:675','Peer-reviewed','ind','https://link.springer.com/article/10.1007/s10499-019-00358-6');
+S_(159,'Society of Aquaculture Professionals (2021), India’s farmed shrimp sector in 2020, white paper','Industry association','ind','https://aquaasiapac.com/2021/07/31/indias-farmed-shrimp-sector-in-2020-a-white-paper/');
+S_(160,'MPEDA: aquaculture production data (L. vannamei and P. monodon)','National agency','ind','https://mpeda.gov.in/?page_id=651');
+S_(161,'The effect of COVID-19 on the shrimp industry of Iran, PMC','Peer-reviewed','ind','https://pmc.ncbi.nlm.nih.gov/articles/PMC8629740/');
+S_(162,'Ghodrati et al., Nitrogen dynamics in Gomishan wetland shrimp ponds, Scientific Reports','Peer-reviewed','ind','https://pmc.ncbi.nlm.nih.gov/articles/PMC9792527/');
+S_(163,'Taw et al. (2016), Shrimp biofloc production trials in Saudi Arabia, Responsible Seafood Advocate','Trade article','ind','https://www.globalseafood.org/advocate/shrimp-biofloc-production-trials-in-saudi-arabia/');
+S_(164,'TheFishSite: The Saudi shrimp farm whose sights are set on 250,000 tonnes (NAQUA, 2023)','Trade press','ind','https://thefishsite.com/articles/the-saudi-shrimp-farm-whose-sights-are-set-on-250-000-tonnes-a-year-naqua-diego-illingworth');
+S_(165,'Aranguren et al., Saudi Arabia developing an effective farmed shrimp biosecurity strategy','Trade article (expert authors)','ind','https://www.globalseafood.org/advocate/saudi-arabia-developing-effective-farmed-shrimp-biosecurity-strategy/');
+S_(166,'Department of Fisheries Malaysia / SIRIM (2022), Code of good aquaculture practices for marine shrimp hatcheries','National standard','ind','https://www.dof.gov.my/wp-content/uploads/2022/11/DOF-SIRIM-2-2022-COP-Marine-Shrimp-Harchery.pdf');
+S_(167,'Taw et al. (2011), Malaysia shrimp farm redesign with biosecurity and biofloc','Trade article','ind','https://www.globalseafood.org/advocate/malaysia-shrimp-farm-redesign-successfully-combines-biosecurity-biofloc-technology/');
+S_(168,'Chithambaran & Al Deen (2025), Growing jumbo L. vannamei in semi-arid Saudi Arabia, Aquaculture Magazine','Trade magazine (trial)','ind','https://aquaculturemag.com/2025/05/12/cultivation-strategy-for-growing-jumbo-sized-pacific-white-shrimp-litopenaeus-vannamei-in-semi-arid-regions-of-saudi-arabia/');
+S_(169,'Taw & Setio (2014), Intensive biofloc farm in Bali, Responsible Seafood Advocate','Trade article','ind','https://www.globalseafood.org/advocate/intensive-farm-in-bali-produces-shrimp-in-biofloc-system/');
+S_(170,'Songsangjinda (Thai DoF) via TheFishSite (2020), Key insights into Thailand’s shrimp farming sector','Trade press','ind','https://thefishsite.com/articles/key-insights-into-thailands-shrimp-farming-sector');
+S_(171,'Tookwinas et al., Vannamei farming in Thailand, SEAFDEC proceedings (c. 2005)','Institutional report','ind','https://repository.seafdec.org.ph/bitstream/handle/10862/855/RTC-P.vannamei_p74-80.pdf');
+S_(172,'Schuur et al. (2022), Modelled intensive and extensive shrimp farming in Vietnam, Aquaculture, Fish and Fisheries','Peer-reviewed (modelled)','ind','https://onlinelibrary.wiley.com/doi/full/10.1002/aff2.26');
+S_(173,'Aqua Culture Asia Pacific (2024), How to achieve successful shrimp crops in Vietnam (Uni-President)','Trade press','ind','https://aquaasiapac.com/2024/01/29/how-to-achieve-successful-shrimp-crops-in-vietnam/');
+S_(174,'Piedrahita (2018), Shrimp farming industry in Ecuador, Camara Nacional de Acuacultura, Responsible Seafood Advocate','Industry association','ind','https://www.globalseafood.org/advocate/shrimp-farming-industry-in-ecuador-part-1/');
+S_(175,'Fletcher (2022), How can Ecuador make the most of its shrimp production, TheFishSite','Trade press','ind','https://thefishsite.com/articles/how-can-ecuador-make-the-most-of-its-ever-growing-shrimp-production-gabriel-luna-glunashrimp');
+S_(176,'NABARD/TNAU (2015), Culture of white-legged shrimp L. vannamei, extension manual','Government extension','ind','https://agritech.tnau.ac.in/banking/nabard_pdf/Fisheries/5.Culture_of_Vannamei_white_legged_shrimp_15.pdf');
+S_(177,'Inland shrimp farming in Ecuador (Inacua farm, 2002), Responsible Seafood Advocate','Trade article','ind','https://www.globalseafood.org/advocate/inland-shrimp-farming-in-ecuador/');
+/* production sources */
+S_(180,'MARA China: vannamei supply-demand report (Mar 2026)','National ministry','ind','https://www.agri.cn/sj/gxxs/202604/t20260413_8827738.htm');
+S_(181,'China Customs / MARA trade explainer on shrimp production (2024)','Official-affiliated','ind');
+S_(182,'Development dilemma of L. vannamei industry in China, Int. J. Aquaculture (yearbook data)','Peer-reviewed review','ind','https://ija.scholasticahq.com/article/122102-development-dilemma-of-_litopenaeus-vannamei_-industry-in-china-current-countermeasures-taken-and-its-implications-for-the-world-shrimp-aquaculture-i');
+S_(183,'Vietnam Directorate of Fisheries, 2024 output (via Tuoi Tre; search summary)','National agency','ind','https://tuoitre.vn/nld/nganh-tom-ky-vong-but-pha-196250223202140878.htm');
+S_(184,'Vietnam Fisheries Association, 2023 output (Viet Nam News)','Industry association','ind','https://vietnamnews.vn/economy/1652380/vietshrimp-2024-aiming-to-elevate-the-vietnamese-shrimp-industry.html');
+S_(185,'VASEP: Vietnam shrimp farming output, first 10 months of 2024','Industry association','ind','https://seafood.vasep.com.vn/key-seafood-sectors/shrimp/news/vietnam-s-shrimp-farming-output-reaches-1-106-9-thousand-tons-in-the-first-10-months-of-2024-32264.html');
+S_(186,'Thai Department of Fisheries: shrimp situation report 2024 (search summary)','National agency','ind','https://www.fisheries.go.th/strategy/fisheconomic/Monthly%20report/Shrimp/shrimp%20-%20Q4.2567.pdf');
+S_(187,'Thai Shrimp Association via Aqua Culture Asia Pacific (Dec 2024)','Industry association','ind','https://aquaasiapac.com/2024/12/12/thailands-shrimp-production-down-by-4-in-2024-as-it-is-battered-by-disease-low-prices/');
+S_(188,'SEAFDEC: Thailand fisheries country profile (search summary)','Intergovernmental','ind','https://www.seafdec.org/fisheries-country-profile-thailand/');
+S_(189,'Indonesian Ministry of Marine Affairs and Fisheries (KKP), via ANTARA and ivoox (2024)','National ministry','ind','https://www.antaranews.com/berita/5766544/pemerintah-targetkan-produksi-udang-capai-169-juta-ton-pada-2029');
+S_(190,'JALA Tech via Aqua Culture Asia Pacific: Indonesian shrimp industry 2024','Company analysis','ind','https://aquaasiapac.com/2025/08/15/shrimp-outlook-2025-indonesian-shrimp-industrys-performance-challenges-and-market-dynamics-in-2024/');
+S_(191,'Shrimp Club Indonesia via Aqua Culture Asia Pacific (2023)','Industry association','ind','https://aquaasiapac.com/2025/02/08/asian-marine-shrimp-in-2023-reflections-on-the-lowest-prices-in-a-decade/');
+S_(192,'EU Market Observatory (EUMOFA): Shrimp Penaeus species profile (FAO data)','EU dashboard on FAO data','ind','https://fishery-aquaculture-market-observatory.ec.europa.eu/en/country-and-species-profiles/species-profiles/shrimp-penaeus');
+S_(193,'Bangladesh Department of Fisheries figures via TBS News (FY2024-25) and Fisheries Yearbook 2023-24','National agency','ind','https://www.tbsnews.net/bangladesh/shrimp-export-target-set-3b-2030-can-bangladesh-revive-its-white-gold-1456816');
+S_(194,'Frontiers in Aquaculture (2025), Bangladesh aquaculture, DoF data','Peer-reviewed','ind','https://www.frontiersin.org/journals/aquaculture/articles/10.3389/faquc.2025.1541025/full');
+S_(195,'Tehran Times (2026), Iran farmed shrimp output rises 37% (Iran Veterinary Organization)','News on official data','ind','https://www.tehrantimes.com/news/524100/Farmed-shrimp-output-rises-37-to-over-62-000-tons');
+S_(196,'SeaIran (2024), Iran’s shrimp farming industry outlook','Commercial site','ind','https://seairan.com/irans-shrimp-farming-industry-a-comprehensive-outlook-on-its-past-present-and-future/?lang=en');
+S_(197,'Ken Research / USDA GAIN: Saudi shrimp production 2024 (search summary)','Vendor / government','ind','https://www.kenresearch.com/industry-reports/saudi-arabia-seafood-and-fish-feed-market');
+S_(198,'Xinhua / DoF Malaysia: Malaysian shrimp sector (2024 output; search summary)','News on official data','ind','https://english.news.cn/20260613/ec27ba1587fb41929355d3411148e84f/c.html');
+S_(199,'Rabobank 2025 Ecuador outlook (search summary)','Industry analyst','ind');
+
+/* ============================== THREATS (Rethink Priorities, 2024) ============================== */
+/* Per system [extensive, semi-intensive, intensive, super-intensive]. p = share of shrimp affected [min, most likely, max].
+   Durations in hours per affected shrimp: per day lived (unit "day"), per event, or per cycle. Order: annoying, hurtful, disabling, excruciating.
+   Each duration is [low, high] and optionally a third value for the most likely point. Source: RP appendix Table 5 and methods code. */
+const sx=1/3600,mx=1/60,Z=[0,0];
+const Rw=(p,a,h,d,x)=>({p,d:[a,h,d,x]});
+const THREATS=[
+ {id:'crowd',name:'High stocking density',unit:'day',
+  what:'Crowding of animals measured against wild densities, with competition, aggression and cannibalism.',
+  concern:'High (SWP rating)',mech:'Low',mechNote:'RP counts this as chronic mild distress with a smaller hurtful share that rises with density, and notes the top ranking may be an artefact of benchmarking against wild densities. Independent studies show survival, growth and behaviour worsen with density; cannibalism rates at set densities were not found in an independent source.',sent:[15,101,102],
+  rows:[Rw(T(.25,.5,.75),[21.6,21.6],[2.4,2.4],Z,Z),
+        Rw(T(.75,.8,1),[21.6,21.6],[2.4,2.4],[.54*sx,.54*sx],[.54*sx,.54*sx]),
+        Rw(T(1,1,1),[20.4,20.4],[3.6,3.6],[1.08*sx,1.08*sx],[1.08*sx,1.08*sx]),
+        Rw(T(1,1,1),[19.2,19.2],[4.8,4.8],[1.08*sx,1.08*sx],[1.08*sx,1.08*sx])]},
+ {id:'substrate',name:'Lack of substrate',unit:'day',
+  what:'Bare pond or tank bottom with no substrate or structure. RP assumes 12 hours of exposure a day and models P. monodon as more affected than vannamei.',
+  concern:'High (SWP rating)',mech:'Low',mechNote:'The weakest-evidenced threat in the draft. No source links substrate deprivation to a physiological or behavioural marker in grow-out ponds. Independent experiments on artificial substrate in biofloc and nursery tanks show higher survival and biomass, but one finds minimal effect and none test ponds.',sent:[21,20,101],
+  mono:{a:8.4,h:3.6,d:1.08*sx,x:1.08*sx},
+  rows:[Rw(T(0,.05,.15),[11.76,11.76],[.24,.24],Z,Z),Rw(T(.25,.5,.75),[11.76,11.76],[.24,.24],Z,Z),
+        Rw(T(.9,.95,1),[11.76,11.76],[.24,.24],Z,Z),Rw(T(1,1,1),[11.76,11.76],[.24,.24],Z,Z)]},
+ {id:'hypoxia',name:'Low dissolved oxygen',unit:'day',
+  what:'Daily oxygen dips where aeration is absent or minimal. RP averages its first-half and second-half cycle estimates.',
+  concern:'Very High (SWP rating)',mech:'Moderate',mechNote:'Oxygen deprivation harms survival and yield in controlled trials, and extremely low oxygen kills. A recent trial found no difference between aeration setpoints of 2.5 to 4.5 mg/L. The pathway does not need a pain-specific mechanism.',sent:[20,101,121],
+  rows:[Rw(T(1,1,1),[.854,4.675],[.1445,.8175],[.0013,.00735],[.000125,.0007]),
+        Rw(T(.5,.8,1),[.427,3.82],[.0723,.673],[.00065,.00605],[.0000625,.000575]),
+        Rw(T(.2,.6,1),[0,1.35],[0,.149],[0,.0016],[0,.0001]),
+        Rw(T(0,.1,.5),[0,.6875],[0,.0625],Z,Z)]},
+ {id:'ammonia',name:'High un-ionised ammonia',unit:'day',
+  what:'Toxic ammonia from poor water exchange and feed waste, with irritation and a weakened immune system.',
+  concern:'Very High (SWP rating)',mech:'Moderate',mechNote:'Ammonia toxicity thresholds are well established in laboratory studies and FAO guidance. Toxicity rises as salinity falls. Whether sub-lethal exposure is experienced as pain is the open question.',sent:[20,101,125],
+  rows:[Rw(T(.25,.5,1),[.2438,4.88,.975],[.2535,5.07,1.014],[.00167,.05,.01],[.00025,.005,.001]),
+        Rw(T(.25,.4,1),[.2438,4.88,.975],[.2535,5.07,1.014],[.00167,.05,.01],[.00025,.005,.001]),
+        Rw(T(.4,.6,1),[.2473,2.97,.4947],[.25,3,.5],[.0025,.03,.005],[.0002,.0024,.0004]),
+        Rw(T(.05,.3,.9),[0,2.85,.2373],[0,3.12,.26],[0,.03,.0025],[0,.0012,.0001])]},
+ {id:'salinity',name:'Low salinity',unit:'day',
+  what:'Salinity below what the species tolerates well, whether accidental or by design (freshwater and low-salinity farming).',
+  concern:'Medium (SWP rating)',mech:'Low',mechNote:'RP counts mostly mild distress. SWP rates salinity as a medium concern. Low salinity raises ammonia and nitrite toxicity in laboratory studies.',sent:[101,125],
+  rows:[Rw(T(.25,.5,.75),[4.97,23.88],[.025,.12],[.00025,.0012],[.000125,.0006]),
+        Rw(T(.1,.5,.7),[.995,23.86],[.005,.12],[.00005,.0012],[.000025,.0006]),
+        Rw(T(.25,.5,.75),[.995,23.88],[.005,.12],Z,Z),
+        Rw(T(.5,.75,.9),[0,23.99],[0,.012],Z,Z)]},
+ {id:'temp_hi',name:'High temperature',unit:'day',
+  what:'Water above the preferred range.',concern:'High above optimum (SWP rating)',mech:'Low',mechNote:'RP estimates; temperature optimum for P. vannamei is 25.5 to 32.4 C (RP) or 28 to 30 C (SWP).',sent:[101],
+  rows:[Rw(T(.1,.2,.3),[.9097,4.55],[.09,.45],[.0002,.001],[.0001,.0005]),
+        Rw(T(.1,.15,.3),[.454,3.63],[.045,.36],[.0005,.004],[.0005,.004]),
+        Rw(T(0,.05,.1),[0,.848],[0,.15],[0,.002],Z),
+        Rw(T(0,.025,.05),[0,.495],[0,.005],Z,Z)]},
+ {id:'temp_lo',name:'Low temperature',unit:'day',
+  what:'Water below the preferred range.',concern:'Medium below optimum (SWP rating)',mech:'Low',mechNote:'Small contribution in RP’s model. Cold winters are linked to white spot outbreaks in Saudi Arabia.',sent:[101,165],
+  rows:[Rw(T(0,.1,.2),[0,1.9],[0,.1],Z,Z),Rw(T(0,.1,.2),[0,1.9],[0,.1],Z,Z),
+        Rw(T(0,.025,.05),[0,.99],[0,.01],Z,Z),Rw(T(0,.005,.01),[0,.0997],[0,.0003],Z,Z)]},
+ {id:'ph',name:'Non-optimal pH',unit:'day',
+  what:'Sustained or sudden pH deviations.',concern:'High (SWP rating)',mech:'Low',mechNote:'RP estimates.',sent:[101],
+  rows:[Rw(T(.1,.3,.5),[.908,3.63],[.0908,.363],[.001,.004],[.0001,.0004]),
+        Rw(T(.1,.2,.4),[.908,3.63],[.0908,.363],[.001,.004],[.0001,.0004]),
+        Rw(T(0,.075,.15),[.95,2.85],[.05,.15],Z,Z),Rw(T(0,.05,.1),[0,.475],[0,.025],Z,Z)]},
+ {id:'pollutants',name:'Pollutants',unit:'day',
+  what:'Contaminants in source or pond water.',concern:'Not rated',mech:'Low',mechNote:'RP estimates; small contribution.',sent:[101],
+  rows:[Rw(T(0,.05,.1),[.709,4.25,2.13],[.29,1.74,.87],[.0005,.003,.0015],[.00025,.0015,.00075]),
+        Rw(T(0,.075,.15),[.709,4.25,1.42],[.29,1.74,.58],[.0005,.003,.001],[.00025,.0015,.0005]),
+        Rw(T(0,.025,.05),[.375,2.25,.75],[.125,.75,.25],Z,Z),Rw(T(0,.025,.05),[0,1.5,.375],[0,.5,.125],Z,Z)]},
+ {id:'predators',name:'Predators',unit:'day',
+  what:'Predation attempts and the fear of them in open ponds.',concern:'Not rated',mech:'Low',mechNote:'RP estimates; zero for super-intensive systems.',sent:[101],
+  rows:[Rw(T(0,.25,.5),[.972,2.92],[.028,.084],[.00001,.00003],[.00002,.000075]),
+        Rw(T(0,.15,.3),[.485,.97],[.015,.03],[.000015,.00003],[.00003,.00006]),
+        Rw(T(0,.05,.1),[.0965,.483],[.0034,.017],[.000006,.00003],[.000012,.00006]),
+        Rw(T(0,0,0),Z,Z,Z,Z)]},
+ {id:'malnutrition',name:'Malnutrition',unit:'cycle',
+  what:'Nutritionally inadequate feed over the cycle.',concern:'High (SWP rating, food)',mech:'Low',mechNote:'RP estimates, per affected shrimp per cycle.',sent:[101],
+  rows:[Rw(T(0,.05,.1),[83.96,335.83,209.9],[.042,.168,.105],Z,Z),Rw(T(0,.05,.1),[83.96,167.92,104.95],[.042,.084,.0525],Z,Z),
+        Rw(T(0,.05,.1),[83.96,167.92,125.94],[.042,.084,.063],Z,Z),Rw(T(0,.05,.1),[41.98,83.96,62.97],[.021,.042,.0315],Z,Z)]},
+ {id:'hunger',name:'Hunger',unit:'cycle',
+  what:'Too little feed over the cycle.',concern:'High (SWP rating, food)',mech:'Low',mechNote:'RP estimates, per affected shrimp per cycle.',sent:[101],
+  rows:[Rw(T(0,.05,.1),[21.84,611.52,316.68],[2.16,60.48,31.32],[.043*sx,1.21*sx,.63*sx],[.043*sx,1.21*sx,.63*sx]),
+        Rw(T(0,.1,.25),[19.2,134.4,76.8],[4.8,33.6,19.2],[.17*sx,1.21*sx,.69*sx],[.17*sx,1.21*sx,.69*sx]),
+        Rw(T(0,.15,.25),[19.2,134.4,76.8],[4.8,33.6,19.2],[.17*sx,1.21*sx,.69*sx],[.17*sx,1.21*sx,.69*sx]),
+        Rw(T(0,.15,.25),[19.2,134.4,57.6],[4.8,33.6,14.4],[.17*sx,1.21*sx,.52*sx],[.17*sx,1.21*sx,.52*sx])]},
+ {id:'disease',name:'Disease (biosecurity failures)',unit:'episode',actual:true,
+  what:'Outbreaks of white spot, acute hepatopancreatic necrosis and similar diseases. Durations are per affected episode. Where independent farm surveys give a country’s disease prevalence, it is averaged with RP’s system estimate.',
+  concern:'Very High (SWP rating)',mech:'Moderate',mechNote:'Mortality and time course are well documented in independent studies: white spot kills 80 to 100% within 5 to 10 days, and AHPND up to 100% within 30 to 35 days of stocking. How long each stage is experienced as pain is an RP estimate. Sub-lethal infections such as EHP are common but their welfare cost is unknown.',sent:[15,101,137,138],
+  rows:[0,1,2,3].map(i=>Rw([T(.05,.125,.2),T(.055,.1775,.3),T(.05,.115,.18),T(.005,.0275,.05)][i],[7.78,53.91],[22.8,300],[11.4,66],[1.12*mx,5.4*mx]))},
+ {id:'ablation',name:'Eyestalk ablation (broodstock)',unit:'ablation',special:'ablation',
+  what:'Ablation of female broodstock to induce spawning. The pain is per ablated female and is divided across the shrimp she produces.',
+  concern:'Very High (SWP rating)',mech:'Moderate',mechNote:'Anaesthesia before ablation reduces erratic swimming, and non-ablated broodstock give offspring with better survival after disease challenge. Birch et al. have high confidence that ablation is a severe welfare risk if shrimp are sentient. For penaeids the sentience evidence is "little one way or the other".',sent:[111,117,118,101],
+  rows:[Rw(T(.25,.75,1),0,0,0,0),Rw(T(.5,.75,1),0,0,0,0),Rw(T(.9,.98,1),0,0,0,0),Rw(T(.9,.98,1),0,0,0,0)],
+  /* per ablated female: acute procedure window and chronic recovery period, hours */
+  acute:[[.0495,.198],[.175,.7],[.275,1.1],[.0005,.002]],
+  chronic:[[89.99,224.99],[10,25],[.004,.01],[.002,.005]]},
+ {id:'transport_w',name:'Water-based transport',unit:'event',
+  what:'Transport of postlarvae and juveniles in water. Durations are per trip.',concern:'High (SWP rating)',mech:'Low',mechNote:'RP estimates, with transport times of 0.1 to 72 hours.',sent:[101],
+  rows:[Rw(T(.5,.75,1),[.0748,53.91,17.97],[.025,18,6],[.0001,.0718,.024],[.00003,.0217,.0072]),
+        Rw(T(.9,.95,1),[.0748,53.91,17.97],[.025,18,6],[.0001,.0718,.024],[.00003,.0217,.0072]),
+        Rw(T(.5,.7,.9),[.0748,53.91,17.97],[.025,18,6],[.0001,.0718,.024],[.00003,.0217,.0072]),
+        Rw(T(.1,.5,.9),[.0748,53.91,17.97],[.025,18,6],[.0001,.0718,.024],[.00003,.0217,.0072])]},
+ {id:'transport_d',name:'Waterless transport',unit:'event',expo:T(.01,.015,.02),
+  what:'Broodstock and live shrimp shipped without water. Only 1 to 2% of shrimp are exposed (RP code).',concern:'High (SWP rating)',mech:'Low',mechNote:'RP estimates, with shipments of 15 to 35 hours and up to 72 hours.',sent:[101],
+  rows:[Rw(T(0,.05,.1),[2.44,43.86,18.27],[1.56,28.08,11.7],[.0024,.0432,.018],[.0012,.0217,.009]),
+        Rw(T(0,.25,.5),[2.44,43.86,18.27],[1.56,28.08,11.7],[.0024,.0432,.018],[.0012,.0217,.009]),
+        Rw(T(.5,.75,1),[2.44,43.86,18.27],[1.56,28.08,11.7],[.0024,.0432,.018],[.0012,.0217,.009]),
+        Rw(T(.8,.9,1),[2.44,43.86,18.27],[1.56,28.08,11.7],[.0024,.0432,.018],[.0012,.0217,.009])]},
+ {id:'harvest',name:'Harvest',unit:'event',
+  what:'Netting, draining and handling at harvest, 5 to 60 minutes.',concern:'High (SWP rating, handling)',mech:'Low',mechNote:'RP estimates. Seine-net harvest after draining is typical (Bangladesh survey).',sent:[101,147],
+  rows:[Rw(T(1,1,1),[2*mx,6*mx],[13.8*mx,41.4*mx],[4*mx,12*mx],[12*sx,36*sx]),
+        Rw(T(1,1,1),[2*mx,6*mx],[13.8*mx,41.4*mx],[4*mx,12*mx],[12*sx,36*sx]),
+        Rw(T(.99,.995,1),[1*mx,4.5*mx],[6.9*mx,31.05*mx],[2*mx,9*mx],[6*sx,27*sx]),
+        Rw(T(.95,.975,1),[.5*mx,2*mx],[3.45*mx,13.8*mx],[1*mx,4*mx],[3*sx,12*sx])]},
+ {id:'slaughter',name:'Slaughter (ice slurry)',unit:'event',
+  what:'Slaughter by chilling in ice slurry, which RP assumes for all shrimp except the 0.3% stunned. Prevalence is the share slaughtered this way.',
+  concern:'Very High (SWP rating)',mech:'Moderate',mechNote:'Shrimp lose heartbeat within about 4 minutes in ice slurry, with sensory responses gone after about 30 seconds, but the cold stun is reversible and Birch et al. have no confidence that chilling renders decapods unconscious. Electrical stunning may leave animals paralysed but conscious.',sent:[113,111,114,101],
+  rows:[Rw(T(.5,.7,.9),Z,[.3*sx,6*sx,2.4*sx],[23.7*sx,474*sx,189.6*sx],[6*sx,120*sx,48*sx]),
+        Rw(T(.6,.8,.95),Z,[.3*sx,6*sx,2.4*sx],[23.7*sx,474*sx,189.6*sx],[6*sx,120*sx,48*sx]),
+        Rw(T(.98,.99,1),Z,[.3*sx,6*sx,2.4*sx],[23.7*sx,474*sx,189.6*sx],[6*sx,120*sx,48*sx]),
+        Rw(T(1,1,1),Z,[.3*sx,6*sx,2.4*sx],[23.7*sx,474*sx,189.6*sx],[6*sx,120*sx,48*sx])]}
+];
+const TI={};THREATS.forEach((t,i)=>TI[t.id]=i);
+
+/* RP crowding intensity depends on density: hurtful share 10% at extensive and semi-intensive densities, 15% intensive, 20% super-intensive.
+   Anchors are the midpoints of RP's stocking-density ranges per system (Table 1, RP 2023). */
+const DENS_ANCHORS=[[12.5,.10],[22.5,.10],[85,.15],[215,.20]];
+function hurtShare(d){const a=DENS_ANCHORS;if(d<=a[0][0])return a[0][1];for(let i=1;i<a.length;i++){if(d<=a[i][0])return a[i-1][1]+(a[i][1]-a[i-1][1])*(d-a[i-1][0])/(a[i][0]-a[i-1][0]);}return a[a.length-1][1];}
+
+/* ============================== METHODS ============================== */
+const METHODS=[
+ {id:'mix',name:'Typical mix for this country',dens:'Weights the five systems by the country’s estimated production shares',
+  facts:[['Share of shrimp worldwide (RP)','Extensive 11.2%, semi-intensive 16.4%, intensive 71.4%, super-intensive about 1%. An industry expert gave 5 / 30 / 60 / 5 for 2020, so the shares disagree.','Reconciled','Low',[101,103]]]},
+ {id:'ext',name:'Extensive / traditional',dens:'Under 5 to 20 PL/m² (RP); 300–400 kg/ha per year in the Mekong Delta',
+  facts:[
+   ['Stocking density','Under 5 to 20 PL/m²; one crop a year; no aeration; earthen, irregular, intertidal ponds; wild seed','Sourced','Moderate',[103]],
+   ['Yield','300–400 kg/ha per year in large-scale mangrove-shrimp and improved-extensive systems, Mekong Delta','Sourced','Moderate',[1]],
+   ['Infrastructure','Ponds along bays and tidal rivers with elevated mud walls; low-investment, rural','Sourced','Moderate',[3,1]],
+   ['Share of shrimp (RP)','About 11% worldwide','Sourced','Low',[101]]]},
+ {id:'semi',name:'Semi-intensive',dens:'5 to 40 PL/m² (RP); pumps, paddlewheels when oxygen is low',
+  facts:[
+   ['Stocking density','5 to 40 PL/m² (RP); typical 25 to 35 (SWP); 10 to 70 in India','Sourced','Moderate',[103,106,141]],
+   ['Water management','Pumping, sometimes aerators; daily exchange 0–25%','Sourced','Moderate',[3]],
+   ['Infrastructure','Ponds 1–6 ha, regular; nursery ponds often used first; 1 to 2 crops a year','Sourced','Moderate',[3,103]],
+   ['Share of shrimp (RP)','About 16% worldwide','Sourced','Low',[101]]]},
+ {id:'int',name:'Intensive',dens:'40 to 130 PL/m² (RP); 30–60/m² in Thailand (draft); 5–10 t/ha per crop in Vietnam',
+  facts:[
+   ['Stocking density','40 to 130 PL/m² (RP). The draft cites 30–60/m² for Thailand and a Brazilian trial labelled 100/m² intensive; Mekong farm survey mean 162','Sourced','Low',[103,3,6,151]],
+   ['Yield','5–10 t/ha per crop in Vietnam; 0.3 to 2 kg/m² per crop','Sourced','Moderate',[1,103]],
+   ['Management','Plastic-lined ponds with treatment reservoirs, frequent aeration, feed up to five times a day; ponds 0.16–1 ha','Sourced','Moderate',[3,103]],
+   ['Share of shrimp (RP)','About 71% worldwide','Sourced','Low',[101]]]},
+ {id:'super',name:'Super-intensive / biofloc (BFT)',dens:'130 to over 300 PL/m² (RP); up to 500/m² tested in Brazil; 20–40 t/ha per crop',
+  facts:[
+   ['Stocking density','130 to over 300 PL/m² (RP); 500/m² treatment in a Brazilian pilot','Sourced','Moderate',[103,6]],
+   ['Yield','20–40 t/ha per crop for Vietnamese super-intensive whiteleg culture','Sourced','Moderate',[1]],
+   ['Infrastructure','500–1,000 m² HDPE-lined ponds or round tanks in greenhouses or nethouses; continuous aeration; needs reliable power','Sourced','Moderate',[1,5,103]],
+   ['Share of shrimp (RP)','About 1% worldwide (RP assumption; an expert said 5%)','Sourced','Low',[101,103]]]},
+ {id:'ras',name:'Indoor RAS',dens:'High, tank-based; no RAS-specific figures exist, so RP’s super-intensive values are used',
+  facts:[
+   ['Pain parameters','RP lumps biofloc and recirculating systems into "super-intensive". No source gives RAS-only prevalence or durations, so this option uses the super-intensive values, and the model cannot tell the two apart.','Inferred','Low',[101,102]],
+   ['Economics','High investment and maintenance cost; used for hatcheries and nurseries; scaling to open production ponds does not seem practical','Sourced','Moderate',[5]]]}
+];
+
+/* ============================== INTERVENTIONS ============================== */
+/* fx.m: multiplier on the share of animals affected by that threat when the intervention is fully adopted (lower = more pain averted).
+   No source quantifies these in affective terms, so every size is an analyst estimate; the experiments that support the direction are listed in sup. */
+const IVS=[
+ {id:'stun',name:'Electrical stunning at slaughter',addr:'Stunning and slaughter',concern:'Very High',status:'Rapidly moving from rare to widespread',
+  ev:'Tesco has committed to 100% electrical stunning by 2027 and Co-op by end of 2027. Sainsbury’s, M&S, Ocado and Waitrose have also committed publicly; no confirmed date found. Sea Farms (Thailand) has adopted Ace Aquatec’s system.',
+  where:'All systems. It happens at slaughter, independent of rearing method.',src:[11,12],conf:'Moderate',appl:[1,1,1,1,1],applB:'src',
+  fx:[{t:'slaughter',m:T(.03,.25,1),note:'The upper bound of 1.0 means no benefit. Electrical stunning rated medium confidence of rendering decapods unconscious (Birch et al.), mostly from crab and lobster data; EEG work on shrimp finds insensibility confirmed in only a subset. About 2 to 3% of commercially stunned shrimp still moved their legs (CIWF case study via SWP).'}],
+  sup:[{t:'Time to loss of response, ice slurry, P. vannamei: heartbeat gone by 4 min at most; stun reversible',s:[113]},{t:'Electrical stunning rated medium confidence of rendering decapods unconscious; chilling no confidence',s:[111]},{t:'EEG insensibility confirmed only in a subset after stun or cold shock',s:[114]}]},
+ {id:'noabl',name:'End eyestalk ablation (ablation-free broodstock)',addr:'Eyestalk ablation',concern:'Very High',status:'Promising, partial',
+  ev:'Affects only broodstock. Seajoy has farmed only ablation-free shrimp since 2016. Some Latin American and Thai maturation facilities no longer ablate; no share was found. Vannamei reproduce well without ablation; monodon does not yet.',
+  where:'Hatchery stage, upstream of all five grow-out systems. Feasibility depends on species, not grow-out method.',src:[12,19,115],conf:'Moderate',appl:[1,1,1,1,1],applB:'src',
+  abl:{a:T(.90,.97,1),b:T(0,.15,.40)},
+  sup:[{t:'Non-ablated vannamei females: similar nauplii output per spawned female, and offspring survived AHPND challenge better (70.4% vs 38.8% at 96 h)',s:[118,115]},{t:'Vietnam hatcheries: unablated vannamei 8.3 million nauplii per female vs about four times fewer when ablated; monodon unablated 72 times lower',s:[119]},{t:'Lidocaine before ablation reduced erratic swimming (vannamei)',s:[117]}]},
+ {id:'altabl',name:'Ablation alternatives (anaesthesia, unilateral ablation, hormonal induction, ablation-free lines)',addr:'Eyestalk ablation (mechanism-level fix)',concern:'Very High',status:'Emerging, species-dependent',
+  ev:'A 2026 Vietnam hatchery study found vannamei can reproduce well without ablation, while monodon still struggles. Improved feed quality and 2:1 female:male sex ratios were found effective as alternatives but are not widespread.',
+  where:'Hatchery stage, same as above.',src:[14,11,119],conf:'Low',appl:[1,1,1,1,1],applB:'src',
+  abl:{a:T(.40,.65,.90),b:T(.20,.40,.70)},
+  sup:[{t:'Anaesthesia before ablation reduced erratic swimming and improved onset of feeding',s:[117,115]},{t:'Unilateral cautery ablation in P. monodon: behavioural states similar to controls after the first hour (abstract only)',s:[116]}]},
+ {id:'dens',name:'Reduce stocking density',addr:'Stocking density; water quality indirectly',concern:'High',status:'Promising, actively piloted',
+  ev:'Experimental evidence that lower density improves survival, water quality and disease resistance. SWP is running an India pilot on whether it is also profitable for farmers.',
+  where:'Most actionable in intensive, super-intensive and RAS; extensive systems are already low-density (inferred).',src:[15,16,17],conf:'Moderate',appl:[.1,.5,1,1,1],applB:'inf',
+  fx:[{t:'crowd',m:T(.25,.5,.8)},{t:'ammonia',m:T(.5,.7,.9)},{t:'disease',m:T(.5,.75,.95)}],
+  sup:[{t:'Biofloc: survival 98.8% at 50/m² vs 96.8% at 200/m², final weight 18.5 vs 12.8 g',s:[129]},{t:'Semi-intensive P. monodon at 15–20/m² survived 12–46% vs 43–88% at 3–5/m² (one crop)',s:[128]},{t:'Behaviour: shrimp at 50/m² fed more and crawled less than at 75 or 100',s:[130]},{t:'AHPND risk lower with lower stocking density (Vietnam epidemiology)',s:[138]}]},
+ {id:'aerate',name:'Improve dissolved oxygen (aeration)',addr:'Water quality: dissolved oxygen',concern:'Very High',status:'Common in intensive systems; being extended to lower-tech farms',
+  ev:'Named alongside stocking density as the best-evidenced, highest-impact intervention. In practice it means training farmers on aeration equipment or subsidising it.',
+  where:'Most needed in extensive and semi-intensive systems, which typically lack aeration. Intensive, super-intensive and RAS already aerate but can refine (inferred).',src:[16,103],conf:'Moderate',appl:[1,1,1,1,1],applB:'inf',
+  ref:[0,.3,.9,1,1], /* aeration already present in RP's system estimates: none, paddlewheels when oxygen is low, frequent, continuous, continuous */
+  fx:[{t:'hypoxia',m:T(.10,.30,.60)}],
+  sup:[{t:'Yield, survival and profit rose linearly with minimum dissolved oxygen (4.6, 2.8, 1.1 mg/L triggers)',s:[121]},{t:'Morning DO 2.3 / 3.0 / 3.9 mg/L gave survival 42 / 55 / 61%',s:[122]},{t:'CONFLICT: aeration setpoints of 2.5, 3.5, 4.5 mg/L gave no difference in growth or yield (semi-intensive, USA)',s:[123]},{t:'Lethal oxygen about 0.5 to 1.2 mg/L',s:[124,126]}]},
+ {id:'sludge',name:'Sludge removal and pond-bottom preparation',addr:'Water quality (ammonia buildup) and disease',concern:'High',status:'Emerging, scaling fast',
+  ev:'SWP targeted removing sludge from a further 300–500 acres of ponds in 2025 alone. The sources establish it as a welfare intervention but do not state the mechanism.',
+  where:'Pond-based systems from extensive to super-intensive. It does not map onto indoor RAS.',src:[13,26],conf:'Low',appl:[1,1,1,.7,0],applB:'inf',
+  fx:[{t:'ammonia',m:T(.35,.60,.90)},{t:'disease',m:T(.55,.80,.95)}],
+  sup:[{t:'Sediment oxygen demand is the main oxygen sink in rice-shrimp ponds',s:[127]},{t:'Pond drying between cycles is already done on 90% of surveyed Java farms',s:[152]}]},
+ {id:'enrich',name:'Environmental enrichment (substrate, shelter)',addr:'Environmental enrichment',concern:'High',status:'Promising, not yet widespread',
+  ev:'Rethink Priorities data show lack-of-substrate prevalence rising sharply with intensification.',
+  where:'Most needed in intensive, super-intensive and RAS (near-total prevalence); least needed in extensive systems (inferred).',src:[18,15],conf:'Low',appl:[1,1,1,1,1],applB:'inf',
+  fx:[{t:'substrate',m:T(.05,.20,.50)}],
+  sup:[{t:'Biofloc tanks with substrate: final biomass 314% greater, higher survival',s:[131]},{t:'At 1,125 shrimp/m³: survival over 95% with fixed substrate vs 75.9% without',s:[132]},{t:'Greenhouse biofloc: high density plus substrate gave the highest biomass',s:[133]},{t:'CONFLICT: substrate gave minimal production impact in high-tunnel systems',s:[134]},{t:'Gap: all substrate work is in tanks and nurseries; none in grow-out ponds',s:[]}]},
+ {id:'bios',name:'Disease reduction and biosecurity',addr:'Disease',concern:'Very High',status:'Common in higher-tech systems; ongoing everywhere',
+  ev:'One of SWP’s top-tier concerns alongside ablation and slaughter.',
+  where:'Most acute in intensive, super-intensive and RAS because of density-driven risk (inferred).',src:[15],conf:'Moderate',appl:[1,1,1,1,1],applB:'inf',
+  fx:[{t:'disease',m:T(.35,.60,.90)}],
+  sup:[{t:'Specific-pathogen-free and resistant postlarvae and low prevalence of WSSV in Ecuador (at most 7%)',s:[140]},{t:'Non-ablated broodstock offspring survive disease challenge better',s:[118]},{t:'Crop success depends on lining and water treatment (Vietnam)',s:[173]}]}
+];
+const IVMAP={};IVS.forEach(i=>IVMAP[i.id]=i);
+const ENABLERS=[
+ {id:'advis',name:'Farmer advisory programmes (e.g. WhatsApp technical support)',note:'Delivery mechanism for density, water-quality and pond-prep changes. SWP’s SSFI initiative in India combines free advice with farmer groups. Most suited to smallholder extensive and semi-intensive operations (inferred).',src:[17]},
+ {id:'retail',name:'Retailer and certification standards (ASC, UK retailers)',note:'Meta-intervention driving adoption. ASC certifies about 29 billion shrimp a year. Reaches mainly export-oriented intensive and super-intensive operations (inferred).',src:[17,12]},
+ {id:'monit',name:'Precision welfare monitoring (AI or sensor indicators)',note:'Very early stage. SWP’s 2026 goal is to identify robust indicators and secure at least one RAS farm commitment.',src:[13]}
+];
+
+/* ============================== COUNTRIES ============================== */
+/* Production is in kilotonnes a year; weights in grams; cycles in days; densities in shrimp per m2. Every list of source values is reconciled by rec():
+   the most likely value is the average and the range runs from the lowest to the highest value found. */
+const AERA=(r)=>r; /* aeration adoption by system, share of production */
+const COUNTRIES=[
+ {id:'cn',name:'China',rank:1,
+  prod:rec([E(2370,[180],'MARA, vannamei, 2024. The draft’s 2.37 Mt is 2024 data that the trade source labelled 2025'),E(2099,[182],'China Fishery Statistical Yearbook 2022, vannamei, via review'),E(1890,[191],'Guo calculation, 2023 (1.49 Mt seawater + about 0.30 Mt freshwater)'),E(1700,[7],'MSD Animal Health estimate, 2025 (in the draft)'),E(1530,[10],'GSA survey 2023: industry low 1.06 Mt to statistical high 2.0 Mt',1060,2000)]),
+  vann:rec([E(.92,[181],'Marine plus freshwater vannamei over all shrimp, 2023: 2.24 / 2.44 Mt'),E(.88,[7],'About 88% of the lower estimate (in the draft)')],[0,1]),
+  wt:rec([E(17.45,[157],'Greenhouse research ponds, 87 days'),E(21.5,[172],'Modelled intensive harvest weight 18–25 g',18,25)]),
+  cyc:rec([E(87,[157],'Greenhouse ponds'),E(150,[156],'Northern pond mode, about 5 months'),E(120,[156],'Northern factory mode, about 4 months')]),
+  mix:{ext:J(0,.06,.12,'Not quantified in any source'),semi:J(.2,.30,.45,'Older farm surveys: 85% semi-intensive or extensive (Seafood Watch 2016)'),int:J(.2,.35,.5,'Ponds are about 70% of saltwater production (Guo)'),super:J(.15,.25,.3,'Small greenhouses about 30% of saltwater output, disputed (Guo panel)'),ras:J(0,.04,.05,'RAS under 5% of production (Guo)')},
+  dens:{int:rec([E(180,[144],'Seafood Watch 2016: 160–200 PL/m²',160,200),E(87.5,[154],'Small greenhouses 75–100 PL/m²',75,100),E(105,[157],'Greenhouse research ponds, about 105/m²')]),super:rec([E(90,[154],'Greenhouse 75–105 PL/m²',75,105)])},
+  aer:{},
+  dz:null,
+  salF:J(1.1,1.3,1.6,'Freshwater or low-salinity vannamei ponds are 13 to 35% of output (0.3, 0.5 or 0.81 Mt in three sources, average 0.54 Mt).'),
+  thiF:null,tloF:J(1,1.3,1.8,'Northern single-crop pond mode (5 months) implies cold seasons; not quantified.'),
+  stunN:0,
+  docs:['semi','int','super','ras'],
+  conds:[
+   ['Freshwater share','Freshwater vannamei output 0.3 Mt (Guo, AAP), 0.5 Mt (Guo, Shrimp Insights) or 0.81 Mt (yearbook via a secondary source). Sources disagree; the average is 0.54 Mt.',[191,154,181]],
+   ['Water','Nitrite peaked at 16.3 mg/L and total nitrogen at 48.4 mg/L in greenhouse ponds; low exchange with biofloc and heavy probiotics.',[157,154]],
+   ['Disease','EHP in 91 to 93% of growth-retarded shrimp in Jiangsu ponds; EMS caused about 80% production loss in four provinces in 2011. Crop success rate is disputed: 80% (Guo) vs 20% (ASC China).',[158,144,191]],
+   ['Harvest','About 75% of domestic production is sold live through wet markets, so slaughter is by the buyer. No electrical stunning found.',[154]],
+   ['Broodstock','About half imported and half domestic; imports fell 30 to 40% in 2023 to 2024. No ablation share found.',[153]]]},
+ {id:'ec',name:'Ecuador',rank:2,
+  prod:rec([E(1490,[10],'GSA survey, 2023'),E(1750,[7],'Vitapro estimate, 2025 (in the draft)'),E(1325,[199],'Rabobank estimate, 2025: 1.3–1.35 Mt',1300,1350),E(1200,[192],'FAO via EUMOFA, 2023 (derived from share)')]),
+  vann:rec([E(.99,[7,174],'Almost entirely vannamei')],[0,1]),
+  wt:rec([E(11.5,[177],'One inland farm, 2002')]),
+  cyc:rec([E(100,[177],'Inland farm, 2002'),E(90,[146],'Survey, Ecuador')]),
+  mix:{ext:J(.05,.15,.30,'Seafood Watch: "most" production is semi-intensive; 70% of farms use minimal technology (Fletcher)'),semi:J(.6,.75,.9,'Same'),int:J(.02,.10,.20,'Same'),super:J(0,0,.02,'None found'),ras:J(0,0,.01,'None found')},
+  dens:{semi:rec([E(16.5,[140],'Seafood Watch: 8–25 PL/m²',8,25),E(11.5,[175],'8–15 shrimp/m²',8,15),E(18.6,[175],'18.6 shrimp/m² (JALA/other, 2023)')])},
+  aer:{semi:rec([E(.46,[146],'46% of 101 surveyed farms aerate some or all ponds'),E(.25,[175],'"More than a quarter" of farms have aerators and automatic feeders'),E(.17,[175],'17% of farm area (search summary)')],[0,1])},
+  dz:{sys:['semi','int'],ent:[E(.20,[140],'Clinical disease prevalence "at any given time" about 20%, mostly vibriosis',.07,.20)]},
+  salF:null,thiF:null,tloF:null,stunN:2,
+  docs:['ext','semi','int'],
+  conds:[
+   ['Water','Average daily exchange 8% of pond volume (Seafood Watch); exchange 86–87% of surveyed farms practise it.',[140,146]],
+   ['Disease','WSSV and IHHNV prevalence never above 7%; no AHPND, TSV or YHV positives 2011–2019; vibriosis is the biggest threat. Postlarvae are selected for pathogen resistance.',[140]],
+   ['Certification','ASC-certified share 10% (Seafood Watch) or about 19% (search summary). Sources disagree; the average is about 15%.',[140]],
+   ['Ablation','Some Ecuadorian maturation facilities have stopped ablating; the share was not found.',[115]],
+   ['Slaughter','Two Ecuadorian producers are in the SWP stunner scheme; no national share.',[110]]]},
+ {id:'in',name:'India',rank:3,
+  prod:rec([E(1050,[159],'SAP crop review, calendar 2025 (in the draft)'),E(1374,[160],'MPEDA, fiscal 2025-26: 1,305 kt vannamei + 69 kt monodon'),E(1290,[192],'FAO via EUMOFA, 2023 (derived from share)')]),
+  vann:rec([E(.942,[159],'989,000 of 1,049,500 t, 2025'),E(.95,[160],'MPEDA 2025-26: 1,305 of 1,374 kt'),E(.97,[141],'Seafood Watch: just under 97%, 2020')],[0,1]),
+  wt:rec([E(20,[176],'Guidance: 20 g in 100–120 days')]),
+  cyc:rec([E(130,[141],'Norm 85–175 days (2–3 crops a year)',85,175),E(105,[159],'90–120 days',90,120),E(110,[176],'100–120 days',100,120)]),
+  mix:{ext:J(.03,.04,.05,'Extensive monodon about 3% of production (Seafood Watch)'),semi:J(.7,.8,.9,'Over 80% of shrimp production is semi-intensive vannamei (Seafood Watch, STIP)'),int:J(.05,.15,.25,'Intensive ponds of 7–15 t/ha exist'),super:J(0,.01,.03,'None found'),ras:J(0,0,.01,'None found')},
+  dens:{semi:rec([E(40,[141],'10–70 PL/m² (regulatory cap 60)',10,70),E(30,[159],'Mainly 20–40 PL/m²',20,40),E(25,[106],'20 Andhra Pradesh farms average 25 shrimp/m²')])},
+  aer:{semi:rec([E(.85,[141,146],'"Most" farms use paddlewheels (Seafood Watch); all surveyed farms aerate (Boyd, n=89). Numeric share inferred',.6,1)],[0,1])},
+  dz:{sys:['semi','int'],ent:[E(.49,[136],'Probability of any infectious disease 49% across 909 farms, 2018–19 (WSSV 25%, EHP 17%)',.17,.49),E(.23,[141],'White spot prevalence 6–40% of vannamei farms a year',.06,.40)]},
+  salF:null,thiF:null,tloF:null,stunN:3,
+  docs:['ext','semi','int'],
+  conds:[
+   ['Water','Average daily exchange under 3%; 21% of 89 surveyed farms exchange water; pH and ammonia were the worst parameters on 20 Andhra Pradesh farms (SWP survey; also an input to RP).',[141,146,106]],
+   ['Disease','EHP on 27 to 85% of farms; white spot is endemic; EHP and white faeces losses about US$551 m and US$234 m in 2020.',[141,159]],
+   ['Broodstock','Vannamei broodstock are domesticated, mostly imported specific-pathogen-free stock; monodon broodstock are 90 to 99% wild-caught. Ablation is described as common in Andhra Pradesh hatcheries; no share found.',[141]],
+   ['Slaughter','Ice chilling or ice crates in small observational samples; three Indian producers are in the SWP stunner scheme.',[106,110]],
+   ['Regulation','Stocking cap of 60 PL/m²; most farms are not registered with the Coastal Aquaculture Authority; enforcement is "severely limited".',[141]]]},
+ {id:'vn',name:'Vietnam',rank:4,
+  prod:rec([E(1290,[183],'Directorate of Fisheries, 2024, all brackish shrimp'),E(1120,[184],'Vietnam Fisheries Association, 2023'),E(1200,[192],'FAO via EUMOFA, 2023 (derived from share)'),E(735,[7],'Feed-industry estimate 2025: vannamei 470–600 kt plus monodon about 200 kt (in the draft)',670,800)]),
+  vann:rec([E(.74,[183],'951.7 of 1,290.5 kt, 2024'),E(.77,[185],'VASEP, first 10 months of 2024'),E(.70,[142],'Seafood Watch: about 70% by weight'),E(.725,[7],'Feed-industry estimate 2025',.70,.75)],[0,1]),
+  wt:rec([E(18,[149],'Intensive survey: 0.2 g a day over 92 days'),E(21.5,[172],'Modelled 18–25 g',18,25),E(36.75,[173],'Super-intensive partial harvests at 30–43.5 g',30,43.5)]),
+  cyc:rec([E(92,[149],'Intensive survey'),E(90,[146],'Survey, Vietnam'),E(123.5,[173],'Super-intensive staged harvests, 105–142 days',105,142)]),
+  mix:{ext:J(.25,.30,.40,'Schuur et al.: 675,000 ha extensive at 0.43 t/ha vs 51,000 ha intensive at 9.31 t/ha, 2018, which is about 38% / 62% by tonnage'),semi:J(0,.05,.10,'Not quantified'),int:J(.40,.50,.60,'Same'),super:J(.05,.15,.25,'About 20% of culture is in round tanks (Uni-President, 2023)'),ras:J(0,0,.02,'None found')},
+  dens:{ext:rec([E(3.5,[142],'1–6 PL/m²',1,6)]),semi:rec([E(30,[142],'About 30 PL/m²'),E(12,[150],'9–15 shrimp/m²',9,15)]),
+        int:rec([E(75,[142],'50–100 PL/m²',50,100),E(110,[150],'70–150 shrimp/m²',70,150),E(162,[151],'Mean of 200 Mekong farms ± 1 SD (80); farm values run 10–450',82,242),E(109,[149],'846 crops, mean'),E(55,[146],'30-farm survey')]),
+        super:rec([E(255,[142],'160 to over 350 PL/m²',160,350),E(210,[173],'Grow-out 200–220 PL/m²',200,220)])},
+  aer:{int:rec([E(.95,[146],'30 of 30 surveyed intensive farms aerate (24 hp/ha for 14 h a day)',.85,1)],[0,1]),super:rec([E(1,[142,173],'Continuous aeration in super-intensive ponds',.9,1)],[0,1])},
+  dz:{sys:['int','super'],ent:[E(.32,[139],'Share of vannamei pond area hit by disease episodes in the Mekong Delta, 2014: 32.5% (monodon 8.7%)',.09,.33)]},
+  salF:J(1,1.2,1.5,'Mekong Delta salinity 5 to 15 ppt; low salinity causes soft-shell shrimp (Uni-President).'),thiF:null,tloF:null,stunN:9,
+  docs:['ext','int','super'],
+  conds:[
+   ['Water exchange','Super-intensive 27.6% a day, intensive 2.4%, semi-intensive 2% (Seafood Watch); 11 of 30 surveyed intensive farms exchange, mean 10% a day (Boyd). 90% of farms have a reservoir. Only about 30% of earthen ponds are lined.',[142,146,173]],
+   ['Disease','White spot and AHPND were reported every month of 2021. About 54% of postlarvae in the Mekong Delta were infected. About 90% of intensive farmers use antimicrobials. Crop success is as low as 15% in unlined Mekong ponds and 70 to 80% in lined central ponds.',[142,173]],
+   ['Broodstock','Imported share of vannamei broodstock: 90% (Seafood Watch, 2021) vs 75% (Shrimp Insights, 2024). Sources disagree; the average is 82.5%. Ablation: stakeholders disagreed on whether it is still practised.',[142,153,107]],
+   ['Slaughter','Live transport in cold water or immediate ice slurry; nine Vietnamese producers are in the SWP stunner scheme with a committed minimum of 1,900 t each.',[107,110]],
+   ['Certification','30 shrimp cooperatives ASC-certified in 2017; the certified share of output was not found.',[1]]]},
+ {id:'th',name:'Thailand',rank:5,
+  prod:rec([E(250,[186],'Department of Fisheries, 2024'),E(270,[187],'Thai Shrimp Association, 2024'),E(392,[188],'SEAFDEC, 2023, marine shrimp (search summary)'),E(400,[7],'Industry estimate 2025: 380 kt vannamei + 19.6 kt monodon (in the draft); the official vannamei figure is 232.8 kt',250,400)]),
+  vann:rec([E(.937,[186],'234,446 of 250,325 t, 2024'),E(.935,[7],'2025: 232.8–380 kt vannamei of 252–400 kt',.92,.95),E(.96,[143],'Seafood Watch, 2018')],[0,1]),
+  wt:rec([E(16.7,[170],'60 per kg at harvest'),E(14.6,[171],'60–80 per kg',12.5,16.7)]),
+  cyc:rec([E(90,[146],'Survey, Thailand'),E(85,[170],'Harvest at 70–100 days',70,100)]),
+  mix:{ext:J(0,.01,.02,'Seafood Watch: 99.6% of vannamei is intensive'),semi:J(0,.01,.03,'Same'),int:J(.95,.97,.996,'Seafood Watch: 99.6% of vannamei, over 95% of all shrimp, from intensive ponds'),super:J(0,.01,.02,'Biofloc share not found'),ras:J(0,0,0,'None found')},
+  dens:{int:rec([E(77,[146],'Survey, 34 farms, mean 77 PL/m²'),E(45,[3],'30–60 shrimp/m² (in the draft)',30,60),E(75,[171],'About 75/m² historic high-density farms')]),ext:rec([E(2.5,[146],'5 extensive monodon farms, 2.5 PL/m²')])},
+  aer:{int:rec([E(1,[146],'All 34 surveyed farms aerate (43 hp/ha for 19 h a day)',.9,1)],[0,1])},
+  dz:{sys:['int'],ent:[E(.25,[135],'196 ponds, 2013–14: AHPND 20.9%, white spot 4.1% (epidemic period); EHP 60.7% (infection)',.16,.25)]},
+  salF:J(.4,.6,.9,'Inland low-salinity farming is banned; coastal ponds are kept above 10 ppt.'),thiF:null,tloF:null,stunN:2,
+  docs:['ext','semi','int'],
+  conds:[
+   ['Water exchange','Average under 1% a day (Seafood Watch) vs 5% a day among the 17 of 34 surveyed farms that exchange (Boyd). Sources disagree; the average is 3%. Reservoirs on 94% of farms.',[143,146]],
+   ['Disease','Mass mortality in 2011–2014 cut output from 603,000 t to under 200,000 t. Specific-pathogen-free broodstock is mandatory; sediment ponds and central drains are common.',[143]],
+   ['Broodstock','All vannamei come from domesticated broodstock; up to 40% imported. Ablation was standard c. 2004; some facilities have stopped, share not found.',[143,171,115]],
+   ['Slaughter','Sea Farms installed Thailand’s first electrical stunner; slaughter method shares were not found.',[110]],
+   ['Standards','Thai GAP is required for producers selling to exporting processors; domestic consumption is now larger than exports.',[143,7]]]},
+ {id:'id',name:'Indonesia',rank:6,
+  prod:rec([E(987,[189],'KKP, 2024: 844,140 t (ANTARA) to 1.13 Mt (ministry briefing)',844,1130),E(288,[190],'JALA Tech estimate, 2024'),E(312,[191],'Shrimp Club Indonesia, 2023: vannamei 265–275 kt + monodon 40–45 kt',305,320),E(238,[7],'CJ Feed estimate, 2025: 230–245 kt (in the draft)',230,245),E(920,[192],'FAO via EUMOFA, 2023 (derived from share)')]),
+  vann:rec([E(.93,[189],'786,382 of 844,140 t, 2024'),E(.86,[191],'About 270 of 312 kt, 2023',.85,.89),E(.80,[145],'About 80% (Seafood Watch, search summary)')],[0,1]),
+  wt:rec([E(23.3,[152],'Java intensive farms: 43 shrimp/kg'),E(19,[169],'Bali biofloc 18.4–19.7 g',18.4,19.7),E(33.3,[191],'Market target 30 per kg')]),
+  cyc:rec([E(90,[169],'Bali biofloc, 80–100 days',80,100),E(102,[152],'Java super-intensive, 99–105 days',99,105)]),
+  mix:{ext:J(.05,.15,.35,'Traditional ponds are under 20% of production (TheFishSite) but 93% of pond area (ADB, search summary)'),semi:J(.15,.30,.45,'No source'),int:J(.25,.40,.55,'No source'),super:J(.05,.15,.30,'Biofloc: about 50% of farms (2016, supplier-authored) vs 20–25% (search summary)'),ras:J(0,0,.02,'None found')},
+  dens:{ext:rec([E(4,[155],'Under 5 shrimp/m²')]),int:rec([E(187.5,[145],'Large Java farm 125–250 shrimp/m²',125,250),E(175,[169],'Bali biofloc 170–180 PL/m²',170,180)])},
+  aer:{super:rec([E(1,[169],'Biofloc norm 28–32 hp/ha, up to 18 hp per pond',.9,1)],[0,1])},
+  dz:{sys:['int','super'],ent:[E(.49,[145],'Nearly half of 120 farms had at least one disease issue per cycle (AHPND 25%, white spot 11%, EHP 5%)',.25,.5)]},
+  salF:null,thiF:null,tloF:null,stunN:1,
+  docs:['ext','int','super'],
+  conds:[
+   ['Biosecurity','Java survey of 90 farms: biosecurity score 32 to 54 out of 100; 37.8% do not check postlarvae quality; 99% pre-treat water; 90% dry ponds between cycles.',[152]],
+   ['Disease','Industry mortality about 50% in 2020 (Seafood Watch); outbreaks of white spot, AHPND and IMNV across Sumatra, Java and Sulawesi in 2022 to 2023.',[145,191]],
+   ['Water','Biofloc farms run at zero exchange with 28 to 32 hp/ha; salinity 33 to 38 ppt in Bali. Ammonia 0.5 to 5 mg/L and nitrite 0.5 to 18 mg/L during an intensive cycle.',[169,139]],
+   ['Certification','ASC-certified share 0.02 to 0.04% (search summary) vs 1% (Seafood Watch). Sources disagree; the average is about 0.5%.',[145]],
+   ['Slaughter','One electrical-stunner agreement signed in 2025.',[110]]]},
+ {id:'bd',name:'Bangladesh',rank:7,
+  prod:rec([E(299,[193],'Department of Fisheries, FY2024-25, shrimp and prawn'),E(260.5,[193],'Fisheries Yearbook FY2023-24'),E(271,[194],'Department of Fisheries FY2022-23'),E(251,[8],'Government minister, FY2020-21 (in the draft)')]),
+  vann:rec([E(.05,[148,9],'Commercial vannamei approved in March 2023 at trial scale; share not reported, range assumed',0,.10)],[0,1]),
+  wt:rec([E(46,[147],'Intensive monodon farms: 28–80 g',28,80)]),
+  cyc:rec([E(130,[147],'Intensive farms 90–180 days',90,180),E(160,[148],'Traditional gher, about 160 days')]),
+  mix:{ext:J(.85,.90,.95,'Largely traditional (Seafood Watch social profile)'),semi:J(.03,.05,.08,'About 5% of production semi-intensive (Seafood Watch)'),int:J(.03,.05,.08,'89 intensive farms were 5.4% of production in 2016 (Ali et al.)'),super:J(0,0,.01,'None found'),ras:J(0,0,0,'None found')},
+  dens:{ext:rec([E(3,[148],'About 2.5–3.5 PL/m²',2.5,3.5)]),int:rec([E(10,[147],'Mean 10 ± 1 SD (3.2); farm values run 4.2–17 PL/m²',6.8,13.2)])},
+  aer:{int:rec([E(1,[147],'All 53 surveyed intensive farms use paddlewheels',.9,1)],[0,1])},
+  dz:{sys:['int'],ent:[E(.24,[147],'53 intensive farms: white spot 13% and AHPND-like signs 11% in the year; more than half reported no major outbreak',.11,.5)]},
+  salF:J(1.1,1.4,1.8,'Intensive farm salinity averages 8.3 g/L and improved-traditional ponds run 5 to 10 ppt, under RP’s 10 psu optimum.'),thiF:null,tloF:null,stunN:0,
+  docs:['ext','semi','int'],
+  conds:[
+   ['Biosecurity','Few biosecurity measures on most visited farms; 3.8% test for pathogens; 62% buy PCR-tested postlarvae and 36% specific-pathogen-free; 87% of health decisions are made by feed and chemical company technicians.',[147]],
+   ['Water','Ammonia and nitrite build-up on intensive farms (black gill on 15% of farms); intensive farms exchange or top up water on 55% of farms, about 24% of volume.',[147]],
+   ['Certification','Certified share 4 to 5% of production (2022) vs "no certified farm" (2019). Sources disagree; the average is about 2%.',[148]],
+   ['Species','Mostly monodon and the giant freshwater prawn, a non-penaeid that RP’s model excludes. Wild-caught monodon broodstock are ablated in at least some hatcheries.',[148,101]],
+   ['Harvest','Seine nets after draining, 75% of farms; harvest can take up to 3 days.',[147]]]},
+ {id:'sa',name:'Saudi Arabia',rank:8,
+  prod:rec([E(65,[10],'GSA survey, 2023: 60–70 kt (in the draft)',60,70),E(71.7,[197],'2024, shrimp (search summary)')]),
+  vann:rec([E(.99,[10],'Vannamei dominant; no monodon figure',.98,1)],[0,1]),
+  wt:rec([E(84.6,[168],'Semi-extensive HDPE ponds, 330-day cycle'),E(25.5,[163],'Biofloc trial, 23–28 g',23.3,27.8)]),
+  cyc:rec([E(330,[168],'Jumbo-size strategy, 47 weeks'),E(146.5,[163],'Biofloc trial, 141–152 days',141,152),E(147,[164],'Historic 20–22 weeks (2003)',140,154)]),
+  mix:{ext:J(.15,.30,.5,'NAQUA calls its large-pond system "high-tech extensive"'),semi:J(.4,.6,.8,'Semi-extensive trial ponds; automatic feeders and oxygen management'),int:J(0,.05,.1,'No source'),super:J(0,.03,.08,'Biofloc is at trial scale'),ras:J(0,.02,.05,'Indoor and inland systems are mentioned but unquantified')},
+  dens:{semi:rec([E(25,[168],'Semi-extensive trial, 25/m²'),E(37.5,[164],'Historic 35–40 PL/m² (F. indicus, 2003)',35,40)])},
+  aer:{semi:rec([E(.85,[164],'Automatic oxygen management in large ponds (qualitative); numeric share inferred',.6,1)],[0,1])},
+  dz:null,
+  salF:J(.1,.2,.4,'Red Sea water is 41 to 44 ppt, so low salinity is rare; high salinity is not modelled.'),thiF:J(1.5,2,3,'Water 26 to 36 C in trials and 28 to 36 C historically, above RP’s 25.5 to 32.4 C optimum.'),tloF:J(1.5,2,3,'White spot outbreaks in winters 2010–11, 2011–12 and 2013–14 were linked to low water temperature.'),stunN:0,
+  docs:['ext','semi'],
+  conds:[
+   ['Water','Red Sea salinity about 42 ppt, rising to about 51 ppt late in the cycle; exchange 10 to 30% every 2 to 3 days at that point; dissolved oxygen above 3.7 ppm in trials.',[164,163]],
+   ['Disease','White spot struck in 2011 with 95% mortality in adult females and output fell from about 26,000 t to about 1,000 t; the industry moved to specific-pathogen-free vannamei in 2013–14.',[165]],
+   ['Concentration','One company, NAQUA, reports about 60,000 t, which is most of the national figure.',[164]],
+   ['Slaughter and standards','No stunning, certification or welfare regulation found.',[]]]},
+ {id:'ir',name:'Iran',rank:9,
+  prod:rec([E(65,[10],'GSA survey, 2023: 60–70 kt (in the draft)',60,70),E(62,[195],'Veterinary Organization / Fisheries Organization, 2025–26'),E(45.5,[196],'SeaIran, 2024')]),
+  vann:rec([E(1,[161,10],'Vannamei is the primary species; share assumed at least 95%',.95,1)],[0,1]),
+  wt:rec([E(15.5,[161],'Hormozgan crops 13.5 and 17.5 g',13.5,17.5),E(15.5,[162],'Gomishan 15–16 g',15,16)]),
+  cyc:rec([E(120,[162],'4 months'),E(120,[161],'Single crop May to November in the north, two crops in Hormozgan')]),
+  mix:{ext:J(0,.10,.2,'Older reviews list traditional, semi-intensive and intensive categories'),semi:J(.65,.80,.92,'Described as semi-intensive (PMC review)'),int:J(0,.10,.2,'No source'),super:J(0,0,.02,'Appear absent in all Iranian sources'),ras:J(0,0,.01,'Appear absent in all Iranian sources')},
+  dens:{semi:rec([E(37.5,[161],'Hormozgan, 37.5 PL/m²'),E(24,[162],'Gomishan 2018, 24/m²'),E(10,[162],'Gomishan 2021, 10/m² after a white spot outbreak'),E(22.5,[161],'Historic 20–25 PL/m²',20,25)])},
+  aer:{},
+  dz:null,
+  salF:J(.1,.25,.5,'Gulf source water is about 42 ppt, so low salinity is rare.'),thiF:J(1.3,1.8,2.5,'Persian Gulf coastal temperatures of 28 to 36 C (low-quality source).'),tloF:J(1.2,1.6,2.2,'Single crop May to November in the north implies cold winters.'),stunN:0,
+  docs:['semi'],
+  conds:[
+   ['Disease','White spot caused about 100% loss in Khuzestan in 2002 and cut output from 7,624 t (2001) to 2,500 t (2007); recent reports claim disease-free harvests in three provinces. No farm-level prevalence after 2010 was found.',[161]],
+   ['Water','Source seawater about 42 ppt (target 30 ppt in ponds); bottoms cannot be cleaned mechanically; water exchange about 10% in the Caspian ponds.',[162]],
+   ['Broodstock','Last imported SPF broodstock was in 2016; hatcheries now breed domestically, although other sources say Iran still relies on imports. Sources disagree.',[161]],
+   ['Markets','Over 90% exported in 2024 (SeaIran) vs about 68% (Press TV, 42,000 of 62,000 t). Sources disagree.',[196,195]]]},
+ {id:'my',name:'Malaysia',rank:10,
+  prod:rec([E(42,[7],'Industry estimate, 2025 (in the draft)'),E(61,[198],'Department of Fisheries, 2024 (search summary)')]),
+  vann:rec([E(.60,[7],'60:40 vannamei to monodon, 2025 (in the draft)'),E(.89,[167],'89% of farmed shrimp in 2017 (Izzuddin & Rahman abstract)')],[0,1]),
+  wt:rec([E(18.8,[167],'Biofloc farm at about 90 days')]),
+  cyc:rec([E(95,[167],'Biofloc farm, 90–100 days',90,100)]),
+  mix:{ext:J(0,.15,.3,'No source'),semi:J(.1,.25,.4,'No source'),int:J(.1,.30,.5,'No source'),super:J(.1,.25,.4,'Biofloc and RAS are described as innovations'),ras:J(0,.05,.15,'Same')},
+  dens:{super:rec([E(130,[167],'One industrial biofloc farm, 130 PL/m²')])},
+  aer:{super:rec([E(1,[167],'Aeration 24 hours a day on one biofloc farm',.9,1)],[0,1])},
+  dz:null,
+  salF:null,thiF:null,tloF:null,stunN:0,
+  docs:['super'],
+  conds:[
+   ['Disease','AHPND losses about US$100 m in 2011; white spot outbreaks in many farms in June 2023; 29 farms sampled showed up to 11 antibiotics in a single shrimp farm.',[139,167]],
+   ['Ablation','The national hatchery code states that eyestalk ablation "is widely practiced" and instructs it for induced breeding.',[166]],
+   ['Markets','Almost all production is for the domestic market; some operators sell about 40% live.',[167]],
+   ['Data gap','No source gives system shares, area, aerator use or slaughter method.',[]]]}
+];
+const CMAP={};COUNTRIES.forEach(c=>CMAP[c.id]=c);
+/* Representative farming-region coordinates (latitude, longitude) used to find the closest modelled country. */
+const LL={cn:[23,113],ec:[-2.2,-80],in:[16.5,80.5],vn:[9.8,105.5],th:[13,100.5],id:[-7,112.5],bd:[22.5,89.5],sa:[20,40],ir:[28.9,50.8],my:[3.5,101.5]};
+COUNTRIES.forEach(c=>{c.ll=LL[c.id];});
+/* Countries a visitor can type, with a representative point (capital or main aquaculture coast). */
+const WORLD=[['Afghanistan',34.5,69.2],['Albania',41.3,19.8],['Algeria',36.8,3],['Angola',-8.8,13.2],['Argentina',-34.6,-58.4],['Australia',-20,148],['Austria',48.2,16.4],['Bahrain',26.2,50.6],['Belgium',50.8,4.4],['Belize',17.3,-88.2],['Benin',6.4,2.4],['Bhutan',27.5,89.6],['Bolivia',-16.5,-68.1],['Brazil',-5,-38],['Brunei',4.9,114.9],['Cambodia',11.6,104.9],['Cameroon',4,9.7],['Canada',45.4,-75.7],['Chile',-33.4,-70.6],['Colombia',10.4,-75.5],['Costa Rica',10,-84.1],['Cote d’Ivoire',5.3,-4],['Croatia',45.8,16],['Cuba',23.1,-82.4],['Denmark',55.7,12.6],['Dominican Republic',18.5,-69.9],['Egypt',31.2,29.9],['El Salvador',13.7,-89.2],['Ethiopia',9,38.7],['Fiji',-18.1,178.4],['France',48.9,2.4],['Germany',52.5,13.4],['Ghana',5.6,-0.2],['Greece',37.98,23.7],['Guatemala',14.6,-90.5],['Guyana',6.8,-58.2],['Haiti',18.5,-72.3],['Honduras',13.3,-87.2],['Hong Kong',22.3,114.2],['India',16.5,80.5],['Iraq',30.5,47.8],['Ireland',53.3,-6.3],['Israel',32.1,34.8],['Italy',41.9,12.5],['Jamaica',18,-76.8],['Japan',34.7,135.5],['Jordan',29.5,35],['Kenya',-4,39.7],['Kuwait',29.4,47.98],['Laos',17.97,102.6],['Lebanon',33.9,35.5],['Libya',32.9,13.2],['Madagascar',-15.7,46.3],['Maldives',4.2,73.5],['Mauritius',-20.2,57.5],['Mexico',25,-108],['Morocco',33.6,-7.6],['Mozambique',-18,35],['Myanmar',16.8,96.2],['Nepal',27.7,85.3],['Netherlands',52.4,4.9],['New Zealand',-36.8,174.8],['Nicaragua',12.4,-87],['Nigeria',6.5,3.4],['North Korea',39,125.7],['Norway',59.9,10.7],['Oman',23.6,58.6],['Pakistan',24.9,67],['Panama',8.9,-79.5],['Papua New Guinea',-9.4,147.2],['Paraguay',-25.3,-57.6],['Peru',-8.1,-79],['Philippines',10.3,123.9],['Poland',52.2,21],['Portugal',38.7,-9.1],['Qatar',25.3,51.5],['Russia',55.8,37.6],['Saudi Arabia',20,40],['Senegal',14.7,-17.5],['Singapore',1.35,103.8],['South Africa',-26.2,28],['South Korea',35.2,129],['Spain',37.4,-6],['Sri Lanka',7,79.9],['Sudan',15.6,32.5],['Sweden',59.3,18.1],['Taiwan',23,120.2],['Tanzania',-6.8,39.3],['Timor-Leste',-8.6,125.6],['Trinidad and Tobago',10.7,-61.5],['Tunisia',36.8,10.2],['Turkey',38.4,27.1],['Uganda',0.3,32.6],['Ukraine',50.4,30.5],['United Arab Emirates',25.2,55.3],['United Kingdom',51.5,-0.1],['United States',28,-97],['Uruguay',-34.9,-56.2],['Venezuela',10.5,-66.9],['Yemen',15.4,44.2],['Zambia',-15.4,28.3],['Zimbabwe',-17.8,31]];
+const ALIAS={'viet nam':'vn','vietnam':'vn','china':'cn','prc':'cn','ecuador':'ec','india':'in','thailand':'th','indonesia':'id','bangladesh':'bd','saudi arabia':'sa','ksa':'sa','iran':'ir','malaysia':'my','usa':'United States','us':'United States','u.s.':'United States','uk':'United Kingdom','britain':'United Kingdom','great britain':'United Kingdom','uae':'United Arab Emirates','ivory coast':'Cote d’Ivoire','korea':'South Korea','burma':'Myanmar','holland':'Netherlands'};
+function haversine(a,b){const R=6371,t=x=>x*Math.PI/180,dl=t(b[0]-a[0]),dn=t(b[1]-a[1]);const h=Math.sin(dl/2)**2+Math.cos(t(a[0]))*Math.cos(t(b[0]))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h));}
+/* Resolve a typed name: a modelled country, or the closest modelled country to a recognised one. */
+function resolveCountry(raw){
+  const q=(raw||'').trim().toLowerCase();if(!q)return null;
+  const al=ALIAS[q];
+  const direct=COUNTRIES.find(c=>c.name.toLowerCase()===q)||(al&&CMAP[al]);
+  if(direct)return{modelled:direct};
+  let w=WORLD.find(x=>x[0].toLowerCase()===q)||(al&&WORLD.find(x=>x[0]===al));
+  if(!w){const m=WORLD.filter(x=>x[0].toLowerCase().startsWith(q));if(m.length===1)w=m[0];}
+  if(!w)return{unknown:true};
+  const ranked=COUNTRIES.map(c=>({c,d:haversine([w[1],w[2]],c.ll)})).sort((a,b)=>a.d-b.d);
+  return{name:w[0],proxy:ranked[0].c,dist:ranked[0].d,next:ranked[1]};
+}
+/* Shrimp on the farm per shrimp harvested. RP's pain figures average over every shrimp on the farm, including those that die before harvest. */
+const ONFARM=rec([E(1.2,[104],'RP stage mortality for vannamei juveniles and subadults is 17% (4–48%), so 1 / 0.83 shrimp on the farm per shrimp harvested',1.04,1.92),E(2.38,[101],'RP: about 608 billion shrimp die on ongrowing farms a year against about 440 billion slaughtered')]);
+const DEF={
+  wt:J(15,22,35,'No harvest weight found for this country; global placeholder'),
+  cyc:rec([E(RP_LIFE_D,[102],'RP mean days lived on the farm (90% interval about 14 to 175)',14,175)]),
+  stunKt:1.9 /* kilotonnes committed per stunner collaborator (SWP: at least 1,900 t a year) */};
+
+/* ============================== MODEL ============================== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function tri(r,[a,m,b]){const u=r();if(b<=a)return a;const f=(m-a)/(b-a);return u<f?a+Math.sqrt(u*(b-a)*(m-a)):b-Math.sqrt((1-u)*(b-a)*(b-m));}
+/* Distribution on [lo, hi] with an exact mean m, skewed toward whichever end the mean sits nearer. Used where RP prints a mean inside a range. */
+function pw(r,[lo,m,hi]){
+  if(hi<=lo)return lo;const u=r(),mid=(lo+hi)/2;
+  if(m<=mid){if(m<=lo)return lo;return lo+(hi-lo)*Math.pow(u,(hi-lo)/(m-lo)-1);}
+  if(m>=hi)return hi;return hi-(hi-lo)*Math.pow(u,(hi-lo)/(hi-m)-1);
+}
+const sumFrom=(v,f)=>{let s=0;for(let i=f;i<4;i++)s+=v[i];return s;};
+
+/* disease prevalence per country and system: RP's system estimate averaged with farm-survey prevalence where it exists */
+function diseaseRec(cty,sys){
+  if(!cty.dz||!cty.dz.sys.includes(sys))return null;
+  cty._dzc=cty._dzc||{};
+  if(cty._dzc[sys])return cty._dzc[sys];
+  const row=THREATS[TI.disease].rows[RPCOL[sys]];
+  const rp=E(row.p[1],[101],'RP system estimate',row.p[0],row.p[2]);
+  return cty._dzc[sys]=rec([rp].concat(cty.dz.ent),[0,1]);
+}
+
+/* Monte Carlo. Baseline and scenario share the same draws, so the difference is meaningful.
+   cfg: method ('mix' or a system id), country, iv (Set), share, baseline ('current' or 'none'). */
+function run(cfg,N,seed,o){
+  o=o||{};
+  const r=mulberry32(seed),cty=CMAP[cfg.country];
+  const S=(key,rg,mean)=>{const x=mean?pw(r,rg):tri(r,rg);
+    if(o.force)for(const f of o.force)if(f.t(key))return rg[f.w];
+    return o.allMode?rg[1]:x;};
+  const sel=cfg.iv,none=cfg.baseline==='none',gen=!!o.noCountry;
+  const out={N,base:[],scen:[],cb:THREATS.map(()=>[]),cs:THREATS.map(()=>[]),animals:[],w:[]};
+  const sysList=cfg.method==='mix'?SYS:[cfg.method];
+  for(let k=0;k<N;k++){
+    out.w.push([S('w:ann',[.002,.006,.01]),S('w:hurt',[.02,.11,.2]),S('w:exc',[5,502.5,1000])]);
+    const vann=S('c:vann',cty.vann.tri),prod=cfg.prodKt!=null?cfg.prodKt:S('c:prod',cty.prod.tri);
+    const wg=S('c:weight',(cty.wt||DEF.wt).tri);
+    const L=gen?RP_LIFE_D:S('c:cyc',(cty.cyc||DEF.cyc).tri);
+    out.animals.push(prod*1e9/wg*S('c:onfarm',ONFARM.tri)*cfg.share);
+    /* system weights */
+    const sw={};
+    if(cfg.method==='mix'){let tot=0;SYS.forEach(s=>{sw[s]=S('c:mix:'+s,cty.mix[s].tri);tot+=sw[s];});if(tot<=0){sw.int=1;tot=1;}SYS.forEach(s=>sw[s]/=tot);}
+    else sw[cfg.method]=1;
+    /* intervention effect sizes, drawn once so every system sees the same value */
+    const fx={};
+    IVS.forEach(iv=>{if(iv.fx)iv.fx.forEach(f=>{fx[iv.id+':'+f.t]=S('fx:'+iv.id+':'+f.t,f.m);});});
+    let spared=0;
+    IVS.forEach(iv=>{if(iv.abl&&sel.has(iv.id)){const a=S('fx:'+iv.id+':a',iv.abl.a),b=S('fx:'+iv.id+':b',iv.abl.b);spared=Math.max(spared,vann*a+(1-vann)*b);}});
+    /* actual adoption of aeration and stunning in the country */
+    const stunAd=gen||!cty.stunN?0:clamp(cty.stunN*DEF.stunKt/Math.max(1,cty.prod.tri[1]),0,1);
+    /* ablation economics, once per iteration */
+    const offs=S('o:ablation',ABL_OFF.tri),acuteF=S('h:ablation:acute',ABL_ACUTE.tri)/1.25; /* RP's acute window sums to 1.25 h at its midpoint */
+    const tb=[0,0,0,0],ts=[0,0,0,0];
+    const cbT=THREATS.map(()=>[0,0,0,0]),csT=THREATS.map(()=>[0,0,0,0]);
+    for(const sys of sysList){
+      const W=sw[sys];if(!(W>0))continue;
+      const si=SYSI[sys],ci=RPCOL[sys];
+      /* country density and disease prevalence for this system */
+      let dens=null;if(!gen&&cty.dens&&cty.dens[sys])dens=S('c:dens:'+sys,cty.dens[sys].tri);
+      const dzr=gen?null:diseaseRec(cty,sys);
+      THREATS.forEach((t,ti)=>{
+        const row=t.rows[ci];
+        let p0=S('p:'+t.id,row.p,true);
+        let actual=false;
+        if(t.id==='disease'&&dzr&&!o.rpOnlyDisease){p0=S('c:dz',dzr.tri);actual=true;}
+        /* country conditions that shift prevalence */
+        if(!gen){
+          if(t.id==='salinity'&&cty.salF)p0=clamp(p0*S('k:sal',cty.salF.tri),0,1);
+          if(t.id==='temp_hi'&&cty.thiF)p0=clamp(p0*S('k:thi',cty.thiF.tri),0,1);
+          if(t.id==='temp_lo'&&cty.tloF)p0=clamp(p0*S('k:tlo',cty.tloF.tri),0,1);
+        }
+        let h=[0,0,0,0];
+        if(t.special==='ablation'){
+          for(let i=0;i<4;i++){
+            const ar=t.acute[i],cr=t.chronic[i];
+            const ac=S('h:ablation:'+i+'a',[ar[0],(ar[0]+ar[1])/2,ar[1]]),ch=S('h:ablation:'+i+'c',[cr[0],(cr[0]+cr[1])/2,cr[1]]);
+            h[i]=(ac*acuteF+ch)/offs;
+          }
+        }else{
+          for(let i=0;i<4;i++){
+            const d=row.d[i];
+            h[i]=d[1]>d[0]?S('h:'+t.id+':'+i,[d[0],d.length>2?d[2]:(d[0]+d[1])/2,d[1]],d.length>2):d[0];
+          }
+          /* RP's oxygen totals equal the first-half and second-half daily durations summed over the whole life, twice what averaging gives */
+          if(t.id==='hypoxia'&&!o.hypHalf)for(let i=0;i<4;i++)h[i]*=2;
+          if(t.mono){const m2=[t.mono.a,t.mono.h,t.mono.d,t.mono.x];for(let i=0;i<4;i++)h[i]=vann*h[i]+(1-vann)*m2[i];}
+          if(t.id==='crowd'&&dens!=null){const hs=hurtShare(dens);h[1]=24*hs;h[0]=24*(1-hs)-h[2]-h[3];}
+          const mult=t.unit==='day'?L:1;
+          for(let i=0;i<4;i++)h[i]*=mult;
+          if(t.expo){const e=S('x:'+t.id,t.expo);for(let i=0;i<4;i++)h[i]*=e;}
+        }
+        if(o.hiScale){h[2]*=o.hiScale;h[3]*=o.hiScale;}
+        /* interventions acting on this threat */
+        let fB=1,fS=1,strongest=1,strongList=[];
+        if(t.special==='ablation'){fS=1-spared;}
+        else{
+          for(const iv of IVS){
+            if(!iv.fx)continue;const f=iv.fx.find(q=>q.t===t.id);if(!f)continue;
+            const wv=iv.appl[si],m=fx[iv.id+':'+t.id];
+            let aAct=0,aRef=0;
+            if(iv.id==='aerate'){aRef=iv.ref[si];aAct=aRef;if(!gen&&cty.aer&&cty.aer[sys])aAct=S('c:aer:'+sys,cty.aer[sys].tri);}
+            if(iv.id==='stun'){aAct=stunAd;}
+            const g=a=>1-a*wv*(1-m);
+            const aB=none?0:aAct,aS=sel.has(iv.id)?1:aB;
+            const den=actual?g(aAct):g(aRef);
+            const hB=g(aB)/den,hS=g(aS)/den;
+            fB*=hB;strongList.push(hS/hB);fS*=hS;
+          }
+          if(o.strongest&&strongList.length>1){fS=fB*Math.min(...strongList);}
+        }
+        const pB=clamp(p0*fB,0,1),pS=clamp(p0*fS,0,1);
+        for(let i=0;i<4;i++){cbT[ti][i]+=W*pB*h[i];csT[ti][i]+=W*pS*h[i];}
+      });
+    }
+    for(let ti=0;ti<THREATS.length;ti++){for(let i=0;i<4;i++){tb[i]+=cbT[ti][i];ts[i]+=csT[ti][i];}out.cb[ti].push(cbT[ti]);out.cs[ti].push(csT[ti]);}
+    out.base.push(tb);out.scen.push(ts);
+  }
+  return out;
+}
+/* ablation: shrimp harvested per ablated female and the acute pain window, each reconciled across sources */
+const ABL_OFF=rec([E(220000,[101,102],'Derived from RP: 440 billion shrimp slaughtered a year over about 2 million female broodstock',150000,310000),E(1240000,[119,104],'Derived: about 2.1 million nauplii per ablated female (Hoang & Nguyen) x 0.59 survival to harvest (RP)')]);
+const ABL_ACUTE=rec([E(1.25,[101],'RP: acute procedure window, 0.5 to 2 hours in total',.5,2),E(3,[12,19],'Draft and trade press: "three hours of pain" per shrimp; no traceable calculation')]);
+function runBase(method,country,N,seed,baseline){return run({method,country,iv:new Set(),share:1,baseline:baseline||'current'},N,seed,{});}
+function stats(arr){
+  const n=arr.length,s=Float64Array.from(arr).sort();let m=0;for(const x of arr)m+=x;m/=n;
+  return{mean:m,p5:s[Math.floor(.05*(n-1))],p50:s[Math.floor(.5*(n-1))],p95:s[Math.ceil(.95*(n-1))]};
+}
+/* metric value for iteration k */
+function mval(sim,vec,k,M){
+  if(M.de){const w=sim.w[k];return vec[0]*w[0]+vec[1]*w[1]+vec[2]+vec[3]*w[2];}
+  return sumFrom(vec,M.from);
+}
+const marr=(sim,vecs,M)=>vecs.map((v,k)=>mval(sim,v,k,M));
+
+/* ============================== FORMAT ============================== */
+const fmt=x=>{if(!isFinite(x))return '–';const a=Math.abs(x);if(a===0)return '0';if(a<0.001)return '≈0';if(a<0.1)return x.toFixed(3);if(a<10)return x.toFixed(2);if(a<100)return x.toFixed(1);return Math.round(x).toLocaleString('en-US');};
+const ciS=s=>fmt(s.p5)+'–'+fmt(s.p95);
+const pctf=x=>{const v=x*100;return (Math.abs(v)<10?v.toFixed(1):Math.round(v))+'%';};
+const big=x=>{if(x>=1e9)return (x/1e9).toFixed(x>=1e10?0:1)+' billion';if(x>=1e6)return (x/1e6).toFixed(x>=1e7?0:1)+' million';if(x>=1e3)return Math.round(x/1e3)+' thousand';return Math.round(x).toString();};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const refs=ids=>(ids||[]).map(i=>`<span class="sref" title="${esc(SRC[i]?SRC[i].t:'')}">[${i}]</span>`).join(' ');
+const confCls=c=>({'High':'c-high','Moderate':'c-mod','Low':'c-low','Very low':'c-vlow'}[c]||'c-low');
+const chipC=c=>`<span class="chip ${confCls(c)}">${c}</span>`;
+const chipB=b=>`<span class="chip b ${b==='ph'?'ph':''}">${BASIS[b]||b}</span>`;
+const TAGS={
+ rp:'<span class="chip tag rp" title="Interval taken from published expert credible intervals (Rethink Priorities, 2024). They are subjective estimates, not measurements.">RP interval</span>',
+ est:'<span class="chip tag est" title="Analyst estimate. No source quantifies this; it depends on assumed effect sizes.">estimate</span>',
+ lit:'<span class="chip tag lit" title="Range spans values published by several sources. The most likely value is their average.">source range</span>',
+ mix:'<span class="chip tag" title="Combines published expert intervals, reconciled source ranges and analyst estimates.">mixed basis</span>'};
+const rng=r=>r[0]===r[2]?fmt(r[1]):`${fmt(r[1])} (${fmt(r[0])}–${fmt(r[2])})`;
+const prng=r=>r[0]===r[2]?pctf(r[1]):`${pctf(r[1])} (${pctf(r[0])}–${pctf(r[2])})`;
+const applWord=w=>w>=.9?'full effect':w>=.5?'partial effect':w>0?'limited effect':'no effect';
+
+/* a reconciled value with its source list and any disagreement */
+function recCell(r,f,unit){
+  if(!r)return '<span class="muted">no data</span>';
+  const t=r.tri,tag=r.judged?'<span class="chip tag est" title="Judgement range, no source value behind its centre">estimate</span>':r.single?'<span class="chip tag est" title="One source only; a plus or minus 15% range is assumed">single source, ±15% assumed</span>':r.assumed?'<span class="chip tag est" title="All sources agree exactly; a plus or minus 15% range is assumed">±15% assumed</span>':'<span class="chip tag lit" title="Range spans the published values; most likely value is their average">source range</span>';
+  const warn=r.conflict?' <span class="chip c-low" title="The source values differ by more than 10%. The average is used and the spread shown.">sources disagree</span>':'';
+  let list='';
+  if(r.entries.length){
+    list=`<details class="mini"><summary>${r.entries.length} source value${r.entries.length>1?'s':''}</summary><ul>${r.entries.map(e=>`<li><span class="mono">${f(e.v)}${e.lo!==e.hi?' ('+f(e.lo)+'–'+f(e.hi)+')':''}</span> ${esc(e.l)} ${refs(e.s)}</li>`).join('')}</ul></details>`;
+  }else if(r.why)list=`<div class="small muted">${esc(r.why)}</div>`;
+  return `<span class="mono">${f(t[1])} <span class="muted">(${f(t[0])}–${f(t[2])})</span></span> ${unit?'<span class="muted">'+unit+'</span>':''} ${tag}${warn}${list}`;
+}
+const fK=x=>x>=1000?(x/1000).toFixed(2)+' Mt':Math.round(x)+' kt';
+
+/* ============================== STATE & UI ============================== */
+const N=2500,NV=800,NC=1000,SEED=20261; /* headline draws, robustness-run draws, system-comparison draws */
+const CMPCACHE={};
+const st={method:'int',country:'vn',custom:null,iv:new Set(['enrich','aerate']),enab:new Set(),metric:'de',share:100,sent:1,target:'averted',baseline:'current'};
+const SHARE_PRESETS=[[1,'A pilot or a single-company programme'],[5,'One large buyer commitment or a certified producer group'],[10,'A major processing group or producing region'],[25,'A national rollout in one market segment'],[50,'Half of national output'],[100,'All national output: an upper bound']];
+/* quick share choices: fixed steps plus, for a single system, the estimated share of national output that system holds */
+function presetHtml(cty,cfg){
+  const list=SHARE_PRESETS.map(p=>({v:p[0],t:p[1],l:p[0]+'%'}));
+  if(cfg.method!=='mix'&&cty.mix[cfg.method]){
+    const tot=SYS.reduce((a,s)=>a+cty.mix[s].tri[1],0),v=Math.round(cty.mix[cfg.method].tri[1]/tot*100);
+    if(v>=1&&v<=100&&!list.some(p=>p.v===v))list.push({v,t:'All '+SYSSHORT[cfg.method].toLowerCase()+' farms in '+cty.name+', estimated',l:'All '+SYSSHORT[cfg.method].toLowerCase()+' '+v+'%'});
+    list.sort((a,b)=>a.v-b.v);
+  }
+  return list.map(p=>`<button type="button" class="btn" data-share="${p.v}" aria-pressed="${st.share===p.v}" title="${esc(p.t)}">${p.l}</button>`).join('');
+}
+const $=s=>document.querySelector(s);
+const openSet=new Set();
+const closedSet=new Set();
+const SECS=['verdict','intensity','methods','cons','country','scale','sens','check','claims','sources','collect','notes','objections'];
+const FOLLOWS=['verdict','methods','cons','scale','sens','objections'];
+const FCHIP='<span class="chip b" title="These numbers change with the intensity buttons">follows intensity buttons</span>';
+function fold(html,key){
+  const m=html.match(/^<div class="card"><h3>(.*?)<\/h3>/);
+  const rest=html.slice(m[0].length,html.lastIndexOf('</div>'));
+  return `<details class="card sec" data-c="${key}" ${closedSet.has(key)?'':'open'}><summary><h3>${m[1]}</h3>${FOLLOWS.includes(key)?FCHIP:''}</summary><div class="sbody">${rest}</div></details>`;
+}
+const MHELP=[
+ ['all','Any intensity','Adds all four categories: annoying, hurtful, disabling and excruciating. Dominated by the mildest category, which is the largest in hours and the least certain in how it feels.'],
+ ['hurtful','Hurtful or worse','Adds hurtful, disabling and excruciating. Leaves out annoying.'],
+ ['disabling','Disabling or worse','Adds disabling and excruciating only: the states that stop normal behaviour.'],
+ ['excr','Excruciating','Counts only the most severe category. Tiny in hours, so its percentage changes are unstable.'],
+ ['de','Disabling-equivalent','Rethink Priorities’ weighting: one hour of disabling pain counts as 1, hurtful as 0.02 to 0.2, annoying as 0.002 to 0.01, excruciating as 5 to 1,000. The weights are drawn at random in every run. This is the metric of RP’s published total, so it is the one to compare with their report.']];
+function renderMhelp(){
+  $('#mhelp').innerHTML=`<p style="margin-top:8px">Pain is tracked in four intensity categories. The buttons choose how they are added into one number per shrimp: by a lowest category to count, or, for the last button, by weights.</p>
+  <dl>${MHELP.map(r=>`<dt class="${r[0]===st.metric?'on':''}">${r[1]}</dt><dd>${r[2]}</dd>`).join('')}</dl>
+  <p><b>Currently counting ${METRICS[st.metric].label}.</b> This changes the headline figures, the method comparison, the consequence breakdown, the population totals, the sensitivity and robustness tables, and the numbers quoted in the objections. It does not change the intensity chart (it always shows the four categories separately), the country conditions, the check against RP, the claims table, the sources or the method notes. Sections that follow the buttons carry a ${FCHIP} tag.</p>`;
+}
+
+function buildInputs(){
+  $('#methods').innerHTML=METHODS.map(m=>`
+    <label class="opt"><input type="radio" name="method" value="${m.id}" ${m.id===st.method?'checked':''}>
+      <span class="body"><span class="t">${m.name}</span><span class="d"><b>Density:</b> ${m.dens}</span></span></label>`).join('');
+  $('#country').innerHTML=COUNTRIES.map(c=>`<option value="${c.id}" ${!st.custom&&c.id===st.country?'selected':''}>${c.rank}. ${c.name}</option>`).join('')+`<option value="other" ${st.custom?'selected':''}>Other country…</option>`;
+  $('#worldlist').innerHTML=WORLD.map(w=>`<option value="${esc(w[0])}"></option>`).join('');
+  $('#ivs').innerHTML=`<div class="grp" style="margin-top:0">Modelled interventions</div>`+IVS.map(i=>`
+    <label class="opt iv"><span class="body box"><input type="checkbox" data-iv="${i.id}" ${st.iv.has(i.id)?'checked':''}>
+      <span style="display:grid;gap:4px;min-width:0"><span class="t">${i.name}</span>
+      <span class="d">${i.addr} · ${i.status}</span>
+      <span class="ap" data-ap="${i.id}"></span></span></span></label>`).join('')+
+    `<div class="grp">Enabling mechanisms (no direct effect modelled)</div>`+ENABLERS.map(e=>`
+    <label class="opt iv"><span class="body box"><input type="checkbox" data-en="${e.id}">
+      <span style="display:grid;gap:4px;min-width:0"><span class="t">${e.name}</span><span class="d">${e.note} ${refs(e.src)}</span></span></span></label>`).join('');
+}
+function updateInputInfo(){
+  const c=CMAP[st.country],mix=st.method==='mix';
+  $('#customBox').hidden=!($('#country').value==='other');
+  const cn=$('#cnote');
+  if(st.custom)cn.innerHTML=`<b>${esc(st.custom.name)}</b> is modelled as <b>${c.name}</b>, the closest modelled country (${Math.round(st.custom.dist).toLocaleString('en-US')} km; next closest ${st.custom.next.c.name}, ${Math.round(st.custom.next.d).toLocaleString('en-US')} km). Distance is a crude proxy for similar farming practice.`;
+  else if(st.customMsg)cn.textContent=st.customMsg;
+  else cn.textContent='The form picks the geographically closest of the ten modelled countries and applies its conditions.';
+  IVS.forEach(i=>{
+    const w=mix?null:i.appl[SYSI[st.method]];
+    const el=document.querySelector('[data-ap="'+i.id+'"]');
+    el.innerHTML=mix?'<span class="chip b">effect depends on the system</span>':`<span class="chip ${w>=.9?'c-mod':w>0?'c-low':'c-vlow'}">${applWord(w)} here</span>${i.applB==='inf'?'<span class="chip b">inferred</span>':''}`;
+  });
+  const documented=mix||c.docs.includes(st.method);
+  const ndis=['prod','vann','wt','cyc'].filter(k=>c[k]&&c[k].conflict).length;
+  let h=`<div class="row"><span class="k">Production</span><span class="mono">${fK(c.prod.tri[1])}</span><span class="muted">(${fK(c.prod.tri[0])}–${fK(c.prod.tri[2])})</span></div>
+   <div class="row"><span class="k">Vannamei share</span><span class="mono">${pctf(c.vann.tri[1])}</span></div>
+   <div class="row"><span class="k">Cycle, harvest size</span><span class="mono">${Math.round((c.cyc||DEF.cyc).tri[1])} days, ${((c.wt||DEF.wt).tri[1]).toFixed(0)} g</span></div>
+   <div class="row"><span class="k">Source agreement</span>${ndis?`<span class="chip c-low">${ndis} figure${ndis>1?'s':''} disagree</span>`:'<span class="chip c-mod">sources broadly agree</span>'}</div>`;
+  if(!mix)h+=`<div class="row"><span class="k">${SYSSHORT[st.method]}</span>${documented?'<span class="chip c-mod">documented here</span>':'<span class="chip c-low">not documented</span>'}</div>`;
+  if(!documented)h+=`<div class="muted">No source documents ${SYSSHORT[st.method].toLowerCase()} farming in ${c.name}. The country’s other conditions still apply, but treat the result as a what-if.</div>`;
+  h+=`<div class="muted">Full conditions and every source value are in the results below.</div>`;
+  if(st.custom)h=`<div class="row"><span class="k">Conditions from</span><b>${c.name}</b><span class="chip c-low">proxy for ${esc(st.custom.name)}</span></div>`+h;
+  $('#cinfo').innerHTML=h;
+}
+
+/* ---------- charts ---------- */
+function rangePlot(rows,opt){
+  let pos=rows.flatMap(r=>[r.mean,r.lo,r.hi]).filter(x=>x>0);
+  if(!pos.length)return '<p class="muted small">All values are zero under this threshold.</p>';
+  const mn=Math.floor(Math.log10(Math.min(...pos))),mx2=Math.ceil(Math.log10(Math.max(...pos)));
+  const lo10=Math.max(mn,mx2-8),hi10=Math.max(mx2,lo10+1);
+  const P=v=>v<=0?0:Math.max(0,Math.min(100,(Math.log10(v)-lo10)/(hi10-lo10)*100));
+  const ticks=[];for(let k=lo10;k<=hi10;k++)ticks.push(k);
+  const tk=ticks.map(k=>`<div class="rp-tick" style="left:${P(Math.pow(10,k))}%"></div>`).join('');
+  const rowH=r=>{
+    const a=P(r.lo),b=P(r.hi);
+    return `<div class="rp-row ${r.sel?'sel':''}"><div class="l">${r.label}</div>
+     <div class="rp-track">${tk}<div class="rp-w" style="left:${a}%;width:${Math.max(b-a,.4)}%;background:${r.col}"></div>
+     <div class="rp-m" style="left:${P(r.mean)}%;background:${r.col}"></div></div>
+     <div class="v">${fmt(r.mean)} <span class="muted">(${fmt(r.lo)}–${fmt(r.hi)})</span></div></div>`;};
+  let html='<div class="rp">';
+  let last=null;
+  rows.forEach(r=>{if(r.group&&r.group!==last){html+=`<div class="rp-g"><span class="sw" style="background:${r.gcol}"></span>${r.group}</div>`;last=r.group;}html+=rowH(r);});
+  html+=`<div class="rp-axis"><div></div><div class="ax">${ticks.map(k=>`<span style="left:${P(Math.pow(10,k))}%">${k>=0?Math.pow(10,k).toLocaleString('en-US'):Math.pow(10,k)}</span>`).join('')}</div><div></div></div></div>
+  <p class="rp-note">${opt.note}</p>`;
+  return html;
+}
+function tornado(items,unit){
+  const lo=Math.min(...items.map(x=>Math.min(x.a,x.b,x.mid))),hi=Math.max(...items.map(x=>Math.max(x.a,x.b,x.mid)));
+  const sp=hi-lo||1,P=v=>(v-lo)/sp*100;
+  return '<div class="tor">'+items.map(x=>{
+    const l=Math.min(x.a,x.b),h=Math.max(x.a,x.b);
+    return `<div class="tor-row"><div class="l">${x.label}<br><span class="mono muted small">${fmt(l)} to ${fmt(h)}</span></div><div class="tor-track">
+      <div class="tor-bar" style="left:${P(l)}%;width:${Math.max(P(h)-P(l),.6)}%"></div>
+      <div class="tor-mid" style="left:${P(x.mid)}%"></div></div></div>`;}).join('')+
+    `</div><p class="rp-note">Black line: result with every input at its most likely value (${fmt(items[0].mid)} ${unit}). Bars: the result when that one input moves across its full range and all others stay put.</p>`;
+}
+
+/* ---------- main render ---------- */
+let LAST=null;
+function render(){
+  const cust=st.custom;
+  const perT=!!(cust&&!(cust.prodKt>0)); /* a typed country with no production figure is reported per 1,000 tonnes */
+  const cfg={method:st.method,country:st.country,iv:new Set(st.iv),share:perT?1:st.share/100,baseline:st.baseline,prodKt:cust?(cust.prodKt>0?cust.prodKt/1000:1):null};
+  const M=METRICS[st.metric],cty=CMAP[cfg.country],mix=cfg.method==='mix';
+  const cname=cust?`${cust.name} (modelled as ${cty.name})`:cty.name;
+  const MN=mix?'the typical mix':SYSNAME[cfg.method];
+  renderMhelp();
+  $('#sharePresets').innerHTML=presetHtml(cty,cfg);
+  const sim=run(cfg,N,SEED,{});
+  const hasIv=st.iv.size>0;
+  const bArr=marr(sim,sim.base,M),sArr=marr(sim,sim.scen,M);
+  const bS=stats(bArr),sS=stats(sArr);
+  const dArr=bArr.map((b,i)=>b-sArr[i]),dS=stats(dArr);
+  const rArr=[];bArr.forEach((b,i)=>{if(b>1e-12)rArr.push(1-sArr[i]/b);});
+  const rS=rArr.length?stats(rArr):{mean:0,p5:0,p95:0};
+  const contr=THREATS.map((t,ti)=>({t,ti,b:stats(marr(sim,sim.cb[ti],M)),s:stats(marr(sim,sim.cs[ti],M))}));
+  const totB=bS.mean||1e-12,totS=sS.mean||1e-12;
+  const aS=stats(sim.animals);
+  const popB=stats(sim.animals.map((a,i)=>a*bArr[i]/8766)),popS=stats(sim.animals.map((a,i)=>a*sArr[i]/8766)),popD=stats(sim.animals.map((a,i)=>a*dArr[i]/8766));
+  const mlabel=M.label,unitH=M.de?'disabling-equivalent hours':'hours',unitY=M.de?'disabling-equivalent years':'years';
+  const baseLab=st.baseline==='none'?'no interventions at all':'current practice in '+cname;
+  const scn=`${MN} · ${cname} · ${hasIv?st.iv.size+' intervention'+(st.iv.size>1?'s':''):'no interventions'}`;
+  const adj=st.sent<1?`<p class="small muted" style="margin-top:8px">With the affective-capacity multiplier of ${st.sent.toFixed(2)} applied afterwards, the scenario figure is ${fmt(sS.mean*st.sent)} h per shrimp (${fmt(sS.p5*st.sent)}–${fmt(sS.p95*st.sent)}). The figures above are unadjusted.</p>`:'';
+  const verdictTxt=hasIv
+   ?`Under this scenario the model estimates <b>${fmt(sS.mean)} hours</b> of ${mlabel} pain per shrimp over its life, with a 90% interval of ${ciS(sS)}. The baseline, ${baseLab}, comes to <b>${fmt(bS.mean)} hours</b> (${ciS(bS)}). That is a <b>${pctf(rS.mean)} reduction</b> on average (90% interval ${pctf(rS.p5)} to ${pctf(rS.p95)}, low to high), or ${fmt(dS.mean)} hours averted per shrimp.`
+   :`With no interventions, the model estimates <b>${fmt(bS.mean)} hours</b> of ${mlabel} pain per shrimp over its life, with a 90% interval of ${ciS(bS)}, for ${baseLab}. Select interventions to see the change from this baseline.`;
+  const confTxt=`<p class="txt" style="margin-top:10px"><b>Confidence:</b> baseline magnitude ${chipC('Low')} because Rethink Priorities’ inputs are expert credible intervals, not measurements. ${hasIv?`Size of the intervention effects ${chipC('Very low')} because no source quantifies them in welfare terms; the direction is better supported than the size.`:''}</p>
+  <p class="small muted" style="margin-top:6px">Interval labels: ${TAGS.rp} published expert credible interval; ${TAGS.lit} range across several published values; ${TAGS.est} analyst estimate.</p>`;
+  const docWarn=(mix||cty.docs.includes(cfg.method))?'':`<p class="small" style="margin-top:8px"><span class="chip c-low">Note</span> No source documents ${SYSSHORT[cfg.method].toLowerCase()} farming in ${cty.name}. The scenario applies that system’s published profile with the country’s other conditions.${cust?' '+cust.name+' borrows all of '+cty.name+'’s conditions.':''}</p>`;
+  const rasWarn=(cfg.method==='ras'&&st.iv.has('sludge'))?`<p class="small" style="margin-top:8px"><span class="chip c-low">Note</span> Sludge removal does not apply to indoor RAS; it is selected but has no effect.</p>`:'';
+  const rasNote=(cfg.method==='ras')?`<p class="small" style="margin-top:8px"><span class="chip c-low">Note</span> RP gives no RAS-specific figures, so indoor RAS uses the super-intensive values and cannot be told apart from biofloc.</p>`:'';
+  const bothAbl=(st.iv.has('noabl')&&st.iv.has('altabl'))?`<p class="small" style="margin-top:8px"><span class="chip c-low">Note</span> Both ablation options are selected. They address the same threat, so the stronger one applies and they do not stack.</p>`:'';
+  $('#verdict').innerHTML=`<details class="card verdict sec" data-c="verdict" ${closedSet.has('verdict')?'':'open'}>
+    <summary><span class="scn">${scn}</span>${FCHIP}</summary><div class="sbody" aria-live="polite">
+    <div class="big">
+      <div><div class="lab">Baseline: ${baseLab}</div><div class="num">${fmt(bS.mean)} <small>${unitH} / shrimp</small></div><div class="rng">90% interval ${ciS(bS)} ${TAGS.rp}</div></div>
+      <div class="hl"><div class="lab">This scenario</div><div class="num">${fmt(sS.mean)} <small>${unitH} / shrimp</small></div><div class="rng">90% interval ${ciS(sS)} ${hasIv?TAGS.est:TAGS.rp}</div></div>
+      <div><div class="lab">Change vs baseline</div><div class="num">${hasIv?'−'+pctf(rS.mean):'0%'}</div><div class="rng">${hasIv?'90% interval −'+pctf(rS.p95)+' to −'+pctf(rS.p5)+' '+TAGS.est:'no interventions selected'}</div></div>
+    </div>
+    <p class="txt">${verdictTxt}</p>${confTxt}${adj}${docWarn}${rasNote}${rasWarn}${bothAbl}
+    <div class="row-actions"><button class="btn" type="button" id="copy">Copy summary</button><span class="small muted" id="copied"></span></div>
+    <textarea class="sum" id="sumbox" hidden readonly aria-label="Summary text"></textarea>
+  </div></details>`;
+
+  /* chart 1: by intensity */
+  const rows1=[];
+  for(let i=0;i<4;i++){
+    const bi=stats(sim.base.map(v=>v[i])),si=stats(sim.scen.map(v=>v[i]));
+    rows1.push({group:INTS[i],gcol:ICOL[i],label:'Baseline',mean:bi.mean,lo:bi.p5,hi:bi.p95,col:'var(--base)'});
+    rows1.push({group:INTS[i],gcol:ICOL[i],label:'This scenario',mean:si.mean,lo:si.p5,hi:si.p95,col:'var(--accent)',sel:true});
+  }
+  const ch1=`<div class="card"><h3>Cumulative pain by intensity</h3>
+    <p class="sub">Hours per shrimp over its lifetime in each Welfare Footprint intensity category, for ${MN} in ${cname}. Dots are means; lines span the 5th to 95th percentile of ${N.toLocaleString('en-US')} draws. Baseline intervals are ${TAGS.rp}; scenario intervals are ${hasIv?TAGS.est:TAGS.rp}. The axis is logarithmic because the categories differ by orders of magnitude.</p>
+    ${rangePlot(rows1,{note:'The annoying and hurtful totals can exceed a shrimp’s lifetime in hours because threats overlap and are added, as in RP’s model. Values near zero sit at the left edge.'})}</div>`;
+
+  /* chart 2: vs other systems */
+  const cmpRows=SYS.map(sy=>{
+    const ck=cfg.country+'|'+sy+'|'+cfg.baseline;
+    const ss=CMPCACHE[ck]||(CMPCACHE[ck]=runBase(sy,cfg.country,NC,SEED,cfg.baseline));
+    const s=stats(marr(ss,ss.base,M));
+    return{label:SYSSHORT[sy],mean:s.mean,lo:s.p5,hi:s.p95,col:'var(--base)',sel:sy===cfg.method};
+  });
+  if(mix)cmpRows.push({label:'Typical mix, baseline',mean:bS.mean,lo:bS.p5,hi:bS.p95,col:'var(--base)',sel:true});
+  if(hasIv)cmpRows.push({label:'Your scenario',mean:sS.mean,lo:sS.p5,hi:sS.p95,col:'var(--accent)',sel:true});
+  const order=cmpRows.slice(0,5).slice().sort((a,b)=>b.mean-a.mean).map(r=>r.label).join(' > ');
+  const ch2=`<div class="card"><h3>Against the baseline of every farming system</h3>
+    <p class="sub">${M.de?'Disabling-equivalent hours per shrimp':'Hours of '+mlabel+' pain per shrimp'}, for each system in ${cname} under ${baseLab}. ${hasIv?'Your scenario is added in the accent colour.':'The selected system is in bold.'} Intervals are ${TAGS.rp}.</p>
+    ${rangePlot(cmpRows,{note:'The ordering across systems comes from RP’s per-system prevalence estimates and from the country’s cycle length, density and disease data. RP lumps biofloc and RAS together, so those two rows are identical in everything except the country’s own conditions.'})}</div>`;
+
+  /* consequence breakdown */
+  const consHtml=contr.map(x=>{
+    const t=x.t,key='cons-'+t.id;
+    const maxB=Math.max(...contr.map(y=>y.b.mean))||1e-12;
+    const showSys=mix?'int':cfg.method,row=t.rows[RPCOL[showSys]];
+    const acting=[...st.iv].map(id=>IVMAP[id]).filter(iv=>(iv.fx&&iv.fx.some(f=>f.t===t.id))||(iv.abl&&t.id==='ablation'));
+    let tbl;
+    if(t.special==='ablation'){
+      tbl=INTS.map((n,i)=>`<tr><td>${n}</td><td class="n">acute ${rng([t.acute[i][0],(t.acute[i][0]+t.acute[i][1])/2,t.acute[i][1]])} h, chronic ${rng([t.chronic[i][0],(t.chronic[i][0]+t.chronic[i][1])/2,t.chronic[i][1]])} h per ablated female</td></tr>`).join('')+
+        `<tr><td>Acute window, reconciled</td><td class="n">${rng(ABL_ACUTE.tri)} h ${TAGS.lit} <span class="chip c-low">sources disagree</span></td></tr>
+         <tr><td>Harvested shrimp per ablated female, reconciled</td><td class="n">${Math.round(ABL_OFF.tri[1]).toLocaleString('en-US')} (${Math.round(ABL_OFF.tri[0]).toLocaleString('en-US')}–${Math.round(ABL_OFF.tri[2]).toLocaleString('en-US')}) ${TAGS.lit} <span class="chip c-low">sources disagree</span></td></tr>`;
+    }else{
+      tbl=INTS.map((n,i)=>{const d=row.d[i];const mo=d.length>2?d[2]:(d[0]+d[1])/2;return `<tr><td>${n}</td><td class="n">${d[1]>d[0]?rng([d[0],mo,d[1]]):fmt(d[0])} h ${t.unit==='day'?'a day':t.unit==='cycle'?'a cycle':t.unit==='episode'?'an episode':'an event'}</td></tr>`;}).join('');
+    }
+    const dzr=t.id==='disease'?diseaseRec(cty,showSys):null;
+    const prevHtml=dzr?`${recCell(dzr,pctf)}<div class="small muted">RP’s system estimate averaged with the farm-survey prevalence for ${cty.name}.</div>`:`<span class="mono">${prng(row.p)}</span> ${TAGS.rp}`;
+    const xc=XCHECK[t.id]||[];
+    const ratio=x.b.mean>0?x.s.mean/x.b.mean:1;
+    return `<details data-k="${key}" ${openSet.has(key)?'open':''}>
+      <summary><span class="nm">${t.name}</span>
+        <span><span class="bar" style="display:block"><i class="b2" style="width:${x.b.mean/maxB*100}%"></i><i class="s" style="width:${x.s.mean/maxB*100}%"></i></span></span>
+        <span class="nums">${fmt(x.b.mean)} → ${fmt(x.s.mean)} h</span></summary>
+      <div class="det">
+        <p>${t.what}</p>
+        <div class="legend"><span>Mechanism evidence ${chipC(t.mech)}</span><span>Quantification ${chipC('Low')} ${TAGS.rp}</span><span>Concern: ${t.concern}</span><span>Sources ${refs(t.sent)}</span></div>
+        <p class="small muted">${t.mechNote}</p>
+        <div class="scroll"><table><thead><tr><th>Parameter (${SYSSHORT[showSys]})</th><th>Value used: most likely (range)</th></tr></thead><tbody>
+          <tr><td>Share of animals affected</td><td>${prevHtml}</td></tr>
+          ${tbl}
+        </tbody></table></div>
+        ${xc.length?`<div class="small"><b>Independent evidence</b><ul style="margin:4px 0 0;padding-left:18px">${xc.map(q=>`<li>${chipC(q.v)} ${q.t} ${refs(q.s)}</li>`).join('')}</ul></div>`:''}
+        <p class="small"><b>Interventions acting here:</b> ${acting.length?acting.map(a=>a.name.split(' (')[0]+(mix?'':' ('+applWord(a.appl[SYSI[cfg.method]])+')')).join('; '):'none selected'}${acting.length&&ratio<1?`. Scenario is ${pctf(ratio)} of baseline for this threat.`:''}</p>
+        <p class="small muted">Baseline ${fmt(x.b.mean)} h (${ciS(x.b)}) · scenario ${fmt(x.s.mean)} h (${ciS(x.s)}) · share of baseline total ${pctf(x.b.mean/totB)}</p>
+      </div></details>`;
+  }).join('');
+  const ch3=`<div class="card"><h3>What drives the estimate</h3>
+    <p class="sub">${M.de?'Disabling-equivalent hours per shrimp':'Hours of '+mlabel+' pain per shrimp'} by threat, baseline (grey) and scenario (accent). Open a row for the parameters, their ranges and the independent evidence for each.</p>
+    <div class="cons">${consHtml}</div></div>`;
+
+  /* country conditions */
+  const fNum=x=>fmt(x),fP=x=>pctf(x);
+  const crow=(a,b)=>`<tr><td>${a}</td><td>${b}</td></tr>`;
+  let cr='';
+  cr+=crow('Production, kilotonnes a year',recCell(cty.prod,fNum,'kt'));
+  cr+=crow('Vannamei share of output',recCell(cty.vann,fP));
+  cr+=crow('Harvest weight',recCell(cty.wt||DEF.wt,fNum,'g'));
+  cr+=crow('Cycle length',recCell(cty.cyc||DEF.cyc,v=>Math.round(v),'days')+'<div class="small muted">Multiplies every chronic, per-day threat; RP uses 115 days.</div>');
+  cr+=crow('System shares (production)',SYS.filter(s=>cty.mix[s].tri[1]>0).map(s=>`${SYSSHORT[s]} ${pctf(cty.mix[s].tri[1])} <span class="muted">(${pctf(cty.mix[s].tri[0])}–${pctf(cty.mix[s].tri[2])})</span> <span class="small muted">${esc(cty.mix[s].why)}</span>`).join('<br>')+'<div class="small muted">Used by the "typical mix" option. Mostly estimates; no source gives a complete split.</div> '+TAGS.est);
+  cr+=crow('Stocking density by system',Object.keys(cty.dens||{}).length?Object.keys(cty.dens).map(s=>`<b>${SYSSHORT[s]}</b> ${recCell(cty.dens[s],fNum,'shrimp/m²')}`).join('<br>')+'<div class="small muted">Sets the hurtful share of RP’s crowding pain: 10% at semi-intensive densities, 15% at intensive, 20% at super-intensive.</div>':'<span class="muted">no density data; RP’s system profile is used</span>');
+  cr+=crow('Aeration already in use',Object.keys(cty.aer||{}).length?Object.keys(cty.aer).map(s=>`<b>${SYSSHORT[s]}</b> ${recCell(cty.aer[s],fP)}`).join('<br>')+'<div class="small muted">RP’s system estimates assume aeration of 0, 30%, 90% and 100% for the four systems. The gap to full adoption is what the aeration intervention can still remove.</div>':'<span class="muted">no aeration data; RP’s system assumptions apply</span>');
+  const dzS=cty.dz?cty.dz.sys.map(s=>`<b>${SYSSHORT[s]}</b> ${recCell(diseaseRec(cty,s),fP)}`).join('<br>'):'';
+  cr+=crow('Disease prevalence',cty.dz?dzS+'<div class="small muted">RP’s system estimate averaged with the survey figure.</div>':'<span class="muted">no farm-level survey found; RP’s system estimate is used</span>');
+  const modRows=[['Low-salinity prevalence',cty.salF],['High-temperature prevalence',cty.thiF],['Low-temperature prevalence',cty.tloF]].filter(q=>q[1]);
+  cr+=crow('Water modifiers',modRows.length?modRows.map(q=>`${q[0]} × <span class="mono">${q[1].tri[1]} (${q[1].tri[0]}–${q[1].tri[2]})</span> ${TAGS.est}<div class="small muted">${esc(q[1].why)}</div>`).join(''):'<span class="muted">none applied</span>');
+  const stunAd=cty.stunN?clamp(cty.stunN*DEF.stunKt/cty.prod.tri[1],0,1):0;
+  cr+=crow('Electrical stunning already in use',cty.stunN?`${cty.stunN} producer${cty.stunN>1?'s':''} in the SWP stunner scheme, each committing to stun at least 1,900 t a year, is about <span class="mono">${pctf(stunAd)}</span> of output. A commitment, not realised volume.`:'None found.');
+  cr+=crow('Other conditions',cty.conds.map(c=>`<b>${c[0]}.</b> ${c[1]} ${refs(c[2])}`).join('<br>'));
+  const ch4=`<div class="card"><h3>Country conditions applied: ${cty.name}</h3>
+    ${cust?`<div class="warnbox"><b>${esc(cust.name)} is not modelled.</b> The closest modelled country is ${cty.name} (${Math.round(cust.dist).toLocaleString('en-US')} km between representative farming regions; next closest ${cust.next.c.name}, ${Math.round(cust.next.d).toLocaleString('en-US')} km). Every condition below is ${cty.name}’s, not ${esc(cust.name)}’s. Distance is a crude proxy for similar farming practice: replace these values with national statistics for ${esc(cust.name)} where you have them.</div>`:''}
+    <p class="sub">These country figures change the result. Each value is the average of the source values found, with the lowest to the highest as its range; open the list under any value to see every source. Rows tagged ${TAGS.est} are estimates because no source gives a number.</p>
+    <div class="scroll"><table><thead><tr><th>Condition</th><th>Value used and sources</th></tr></thead><tbody>${cr}</tbody></table></div></div>`;
+
+  /* population */
+  const adjLine=st.sent<1?` With the ${st.sent.toFixed(2)} adjustment: ${big(popS.mean*st.sent)} scenario, ${big(popD.mean*st.sent)} averted.`:'';
+  const cshort=cust?cust.name:cty.name;
+  const tonnesInScope=perT?1000:cfg.prodKt!=null?cfg.prodKt*1000*cfg.share:cty.prod.tri[1]*1000*cfg.share;
+  const sysShare=(!mix&&cty.mix[cfg.method])?cty.mix[cfg.method].tri[1]/SYS.reduce((a,s)=>a+cty.mix[s].tri[1],0):null;
+  const stunShare=cty.stunN?clamp(cty.stunN*DEF.stunKt/cty.prod.tri[1],0,1):0;
+  const refPts=[];
+  if(sysShare!=null)refPts.push(`all ${SYSSHORT[cfg.method].toLowerCase()} farms are about ${pctf(sysShare)} of ${cty.name}’s output (an estimate)`);
+  if(stunShare>0)refPts.push(`the stunner commitments in the SWP scheme cover about ${pctf(stunShare)}`);
+  refPts.push('ASC-certified output is about 15% in Ecuador and about 2% in Bangladesh, with no figure for most countries');
+  const shareBar=perT?`<div class="sharebar"><div class="cur"><b>Per 1,000 tonnes of harvest.</b> No production figure was entered for ${esc(cshort)}, so the share of national output does not apply. Enter its annual production under Country to scale the result.</div></div>`
+    :`<div class="sharebar"><div class="cur"><b>Showing ${st.share}% of ${esc(cshort)}’s annual output</b>, about ${big(tonnesInScope)} tonnes a year. Change it here or under Assumptions.</div>
+      <div class="presets" role="group" aria-label="Share of national output">${presetHtml(cty,cfg)}</div>
+      <div class="small muted">How much could change quickly? For reference: ${refPts.join('; ')}.</div></div>`;
+  const ch5=`<div class="card"><h3>${perT?'Per 1,000 tonnes harvested':'Scaled to '+esc(cshort)}</h3>
+    ${shareBar}
+    <p class="sub">Illustrative. ${perT?'The unit is 1,000 tonnes of harvested shrimp.':'Assumes '+st.share+'% of '+esc(cshort)+'’s annual output follows this scenario.'} Animal numbers come from the tonnage ${cust&&cust.prodKt>0?'you entered':'(reconciled across sources) '+TAGS.lit}, divided by the country’s harvest weight ${cty.wt?TAGS.lit:TAGS.est} and multiplied by the shrimp on the farm per shrimp harvested, ${ONFARM.tri[1].toFixed(1)} (${ONFARM.tri[0].toFixed(1)}–${ONFARM.tri[2].toFixed(1)}) ${TAGS.lit}. RP’s per-shrimp figures average over every shrimp on the farm, including those that die before harvest. The two RP-derived estimates of that ratio disagree.</p>
+    <div class="big">
+      <div><div class="lab">${perT?'Shrimp on the farm per 1,000 tonnes harvested':'Shrimp on farms per year in scope'}</div><div class="num">${big(aS.mean)}</div><div class="rng">90% interval ${big(aS.p5)}–${big(aS.p95)} ${TAGS.lit}</div></div>
+      <div><div class="lab">Baseline, ${mlabel} pain</div><div class="num">${big(popB.mean)} <small>${unitY}</small></div><div class="rng">${big(popB.p5)}–${big(popB.p95)} ${TAGS.mix}</div></div>
+      <div class="hl"><div class="lab">${hasIv?'Averted by this scenario':'This scenario'}</div><div class="num">${big(hasIv?popD.mean:popS.mean)} <small>${unitY}</small></div><div class="rng">${hasIv?big(popD.p5)+'–'+big(popD.p95):big(popS.p5)+'–'+big(popS.p95)} ${hasIv?TAGS.est:TAGS.mix}</div></div>
+    </div>
+    <p class="small muted">Years of cumulative pain summed across all animals in scope, ${perT?'per 1,000 tonnes harvested':'per year of production'}. The interval covers production figures, harvest weight and every pain parameter.${adjLine}</p></div>`;
+
+  /* sensitivity: tornado */
+  const target=(st.target==='averted'&&hasIv)?'averted':'scen';
+  const detVal=(force,opts)=>{const o=Object.assign({allMode:true,force},opts||{});const s=run(cfg,1,1,o);const b=mval(s,s.base[0],0,{de:false,from:M.de?0:M.from}),sc=mval(s,s.scen[0],0,{de:false,from:M.de?0:M.from});
+    /* for the DE metric use RP's mean weights so the deterministic run is comparable */
+    if(M.de){const w=[.006,.11,1,502.5];const bb=s.base[0].reduce((a,v,i)=>a+v*w[i],0),ss=s.scen[0].reduce((a,v,i)=>a+v*w[i],0);return target==='averted'?bb-ss:ss;}
+    return target==='averted'?b-sc:sc;};
+  const mid=detVal(null);
+  const params=[];
+  THREATS.forEach(t=>{
+    params.push({label:t.name+': share affected',k:'p:'+t.id});
+    if(t.special==='ablation'){params.push({label:'Ablation: pain per ablated female (chronic)',k:'h:ablation:0c'});params.push({label:'Ablation: shrimp per ablated female',k:'o:ablation'});params.push({label:'Ablation: acute window',k:'h:ablation:acute'});}
+    else params.push({label:t.name+': hours',k:'h:'+t.id+':'});
+  });
+  params.push({label:'Cycle length',k:'c:cyc'});
+  if(cty.dz)params.push({label:'Disease prevalence (country survey)',k:'c:dz'});
+  [...st.iv].map(id=>IVMAP[id]).forEach(iv=>{
+    if(iv.fx)iv.fx.forEach(f=>params.push({label:iv.name.split(' (')[0]+' → '+THREATS[TI[f.t]].name.toLowerCase(),k:'fx:'+iv.id+':'+f.t}));
+    if(iv.abl){params.push({label:iv.name.split(' (')[0]+': share spared (vannamei)',k:'fx:'+iv.id+':a'});params.push({label:iv.name.split(' (')[0]+': share spared (monodon)',k:'fx:'+iv.id+':b'});}
+  });
+  if(mix)SYS.forEach(sy=>{if(cty.mix[sy].tri[2]>0)params.push({label:'System share: '+SYSSHORT[sy].toLowerCase(),k:'c:mix:'+sy});});
+  const tItems=params.map(p=>({label:p.label,mid,a:detVal([{t:k=>k.startsWith(p.k),w:0}]),b:detVal([{t:k=>k.startsWith(p.k),w:2}])}))
+    .map(x=>({...x,sw:Math.abs(x.a-x.b)})).filter(x=>x.sw>1e-9).sort((a,b)=>b.sw-a.sw).slice(0,10);
+  const unit=`${M.de?unitH:mlabel+' hours'} per shrimp`;
+  const torHtml=tItems.length?tornado(tItems,unit):'<p class="muted small">No parameter moves the result under this threshold.</p>';
+
+  /* sensitivity: robustness checks */
+  const abx=k=>/^fx:.*:[ab]$/.test(k);
+  const variants=[
+   {n:'Headline run',o:{}},
+   {n:'RP generic system profile: no country conditions',o:{noCountry:true}},
+   {n:'Intervention effects at their least effective bounds',o:{force:[{t:abx,w:0},{t:k=>k.startsWith('fx:'),w:2}]},iv:1},
+   {n:'Intervention effects at their most effective bounds',o:{force:[{t:abx,w:2},{t:k=>k.startsWith('fx:'),w:0}]},iv:1},
+   {n:'Interventions do not stack: only the strongest effect per threat counts',o:{strongest:true},iv:1},
+   {n:'Disabling and excruciating durations three times longer',o:{hiScale:3}},
+   {n:'Disabling and excruciating durations three times shorter',o:{hiScale:1/3}},
+   {n:'Share of animals affected at lower bound for every threat',o:{force:[{t:k=>k.startsWith('p:'),w:0}]}},
+   {n:'Share of animals affected at upper bound for every threat',o:{force:[{t:k=>k.startsWith('p:'),w:2}]}},
+   {n:'Oxygen durations averaged over the two cycle halves (half of RP’s published total)',o:{hypHalf:true}},
+   {n:'Disease prevalence from RP only, ignoring country surveys',o:{rpOnlyDisease:true}},
+   {n:'Stunning leaves shrimp conscious (no benefit at slaughter)',o:{force:[{t:k=>k==='fx:stun:slaughter',w:2}]},need:'stun'},
+   {n:'Fewest harvested shrimp per ablated female (ablation weighs most)',o:{force:[{t:k=>k==='o:ablation',w:0}]},need:['noabl','altabl']}
+  ].filter(v=>(!v.iv||hasIv)&&(!v.need||(Array.isArray(v.need)?v.need.some(q=>st.iv.has(q)):st.iv.has(v.need))));
+  let headScen=null;
+  const vres=[];
+  const vRows=variants.map(v=>{
+    const s=run(cfg,mix?450:NV,SEED,v.o);
+    const ba=marr(s,s.base,M),sa=marr(s,s.scen,M);
+    const b=stats(ba),c=stats(sa),d=stats(ba.map((x,i)=>x-sa[i]));
+    vres.push({n:v.n,b:b.mean,s:c.mean});
+    if(headScen==null)headScen=c.mean;
+    const shift=headScen>0?(c.mean/headScen-1):0;
+    return `<tr><td>${v.n}</td><td class="n">${fmt(b.mean)}</td><td class="n">${fmt(c.mean)} <span class="muted">(${ciS(c)})</span></td><td class="n">${hasIv?fmt(d.mean):'–'}</td><td class="n">${v===variants[0]?'–':(shift>=0?'+':'−')+pctf(Math.abs(shift))}</td></tr>`;
+  }).join('');
+  const sentRows=[0.31,0.031].map(m=>`<tr><td>Affective-capacity adjustment of ${m} (applied after quantification)</td><td class="n">${fmt(bS.mean*m)}</td><td class="n">${fmt(sS.mean*m)} <span class="muted">(${fmt(sS.p5*m)}–${fmt(sS.p95*m)})</span></td><td class="n">${hasIv?fmt(dS.mean*m):'–'}</td><td class="n">−${pctf(1-m)}</td></tr>`).join('');
+  const ch6=`<div class="card"><h3>Sensitivity checks</h3>
+    <p class="sub">Two views. The first moves one input at a time across its full range. The second re-runs the whole model under a single changed assumption.</p>
+    <div class="metricbar" style="margin-bottom:12px"><span class="lab">Show sensitivity of</span><div class="seg" id="tgt" role="group" aria-label="Sensitivity target"><button type="button" data-t="averted" aria-pressed="${target==='averted'}" ${hasIv?'':'disabled'}>Pain averted</button><button type="button" data-t="scen" aria-pressed="${target==='scen'}">Scenario total</button></div></div>
+    ${torHtml}
+    <h4 style="font:600 15px var(--f-body);margin:20px 0 8px">Robustness checks (${M.de?unitH:mlabel+' hours'} per shrimp)</h4>
+    <div class="scroll"><table><thead><tr><th>Assumption changed</th><th>Baseline</th><th>Scenario (90% interval)</th><th>Averted</th><th>Scenario vs headline</th></tr></thead><tbody>${vRows}${sentRows}</tbody></table></div>
+  </div>`;
+
+  /* check against RP's published aggregate */
+  const chkCfg={method:'mix',country:cfg.country,iv:new Set(),share:1,baseline:'current'};
+  const rpSim=runRPGlobal();
+  const rpDE=stats(rpSim.base.map((v,k)=>mval(rpSim,v,k,{de:true})));
+  const rpCat=INTS.map((n,i)=>stats(rpSim.base.map(v=>v[i])));
+  const rpPub=[4175,520,5.88,.139];
+  const RPDE={crowd:63.7,ammonia:29.55,hypoxia:18.38,substrate:12.56,disease:10.65,salinity:6.88,temp_hi:3.87,transport_w:3.595,slaughter:3.049,harvest:1.788,ph:1.386,pollutants:.946,hunger:.376,predators:.285,transport_d:.0524,temp_lo:.0428,malnutrition:.04,ablation:.0000117};
+  const rpThr=THREATS.map((t,ti)=>({t,m:stats(rpSim.cb[ti].map((v,k)=>mval(rpSim,v,k,{de:true}))).mean,p:RPDE[t.id]})).sort((a,b)=>b.p-a.p);
+  const ch7=`<div class="card"><h3>Check against Rethink Priorities’ published total</h3>
+    <p class="sub">Run with RP’s own global system shares (11.2% extensive, 16.4% semi-intensive, 71.4% intensive, 1% super-intensive), a 115-day life and no country conditions. If the transcription of RP’s tables is right, this reproduces their totals.</p>
+    <div class="scroll"><table><thead><tr><th>Quantity</th><th>This model</th><th>RP published</th></tr></thead><tbody>
+      <tr><td>Disabling-equivalent hours per shrimp</td><td class="n">${fmt(rpDE.mean)} <span class="muted">(${ciS(rpDE)})</span></td><td class="n">157 <span class="muted">(28–356)</span></td></tr>
+      ${INTS.map((n,i)=>`<tr><td>${n} hours</td><td class="n">${fmt(rpCat[i].mean)}</td><td class="n">${fmt(rpPub[i])}</td></tr>`).join('')}
+    </tbody></table></div>
+    <details class="mini" style="margin-top:10px"><summary>Threat by threat, disabling-equivalent hours per shrimp</summary>
+    <div class="scroll"><table><thead><tr><th>Threat</th><th>This model</th><th>RP Table 4</th><th>Ratio</th></tr></thead><tbody>
+    ${rpThr.map(q=>`<tr><td>${q.t.name}</td><td class="n">${fmt(q.m)}</td><td class="n">${fmt(q.p)}</td><td class="n">${q.p>0?(q.m/q.p).toFixed(2):'–'}</td></tr>`).join('')}
+    </tbody></table></div></details>
+    <p class="small muted" style="margin-top:8px">Differences come from the model drawing every threat independently, from using RP’s printed ranges and means where its code differs, and from RP’s harvest and slaughter totals being 1.5 to 2 times lower than its per-event durations imply (an averaging step not described in the report). This model’s interval is also narrower than RP’s because it draws each input independently, while RP’s wider interval comes from its own aggregation. The oxygen durations follow RP’s published totals, which sum the two cycle halves; averaging them would halve that row. The 157-hour figure itself is a subjective credible interval, not a measurement.</p></div>`;
+
+  /* claims register */
+  const reg=[];
+  if(!mix)METHODS.find(q=>q.id===cfg.method).facts.forEach(f=>reg.push(['Farming system',f[0],f[1],f[2]==='Reconciled'?'lit':f[2]==='Sourced'?'src':'inf',f[3],f[4]]));
+  [['Production',cty.prod,fNum+'',' kt'],['Vannamei share',cty.vann,null,''],['Harvest weight',cty.wt||DEF.wt,null,' g'],['Cycle length',cty.cyc||DEF.cyc,null,' days']].forEach(q=>{
+    const r=q[1],val=q[0]==='Vannamei share'?prng(r.tri):q[0]==='Cycle length'?Math.round(r.tri[1])+' ('+Math.round(r.tri[0])+'–'+Math.round(r.tri[2])+')'+q[3]:q[0]==='Production'?fK(r.tri[1])+' ('+fK(r.tri[0])+'–'+fK(r.tri[2])+')':fmt(r.tri[1])+' ('+fmt(r.tri[0])+'–'+fmt(r.tri[2])+')'+q[3];
+    const basis=r.judged?'ph':r.single||r.assumed?'inf':'lit';
+    const conf=r.single||r.judged||!r.entries.length?'Low':r.conflict?'Moderate':'Moderate';
+    reg.push(['Country: '+cty.name,q[0],val+(r.conflict?'. Sources disagree; average used.':''),basis,conf,[].concat(...r.entries.map(e=>e.s)).filter((v,i,a)=>a.indexOf(v)===i)]);
+  });
+  reg.push(['Country: '+cty.name,'Cycle length use','Multiplies RP’s per-day durations for every chronic threat',"der",'Moderate',[102]]);
+  [...st.iv].map(id=>IVMAP[id]).forEach(iv=>{
+    reg.push(['Intervention: '+iv.name.split(' (')[0],'Status and evidence',`${iv.status}. ${iv.ev}`,'src',iv.conf,iv.src]);
+    reg.push(['Intervention: '+iv.name.split(' (')[0],'Applicability by system',`${iv.where}`,iv.applB==='src'?'src':'inf',iv.applB==='src'?'Moderate':'Low',iv.src]);
+    const eff=iv.fx?iv.fx.map(f=>THREATS[TI[f.t]].name.toLowerCase()+' × '+rng(f.m)).join('; '):`share of ablation pain spared: vannamei ${rng(iv.abl.a)}, monodon ${rng(iv.abl.b)}`;
+    reg.push(['Intervention: '+iv.name.split(' (')[0],'Size of effect',eff,'ph','Very low',[]]);
+    (iv.sup||[]).forEach(q=>reg.push(['Intervention: '+iv.name.split(' (')[0],'Independent evidence',q.t,'src',q.t.startsWith('CONFLICT')?'Low':'Moderate',q.s]));
+  });
+  THREATS.filter(t=>contr[TI[t.id]].b.mean/totB>.02).forEach(t=>{
+    reg.push(['Threat: '+t.name,'Prevalence, durations and intensity split','Rethink Priorities Table 5, expert credible intervals','rp','Low',[101,102]]);
+    reg.push(['Threat: '+t.name,'That this is a welfare concern',t.mechNote.split('. ')[0]+'.',t.mech==='Moderate'?'src':'inf',t.mech,t.sent]);
+  });
+  const regHtml=`<div class="card"><h3>Claims and confidence</h3>
+    <p class="sub">Every input behind this result, what kind of support it has, and how much weight it can bear. <b>Sourced</b>: stated in a source. <b>RP interval</b>: published expert credible interval. <b>Reconciled</b>: average of several source values. <b>Derived</b>: computed from source figures. <b>Inferred</b>: reasoned from qualitative evidence. <b>Estimate</b>: analyst estimate with no support.</p>
+    <div class="legend">${chipC('High')} multiple convergent independent sources ${chipC('Moderate')} one credible or several partly agreeing sources ${chipC('Low')} thin, inferred, expert-judgement or conflicting ${chipC('Very low')} estimate</div>
+    <div class="scroll"><table><thead><tr><th>Group</th><th>Claim</th><th>Value used</th><th>Basis</th><th>Confidence</th><th>Sources</th></tr></thead><tbody>
+    ${reg.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${chipB(r[3])}</td><td>${chipC(r[4])}</td><td>${refs(r[5])||'<span class="muted">none</span>'}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+
+  /* sources used */
+  const used=new Set();reg.forEach(r=>(r[5]||[]).forEach(i=>used.add(i)));THREATS.forEach(t=>t.sent.forEach(i=>used.add(i)));cty.conds.forEach(c=>c[2].forEach(i=>used.add(i)));
+  const srcLi=ids=>ids.filter(i=>SRC[i]).map(i=>{const s=SRC[i];const tag=s.i==='ind'?'independent':s.i==='rp'?'RP':'advocacy / SWP-linked';return `<li class="${s.u?'':'nourl'}"><span class="id">[${i}]</span><span>${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${s.t}</a>`:s.t} <span class="muted">· ${s.k} · ${tag}${s.u?'':' · no URL available'}</span></span></li>`;}).join('');
+  const usedIds=[...used].sort((a,b)=>a-b),allIds=Object.keys(SRC).map(Number).sort((a,b)=>a-b);
+  const nInd=usedIds.filter(i=>SRC[i]&&SRC[i].i==='ind').length,nRp=usedIds.filter(i=>SRC[i]&&SRC[i].i==='rp').length,nAdv=usedIds.filter(i=>SRC[i]&&SRC[i].i==='adv').length;
+  const srcHtml=`<div class="card"><h3>Sources used for this result</h3>
+    <p class="sub">${usedIds.length} sources behind this result: ${nInd} independent of Shrimp Welfare Project, ${nRp} from Rethink Priorities (which uses SWP survey and stunner data as inputs), ${nAdv} advocacy or SWP-linked. Numbers in square brackets are source IDs; 1 to 26 follow the draft’s numbering. Hover a bracket anywhere for the title. Sources with no URL are highlighted in light red (${usedIds.filter(i=>SRC[i]&&!SRC[i].u).length} of them here); they could not be linked and should be located before the result is cited.</p>
+    <ul class="srcs">${srcLi(usedIds)}</ul>
+    <details data-k="allsrc" ${openSet.has('allsrc')?'open':''} style="margin-top:12px"><summary class="small" style="cursor:pointer">All ${allIds.length} sources in the model</summary><ul class="srcs" style="margin-top:8px">${srcLi(allIds)}</ul></details></div>`;
+
+  /* notes */
+  const notes=`<div class="card"><h3>Method and limits</h3><div class="notes">
+    <h4>Pain-track arithmetic</h4>
+    <p>For each threat, cumulative pain per shrimp = share of animals affected × hours per affected animal at each intensity. Chronic threats are expressed per day and multiplied by the country’s cycle length; events and per-cycle threats are not. Threats are added across all 18 that Rethink Priorities models, and overlap is not removed, as in their report. For the typical-mix option the systems are weighted by the country’s estimated shares.</p>
+    <h4>Baseline and interventions</h4>
+    <p>The baseline is the chosen system in the chosen country under current practice by default, so interventions already in use are included; a switch in Assumptions removes them. An intervention multiplies the share of animals affected by a threat, scaled by how well the draft says it suits the system, and counts only the gap between current adoption and full adoption. Adoption data exist for aeration and stunning; the other interventions are assumed not yet in use, which overstates their gain where they are. Effects on the same threat multiply, which assumes they are independent.</p>
+    <h4>Uncertainty and labels</h4>
+    <p>Each input is a triangular distribution over its minimum, most likely value and maximum, and the model draws ${N.toLocaleString('en-US')} sets of inputs. RP’s ranges are used as published; for country figures the most likely value is the average of all source values found and the range runs from the lowest to the highest. A single source, or sources that agree exactly, get an assumed ±15% range and are tagged as estimates. A 90% interval is the 5th to 95th percentile of the draws; it reflects the input ranges and is not a statistical confidence interval. Inputs are drawn independently, which understates the spread if real parameters move together.</p>
+    <h4>What the country changes</h4>
+    <p>Production and harvest weight (population totals), vannamei share (substrate pain and how well ablation-free broodstock works), cycle length (all chronic threats), stocking density (hurtful share of crowding), aeration already in use (oxygen threat and the room left for aeration), disease prevalence (averaged with RP), low-salinity and temperature prevalence (estimates from water conditions), stunning already in use, and the system mix. Where a source gave no number for a country, RP’s generic system profile applies and the table says so. A country typed under "Other country" is modelled as the closest of the ten by great-circle distance between representative farming regions, which is a crude proxy; its own production figure, if entered, replaces the proxy’s for the population totals.</p>
+    <h4>Affective-capacity adjustment</h4>
+    <p>Kept separate, as the framework recommends. Main figures are unadjusted; the adjustment appears only as an optional multiplier and in the robustness table.</p>
+    <h4>Known issues in the draft and the sources</h4>
+    <ul>
+     <li>The "three hours of pain per ablated shrimp" figure has no traceable source: it is attributed to the Welfare Footprint methodology in trade press, the Welfare Footprint Institute’s public page publishes no shrimp figures, and its cited references ([12], [19]) are a Co-op sourcing article and a Wikipedia page. RP models ablation as about 1 hour of acute pain (range 0.5 to 2) plus about 100 to 250 hours of mostly mild recovery pain per ablated female. The page averages the two acute figures and shows both.</li>
+     <li>Reference [11] (Wikipedia: Shrimp farming) is cited for electrical stunning, feed quality and sex ratios, and [24] (Co-op sourcing) for ablation. These look like numbering slips.</li>
+     <li>The draft’s China figure of 2.37 Mt is 2024 data; the trade source labelled it 2025. The draft’s Vietnam figure of 1.19 Mt for 2024 was not found anywhere; official 2024 output is 1.29 Mt and the draft’s 0.67 to 0.8 Mt matches feed-industry estimates for vannamei only.</li>
+     <li>Concern ratings come from SWP and the EA Forum posts that cite it. They are one organisation’s judgement and not independent of each other.</li>
+     <li>RP’s ranking of stocking density first may reflect its benchmark against wild densities; RP says so itself. RP’s PDF and code disagree on the chronic duration of ablation (about 100–250 h vs a mean of 120 h); the PDF values are used.</li>
+     <li>Per-shrimp totals follow RP and average over every shrimp on the farm, so population totals multiply harvested animals by 1.0 to 2.4 shrimp on the farm per shrimp harvested, a range from two conflicting RP figures. RP’s 115-day life includes shrimp that die early; mortality is otherwise not modelled.</li>
+    </ul>
+    <h4>To change an input</h4>
+    <p>All parameters sit in one data block at the top of the page script: <code>THREATS</code> for RP’s tables, <code>IVS</code> for intervention effects, <code>COUNTRIES</code> for source values. Add a source value to a country’s list and the average and range update.</p>
+  </div></div>`;
+
+  /* statistics to collect */
+  const chCollect=`<div class="card"><h3>Statistics to collect to replace trade-press figures</h3>
+    <p class="sub">National and international statistics to read directly, with the figures they would replace. The row for ${esc(cty.name)}${cust?', the proxy for '+esc(cust.name)+',':''} is highlighted. For a country that is not modelled, look for the same items from its fisheries and statistics agencies.</p>
+    <div class="scroll"><table><thead><tr><th>Country</th><th>Publisher</th><th>What to collect</th><th>What it would settle</th></tr></thead><tbody>
+    ${COLLECT.map(q=>{const c=CMAP[q.id];return `<tr${q.id===cty.id?' style="background:var(--accent-soft)"':''}><td><b>${c.name}</b></td><td>${q.u?`<a href="${q.u}" target="_blank" rel="noopener">${q.who}</a>`:q.who}</td><td>${q.what}</td><td>${q.fix}</td></tr>`;}).join('')}
+    </tbody></table></div>
+    <h4 style="font:600 15px var(--f-body);margin:16px 0 6px">Across all countries</h4>
+    <div class="scroll"><table><tbody>${COLLECT_ALL.map(q=>`<tr><td><a href="${q[2]}" target="_blank" rel="noopener">${q[0]}</a></td><td>${q[1]}</td></tr>`).join('')}</tbody></table></div>
+    <h4 style="font:600 15px var(--f-body);margin:16px 0 6px">Items to ask each source for</h4>
+    <ul style="margin:0;padding-left:20px;display:grid;gap:3px;font-size:13.5px"><li>Shrimp production in tonnes with the weight basis (live, head-on, processed), species split, calendar or fiscal year, and what is excluded (traditional ponds, freshwater, prawns).</li><li>Area, farm numbers and production by system (extensive, semi-intensive, intensive, super-intensive or biofloc, indoor RAS).</li><li>Harvest size, cycle length and stocking-density surveys by system, and survival.</li><li>Aerator ownership and power per hectare; water-exchange practice; salinity and temperature ranges.</li><li>Disease incidence from surveillance, with one definition (clinical outbreak per farm per cycle).</li><li>Hatchery counts, broodstock source and the share of hatcheries that ablate or have stopped.</li><li>Harvest and slaughter method shares, and electrical-stunner installations with volumes actually stunned.</li><li>Certified production by scheme, and any national welfare rules.</li></ul></div>`;
+
+  /* strongest objections */
+  const vr=p=>vres.find(x=>x.n.startsWith(p));
+  const hi3=vr('Disabling and excruciating durations three times longer'),lo3=vr('Disabling and excruciating durations three times shorter');
+  const pLo=vr('Share of animals affected at lower'),pHi=vr('Share of animals affected at upper'),gen=vr('RP generic');
+  const topDrv=tItems.length?tItems[0].label.toLowerCase():'none';
+  const topCons=contr.slice().sort((a,b)=>b.s.mean-a.s.mean)[0];
+  const sh=(a,b)=>(a/b-1>=0?'+':'−')+pctf(Math.abs(a/b-1));
+  const nConf=['prod','vann','wt','cyc'].filter(k=>cty[k]&&cty[k].conflict).length;
+  const O=[];
+  O.push({t:'Shrimp may not feel pain at all, and the headline assumes they do',
+   a:'The evidence for nociception in penaeid shrimp is thin: Birch et al. rate penaeids high on one of eight criteria (nociceptors), medium on one and low or very low on the other six (read from the report’s table text), and say there is little evidence one way or the other for sentience. Several threats in the model act through oxygen, ammonia or infection, which harm an animal without anyone being in pain. Counting hours of annoying to excruciating pain presupposes a subject that has those experiences. The default multiplier of 1.00 is itself a position, and the framework’s four intensity labels were built for vertebrates with no calibrated anchors for a crustacean.',
+   e:`Every figure scales linearly with the adjustment. At 0.31 the scenario is ${fmt(sS.mean*.31)} h and at RP’s median welfare range of 0.031 it is ${fmt(sS.mean*.031)} h (${mlabel}). RP’s own range for shrimp runs from 0 to 1.15. The only numeric estimate found comes from an advocacy-adjacent source; no independent probability exists.`,
+   r:'An independent probability distribution over sentience, kept visible as its own input, plus behavioural evidence tied to specific intensity categories.'});
+  O.push({t:'Almost all of the pain numbers rest on one source, and it is not measurement',
+   a:'Rethink Priorities supplies every prevalence, duration and intensity split. They are subjective credible intervals, and RP says so. Its model uses SWP’s India survey of 20 farms and SWP’s stunner count as inputs, and its funding relationship to SWP was not verified. No quantified shrimp pain track from the Welfare Footprint Institute or SWP was found; SWP’s report gives only confidence ratings. Agreement with RP’s own total (see the check above) shows the arithmetic is right, not that the numbers are.',
+   e:`The largest contributor is ${topCons.t.name.toLowerCase()} (${pctf(topCons.s.mean/totS)} of the scenario total). The largest swing in the sensitivity chart comes from: ${topDrv}. Setting every share affected to its lower or upper bound gives a scenario total of ${pLo?fmt(pLo.s):'n/a'} to ${pHi?fmt(pHi.s):'n/a'} ${unitH}.`,
+   r:'Independent field measurements of prevalence and duration for each threat, and at least one second expert-elicitation exercise.'});
+  O.push({t:'Mild distress is added up for thousands of hours, and the intensity split drives the headline',
+   a:'RP counts a shrimp as annoyed for about 20 hours of every day under high density, which adds up to thousands of hours a lifetime and more than the animal lives, because threats overlap. Whether that state is experienced, and whether it deserves any weight beside a minute of disabling pain, is a value judgement. The weights for the disabling-equivalent metric run from 0.002 to 0.01 for annoying and 5 to 1,000 for excruciating, and RP calls the excruciating ratio the biggest uncertainty.',
+   e:hi3&&lo3?`At the current threshold (${mlabel}), making disabling and excruciating durations three times longer moves the scenario from ${fmt(vres[0].s)} to ${fmt(hi3.s)} h (${sh(hi3.s,vres[0].s)}); three times shorter gives ${fmt(lo3.s)} h (${sh(lo3.s,vres[0].s)}). ${st.metric==='all'?'The "any intensity" total is dominated by annoying hours, so it barely moves.':''}`:'',
+   r:'Anchoring each intensity to observable behaviour or physiology, and an agreed weighting between categories.'});
+  O.push({t:'The ranking of farming systems is built into RP’s prevalence tables',
+   a:'RP’s prevalence of nearly every threat rises with intensification, so intensive systems come out worse because they were entered that way. Biofloc and RAS can improve water quality and disease control, and RP lumps them with super-intensive at about 1% of production, so nothing here distinguishes them.',
+   e:`The baseline ordering for ${cty.name} is ${order} (${mlabel}). Indoor RAS and super-intensive give identical pain parameters here.`,
+   r:'Measured prevalence by system for each threat, including separate biofloc and RAS estimates.'});
+  O.push({t:'Country answers rest on thin, conflicting data and several judgement ranges',
+   a:'Production figures differ by 1.3 to nearly 5 times between sources (Indonesia 0.24 to 1.13 Mt; Vietnam 0.67 to 1.29 Mt, partly because some figures count vannamei only), and an average of conflicting numbers is not a measurement. System shares by country are mostly estimates. Disease prevalence comes from different years, crops and definitions (farms, ponds, area, infection or clinical disease). Salinity and temperature factors are judgement from qualitative water data. No source gave ablation prevalence or slaughter-method shares for any country.',
+   e:`For ${cty.name}, ${nConf} of the four headline figures show source disagreement. ${gen?`Removing all country conditions changes the scenario from ${fmt(vres[0].s)} to ${fmt(gen.s)} ${unitH} (${sh(gen.s,vres[0].s)}).`:''} Production for ${cty.name} spans ${fK(cty.prod.tri[0])} to ${fK(cty.prod.tri[2])}.`,
+   r:'Official country statistics read directly, farm-level surveys with one disease definition, and published ablation and slaughter practices by country.'});
+  if(cust)O.push({t:`${cust.name} is modelled as ${cty.name}, and distance is a weak reason to expect similar farms`,
+   a:`The form chose ${cty.name} because it is the nearest of ten modelled countries (${Math.round(cust.dist).toLocaleString('en-US')} km between representative farming regions). Shrimp farming does not follow geography: neighbours can differ by system, species, disease history and regulation, and a country with no shrimp industry has nothing to borrow from. Every production, species, density, aeration, disease and water figure on the page is ${cty.name}’s.`,
+   e:`The next closest modelled country is ${cust.next.c.name} (${Math.round(cust.next.d).toLocaleString('en-US')} km). ${cust.prodKt>0?'Production is the figure you entered.':'No production figure was entered, so results are per 1,000 tonnes harvested.'}`,
+   r:`National statistics, farm surveys and disease reports for ${cust.name}, entered in place of ${cty.name}’s values (see the list of statistics to collect).`});
+  O.push({t:'The sources are not independent and several are secondary',
+   a:'The concern ratings come from one organisation, and several cited posts restate its position. RP uses SWP data. Some country figures come from trade summaries of other trade summaries, and about half of the peer-reviewed figures were read from abstracts or summaries. Two citations in the draft appear to point at the wrong reference, including the one behind the 3-hour ablation figure.',
+   e:`Of the ${usedIds.length} sources behind this result, ${nInd} are independent of SWP, ${nRp} are from Rethink Priorities and ${nAdv} are advocacy or SWP-linked. Confidence ratings on the page are mine and are not independent checks either.`,
+   r:'Primary studies for each claim, and a separate pass that traces every figure to its original publication.'});
+  O.push({t:'Summing hours double-counts, and the unit hides what is left out',
+   a:'Threats happen at the same time. A shrimp short of oxygen and fighting disease is in one bad state, not two stacked ones, and hours cannot exceed the animal’s life. RP’s per-shrimp figure averages over every shrimp on the farm, including the large share that die before harvest, so population totals must count shrimp on the farm and not only harvested ones; the page multiplies harvested animals by a ratio of 1.0 to 2.4, a range that RP’s own figures give in conflict. The model starts at the postlarval stage; larvae and hatchery mortality are outside RP’s scope. Population totals multiply every one of these errors by billions of animals.',
+   e:`Scaled to ${perT?'1,000 tonnes':cshort}, the scenario implies ${big(popS.mean)} ${M.de?unitY:'years of '+mlabel+' pain'} ${perT?'per 1,000 tonnes harvested':'per year of production'}, with an interval of ${big(popS.p5)} to ${big(popS.p95)}.`,
+   r:'A time-budget model with overlapping states and a cap per animal, and an explicit mortality profile across life stages.'});
+  O.push({t:'Interventions are modelled as clean multipliers with no side effects',
+   a:'Each intervention shrinks the share of animals affected by a threat and nothing else changes. In practice lower density can mean more ponds, enrichment can alter water quality or disease risk, ablation alternatives may reduce spawning and raise broodstock use, and full adoption is not the realistic case. Effect sizes are analyst estimates: no study measures them in welfare terms.',
+   e:hasIv?`If only the strongest effect per threat counts, the scenario total is ${fmt((vr('Interventions do not stack')||{s:NaN}).s)} h against ${fmt(vres[0].s)} h in the headline run. At the least effective bounds it is ${fmt((vr('Intervention effects at their least')||{s:NaN}).s)} h. No intervention in this model can make any threat worse.`:'No interventions are selected, so this objection does not bite yet.',
+   r:'Trial data comparing welfare outcomes under each intervention, including adverse effects, and adoption rates.'});
+  if(st.iv.has('enrich'))O.push({t:'Enrichment: the case that it matters rests on the weakest evidence in the draft',
+   a:'No source connects substrate deprivation to a physiological or behavioural marker in grow-out ponds. RP counts it as about 12 hours of mild distress a day on nearly every intensive farm, so it carries a large share of the annoying hours. Independent experiments are in biofloc and nursery tanks, and one finds minimal effect.',
+   e:`Enrichment is modelled as removing 50% to 95% of the substrate burden. Lack of substrate contributes ${pctf(contr[TI.substrate].b.mean/totB)} of the baseline total at the current threshold.`,
+   r:'A preference or stress-marker experiment with and without substrate and shelter in grow-out ponds.'});
+  if(st.iv.has('stun'))O.push({t:'Stunning may not help, and the model cannot show that it harms',
+   a:'EEG work on shrimp finds insensibility confirmed in only a subset of stunned or cold-shocked animals (abstract only), and Birch et al. rate electrical stunning only medium confidence for decapods overall, from crab and lobster data. If stunning leaves animals paralysed but conscious it could prolong suffering. The model’s multiplier tops out at 1.0, so the worst it can say is "no benefit". RP’s slaughter pain is about four minutes per shrimp slaughtered in ice slurry, mostly disabling, and about 2% of RP’s disabling-equivalent total, so even a perfect fix removes little.',
+   e:`The stunning multiplier runs from 0.03 to 1.0 with a most likely value of 0.25, an estimate. Treating stunning as having no effect gives ${fmt((vr('Stunning leaves')||{s:NaN}).s)} h for the scenario.`,
+   r:'EEG and behavioural data on consciousness during and after electrical stunning, at the settings farms use.'});
+  if(['dens','aerate','sludge','bios'].some(k=>st.iv.has(k)))O.push({t:'Water-quality and density benefits show better survival, which is not the same as less pain',
+   a:'Support for density, aeration, sludge removal and biosecurity is experimental evidence on survival, growth and disease. Those are production outcomes. Translating them into fewer hours of pain is an inference, and survival can improve while the time in distress per surviving shrimp stays the same. The aeration evidence itself conflicts: one trial links survival linearly to minimum oxygen, another finds no difference between setpoints of 2.5 and 4.5 mg/L.',
+   e:'The multipliers for these interventions are analyst estimates. The direction is supported by independent experiments; the size is not measured, and none of it is in affective terms.',
+   r:'Welfare-specific outcomes (behaviour, stress physiology) measured alongside survival in the same trials.'});
+  if(st.iv.has('noabl')||st.iv.has('altabl'))O.push({t:'Ablation: a vivid harm with a very small per-shrimp footprint',
+   a:'The harm falls on broodstock, so its weight per grow-out shrimp depends on how many offspring one female yields, and sources differ by more than five times on that. On RP’s numbers the footprint per shrimp is about a second of pain (0.0003 hours), small beside the grow-out threats, and most of it is mild recovery pain. The "three hours" figure in the draft has no traceable source. Ablation-free reproduction works for vannamei and not yet for monodon.',
+   e:`With ${Math.round(ABL_OFF.tri[0]).toLocaleString('en-US')} harvested shrimp per ablated female the scenario total is ${fmt((vr('Fewest harvested')||{s:NaN}).s)} h. Vannamei share in ${cty.name} is ${prng(cty.vann.tri)}, which limits how much of the ablation burden these options can remove.`,
+   r:'The primary Welfare Footprint estimate with its intensity profile, and hatchery data on offspring per female.'});
+  if(!(mix||cty.docs.includes(cfg.method))||cfg.method==='ras')O.push({t:'This combination is hypothetical',
+   a:cfg.method==='ras'?'No source gives RAS-specific prevalence or durations, and RP merges RAS with biofloc. Every RAS parameter here is borrowed from super-intensive.':`No source documents ${SYSSHORT[cfg.method].toLowerCase()} farming in ${cty.name}. The estimate applies that system’s published profile to the country and may not describe anything that exists at scale there.`,
+   e:'Treat the result as a what-if.',r:'Evidence that the system is used at scale in the selected country, with its practices.'});
+  const objHtml=`<div class="card"><h3>The strongest case against this estimate</h3>
+    <p class="sub">Arguments a sceptical reviewer could make, stated as forcefully as the evidence allows, with the effect on the current result where the model can show one. Your selections change which ones appear.</p>
+    <div class="objs">${O.map((o,i)=>`<article class="obj"><h4>${i+1}. ${o.t}</h4><p>${o.a}</p><p class="small"><b>What it does to this result.</b> ${o.e}</p><p class="small muted"><b>What would answer it.</b> ${o.r}</p></article>`).join('')}</div></div>`;
+
+  $('#out').innerHTML=fold(ch1,'intensity')+fold(ch2,'methods')+fold(ch3,'cons')+fold(ch4,'country')+fold(ch5,'scale')+fold(ch6,'sens')+fold(ch7,'check')+fold(regHtml,'claims')+fold(srcHtml,'sources')+fold(chCollect,'collect')+fold(notes,'notes')+fold(objHtml,'objections');
+  LAST={scn,txt:verdictTxt.replace(/<[^>]+>/g,''),mlabel};
+}
+
+/* RP-global run for the check card: RP's own system shares, 115-day life, no country conditions */
+let RPG=null;
+function runRPGlobal(){
+  if(RPG)return RPG;
+  const base=CMAP.vn;
+  const fake={id:'rp',name:'RP',prod:rec([E(1000)]),vann:rec([E(.925)]),mix:{ext:{tri:[RP_MIX.ext,RP_MIX.ext,RP_MIX.ext]},semi:{tri:[RP_MIX.semi,RP_MIX.semi,RP_MIX.semi]},int:{tri:[RP_MIX.int,RP_MIX.int,RP_MIX.int]},super:{tri:[RP_MIX.super,RP_MIX.super,RP_MIX.super]},ras:{tri:[0,0,0]}},docs:SYS};
+  CMAP.__rp=fake;
+  RPG=run({method:'mix',country:'__rp',iv:new Set(),share:1,baseline:'current'},2500,SEED,{noCountry:true});
+  return RPG;
+}
+
+/* National statistics to read directly, to replace trade-press and summary figures. Web addresses are agency home pages or data portals; check them, as sites move. */
+const COLLECT=[
+ {id:'cn',who:'Ministry of Agriculture and Rural Affairs, Bureau of Fisheries (China)',what:'China Fishery Statistical Yearbook: shrimp by species, marine vs freshwater culture, area and tonnage by culture mode (pond, greenhouse, factory); annual fishery economic statistics bulletin',fix:'The 2.37 Mt figure was labelled 2025 but is 2024 data; marine vs freshwater vannamei (0.3, 0.5 or 0.81 Mt) disagree',u:'https://yyj.moa.gov.cn'},
+ {id:'ec',who:'Ecuador: Ministry of Production, Foreign Trade, Investment and Fisheries (aquaculture undersecretariat); Camara Nacional de Acuacultura; Central Bank',what:'Production in live weight (not exports), registered farms and hectares by size and system, harvest weight and cycle, aerator and automatic-feeder adoption',fix:'Only export weights were found; 1.2, 1.3 and 1.75 Mt production estimates disagree',u:'https://www.cna-ecuador.com'},
+ {id:'in',who:'MPEDA, Ministry of Fisheries (Department of Fisheries), Coastal Aquaculture Authority, ICAR-CIBA',what:'Aquaculture production by species and state, area, farms registered with the Authority, stocking-density and cycle surveys, the National Surveillance Programme disease results',fix:'Calendar-year industry figure (1.05 Mt) vs fiscal-year MPEDA (1.37 Mt); monodon 24,769 vs 85,752 t',u:'https://mpeda.gov.in'},
+ {id:'vn',who:'Directorate of Fisheries (Ministry of Agriculture and Environment), General Statistics Office, provincial departments in the Mekong Delta, Department of Animal Health',what:'Brackish shrimp by species, area and system (extensive, rice-shrimp, intensive, super-intensive), disease-affected area, hatchery and broodstock imports',fix:'Official 1.29 Mt (2024) vs feed-industry 0.47 to 0.6 Mt (vannamei only); the draft’s 1.19 Mt was not found',u:'https://tongcucthuysan.gov.vn'},
+ {id:'th',who:'Department of Fisheries, Thailand (Fisheries Development Policy and Strategy Division; Aquaculture Research)',what:'Fisheries statistics of Thailand and shrimp situation reports: output by species, farms and area by system, Thai GAP certification, disease surveillance',fix:'Official 0.25 Mt vs 0.27 to 0.4 Mt industry estimates; the 2025 total was only found by species',u:'https://www.fisheries.go.th'},
+ {id:'id',who:'Ministry of Marine Affairs and Fisheries (KKP) and its data portal; Statistics Indonesia (BPS)',what:'Shrimp production by species, area by pond type (traditional, semi-intensive, intensive), farms, and the definition KKP uses for each year',fix:'Official 0.84 to 1.13 Mt vs industry 0.23 to 0.32 Mt, a gap of about 3 to 5 times that probably reflects whether traditional ponds are counted',u:'https://satudata.kkp.go.id'},
+ {id:'bd',who:'Department of Fisheries, Bangladesh; Bangladesh Bureau of Statistics; Export Promotion Bureau',what:'Yearbook of Fisheries Statistics: bagda, galda and other, farm and coastal components, hectares, with the fiscal-year basis stated',fix:'Bagda-only (40 to 100 kt) vs all shrimp and prawn (251 to 299 kt)',u:'https://dof.gov.bd'},
+ {id:'sa',who:'Ministry of Environment, Water and Agriculture; the national statistics authority; National Aquaculture Group (company reports)',what:'A shrimp-only production series (the ministry publishes mariculture totals), farm counts, system split, current stocking density and cycle, certification',fix:'60 to 72 kt shrimp-only figures all come from summaries; the company’s own 60 kt is most of the total',u:'https://www.mewa.gov.sa'},
+ {id:'ir',who:'Iranian Fisheries Organization (Shilat); Iran Veterinary Organization; Statistical Centre of Iran',what:'Shrimp production and pond area by province and Iranian calendar year, cycle and density, disease reports since 2010',fix:'45.5 vs 62 vs 65 kt across years; pond area 7,053 to 17,890 ha'},
+ {id:'my',who:'Department of Fisheries Malaysia (fisheries statistics yearbook); Department of Statistics Malaysia',what:'Aquaculture by species and culture system, area, number of farms, hatchery count and broodstock source',fix:'Industry 42 kt (2025) vs official about 61 kt (2024, summary only)',u:'https://www.dof.gov.my'}
+];
+const COLLECT_ALL=[
+ ['FAO FishStat, global aquaculture production','Tonnes by country, species and year in a consistent live-weight basis. Cross-checks every national figure; the country values could not be read in this review.','https://www.fao.org/fishery/en/collection/aquaculture'],
+ ['WOAH WAHIS animal disease reports','Official notifications of white spot, AHPND, IHHNV and other listed diseases by country and year, to replace the mix of survey years used for disease prevalence.','https://wahis.woah.org'],
+ ['ASC and BAP certified-farm registers','Certified farms, hectares and tonnes by country, to replace single-source certification shares.','https://asc-aqua.org'],
+ ['UN Comtrade','Export weights by product form, to tie export figures to live-weight production.','https://comtradeplus.un.org']
+];
+
+/* independent evidence per threat (direction of effect), shown in each threat's detail */
+const XCHECK={
+ hypoxia:[{v:'Moderate',t:'Yield, survival and profit rose linearly with minimum dissolved oxygen in nine ponds.',s:[121]},{v:'Moderate',t:'Survival 42 / 55 / 61% at morning oxygen of 2.3 / 3.0 / 3.9 mg/L.',s:[122]},{v:'Low',t:'Conflicts: setpoints of 2.5, 3.5 and 4.5 mg/L gave no difference in growth or yield.',s:[123]},{v:'Moderate',t:'More than 37% of readings were below recommended levels in improved-extensive Mekong ponds, with dawn oxygen of 0.84 to 2.2 mg/L.',s:[127]},{v:'High',t:'Lethal oxygen is about 0.5 to 1.2 mg/L.',s:[124,126]}],
+ ammonia:[{v:'High',t:'Ammonia-N 96-hour LC50 is 24 mg/L at 15 ppt; susceptibility rises 115 to 162% as salinity falls from 35 to 15 ppt.',s:[125]},{v:'Moderate',t:'0.10 mg/L NH3-N is the maximum acceptable and 0.45 mg/L halves growth (FAO guidance).',s:[126]},{v:'Low',t:'Greenhouse ponds peaked at 7.1 mg/L ammonia-N and 16.3 mg/L nitrite.',s:[157]}],
+ crowd:[{v:'Moderate',t:'Biofloc at 50 vs 200 shrimp/m²: survival 98.8% vs 96.8%, final weight 18.5 vs 12.8 g.',s:[129]},{v:'Low',t:'One crop of P. monodon: survival 12 to 46% at 15 to 20/m² vs 43 to 88% at 3 to 5/m².',s:[128]},{v:'Moderate',t:'Juveniles at 50/m² fed more and crawled less than at 75 or 100/m².',s:[130]}],
+ substrate:[{v:'Moderate',t:'Artificial substrate in biofloc tanks gave 314% greater biomass; survival above 95% vs 75.9% at 1,125 shrimp/m³.',s:[131,132]},{v:'Low',t:'Conflicts: substrate had minimal impact in high-tunnel systems.',s:[134]},{v:'Very low',t:'Gap: no grow-out pond or behavioural study found.',s:[]}],
+ disease:[{v:'High',t:'White spot kills 80 to 100% within 5 to 10 days; AHPND up to 100% within 30 to 35 days of stocking.',s:[137,138]},{v:'Moderate',t:'196 Thai ponds: AHPND 20.9%, white spot 4.1%, EHP 60.7%.',s:[135]},{v:'Moderate',t:'909 Indian farms: 49% had an infectious disease; white spot 25%, EHP 17%.',s:[136]}],
+ ablation:[{v:'Moderate',t:'Lidocaine before ablation reduced erratic swimming and improved feeding onset.',s:[117]},{v:'Moderate',t:'Offspring of non-ablated females survived AHPND challenge 70.4% vs 38.8%.',s:[118]},{v:'Moderate',t:'Birch et al.: high confidence ablation is a severe risk if shrimp are sentient; little evidence either way for penaeid sentience.',s:[111]},{v:'Low',t:'Penaeid pain-related behaviour after ablation is not measured in an independent study; one sceptical review argues about 2 seconds of nociceptor activation and "stress does not equal pain".',s:[116]}],
+ slaughter:[{v:'Moderate',t:'Ice slurry: heartbeat gone within 4 minutes, response to pinch gone after 30 seconds, but the stun is reversible.',s:[113]},{v:'Low',t:'Birch et al.: no confidence that chilling renders decapods unconscious; medium for electrical stunning.',s:[111]},{v:'Low',t:'EEG insensibility confirmed in only a subset after either method (abstract).',s:[114]}]
+};
+
+/* ============================== EVENTS ============================== */
+let timer=null;
+const rerender=()=>{updateInputInfo();clearTimeout(timer);timer=setTimeout(render,0);};
+/* typed country: use it directly if modelled, otherwise model it as the closest modelled country */
+function applyCustomName(fromSelect){
+  const raw=$('#cname').value,prod=+$('#cprod').value;
+  const r=resolveCountry(raw);st.customMsg='';
+  if(!r){st.custom=null;if(!fromSelect)st.customMsg='';}
+  else if(r.modelled){st.country=r.modelled.id;st.custom=null;$('#country').value=r.modelled.id;}
+  else if(r.unknown){st.custom=null;st.customMsg='That name is not in the list. Pick one from the suggestions, or choose one of the ten modelled countries.';}
+  else{st.country=r.proxy.id;st.custom={name:r.name,dist:r.dist,next:r.next,prodKt:prod>0?prod:0};}
+  rerender();
+}
+let cTimer=null;
+const cSoon=()=>{clearTimeout(cTimer);cTimer=setTimeout(()=>applyCustomName(false),200);};
+$('#cname').addEventListener('input',cSoon);
+$('#cname').addEventListener('change',()=>applyCustomName(false));
+$('#cprod').addEventListener('input',()=>{if(st.custom){st.custom.prodKt=+$('#cprod').value>0?+$('#cprod').value:0;clearTimeout(cTimer);cTimer=setTimeout(render,200);}});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.name==='method'){st.method=t.value;}
+  else if(t.name==='bref'){st.baseline=t.value;}
+  else if(t.id==='country'){
+    if(t.value==='other'){st.custom=null;st.customMsg='';applyCustomName(true);return;}
+    st.country=t.value;st.custom=null;st.customMsg='';
+  }
+  else if(t.dataset&&t.dataset.iv){t.checked?st.iv.add(t.dataset.iv):st.iv.delete(t.dataset.iv);}
+  else if(t.dataset&&t.dataset.en){t.checked?st.enab.add(t.dataset.en):st.enab.delete(t.dataset.en);}
+  else return;
+  rerender();
+});
+let slTimer=null;
+const slide=()=>{clearTimeout(slTimer);slTimer=setTimeout(render,120);};
+$('#share').addEventListener('input',e=>{st.share=+e.target.value;$('#shareV').textContent=st.share+'%';slide();});
+$('#sent').addEventListener('input',e=>{st.sent=+e.target.value;$('#sentV').textContent=st.sent.toFixed(2);slide();});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.m){st.metric=b.dataset.m;document.querySelectorAll('#metric button').forEach(x=>x.setAttribute('aria-pressed',x===b));render();}
+  else if(b.dataset.share){st.share=+b.dataset.share;$('#share').value=st.share;$('#shareV').textContent=st.share+'%';render();}
+  else if(b.dataset.sent){st.sent=+b.dataset.sent;$('#sent').value=st.sent;$('#sentV').textContent=st.sent.toFixed(2);render();}
+  else if(b.dataset.t&&!b.disabled){st.target=b.dataset.t;render();}
+  else if(b.id==='copy'){
+    const en=[...st.enab].map(id=>ENABLERS.find(x=>x.id===id).name);
+    const txt=`${LAST.scn}\n${LAST.txt}\nBaseline magnitude confidence: Low (Rethink Priorities expert intervals, not measurements). Intervention effect sizes: analyst estimates.${en.length?'\nNoted but not quantified: '+en.join('; ')+'.':''}\nModel: Welfare Footprint pain-track on Rethink Priorities 2024 parameters, triangular inputs, 90% interval = 5th to 95th percentile.`;
+    const box=$('#sumbox');
+    const fb=()=>{box.hidden=false;box.value=txt;box.focus();box.select();$('#copied').textContent='Select and copy the text below.';};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(()=>{$('#copied').textContent='Copied.';},fb);}else fb();
+  }
+});
+document.addEventListener('toggle',e=>{
+  const d=e.target.dataset;if(!d)return;
+  if(d.k)e.target.open?openSet.add(d.k):openSet.delete(d.k);
+  if(d.c)e.target.open?closedSet.delete(d.c):closedSet.add(d.c);
+},true);
+function setAll(open){
+  document.querySelectorAll('details.step,details.adv,details.status-box').forEach(d=>{d.open=open;});
+  open?closedSet.clear():SECS.forEach(k=>closedSet.add(k));
+  document.querySelectorAll('details.sec').forEach(d=>{d.open=open;});
+}
+$('#showAll').addEventListener('click',()=>setAll(true));
+$('#hideAll').addEventListener('click',()=>setAll(false));
+
+buildInputs();updateInputInfo();render();
+</script>
+
+</body></html>
