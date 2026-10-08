@@ -114,7 +114,21 @@ input[type=text],input[type=number]{width:100%;background:var(--surface);border:
 .tag.rp{border-color:var(--mod);color:var(--mod)}
 .tag.est{border-style:dashed;border-color:var(--bad);color:var(--bad)}
 .tag.lit{border-color:var(--ok);color:var(--ok)}
-.sref{font:400 12px var(--f-mono);color:var(--accent);cursor:help;white-space:nowrap}
+.sref{font:400 12px var(--f-mono);color:var(--accent);cursor:pointer;white-space:nowrap;background:none;border:0;padding:0 1px;margin:0;text-decoration:underline dotted;text-underline-offset:2px}
+.sref:hover{text-decoration:underline}
+.sref[aria-expanded=true]{background:var(--accent-soft);border-radius:3px}
+.pop{position:absolute;z-index:1000;width:min(380px,calc(100vw - 32px));background:var(--surface);color:var(--ink);border:1px solid var(--accent);border-radius:8px;padding:12px 14px;box-shadow:0 8px 28px rgba(0,0,0,.25);display:grid;gap:8px;font-size:13.5px}
+.pop .pid{font:500 12px var(--f-mono);color:var(--accent);display:flex;gap:8px;align-items:center;justify-content:space-between}
+.pop .pt{font-weight:600;line-height:1.4}
+.pop .pk{font-size:12.5px;color:var(--muted)}
+.pop .pa{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pop .pa a.btn{text-decoration:none;color:var(--ink)}
+.pop .pa .btn{padding:5px 10px;font-size:13px}
+.pop .pm{font-size:12.5px;color:var(--muted);min-height:1em}
+.pop .pc{border:0;background:none;cursor:pointer;font-size:18px;line-height:1;color:var(--muted);padding:0 2px}
+.pop textarea{width:100%;min-height:80px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:6px;font:12px var(--f-mono)}
+.srcs .cp{margin-left:8px;border:1px solid var(--line);background:transparent;border-radius:4px;padding:1px 6px;font-size:11.5px;cursor:pointer;color:var(--muted)}
+.srcs .cp:hover{border-color:var(--accent);color:var(--ink)}
 
 /* results */
 section.res{display:grid;gap:18px;min-width:0}
@@ -1025,7 +1039,12 @@ const ciS=s=>fmt(s.p5)+'–'+fmt(s.p95);
 const pctf=x=>{const v=x*100;return (Math.abs(v)<10?v.toFixed(1):Math.round(v))+'%';};
 const big=x=>{if(x>=1e9)return (x/1e9).toFixed(x>=1e10?0:1)+' billion';if(x>=1e6)return (x/1e6).toFixed(x>=1e7?0:1)+' million';if(x>=1e3)return Math.round(x/1e3)+' thousand';return Math.round(x).toString();};
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-const refs=ids=>(ids||[]).map(i=>`<span class="sref" title="${esc(SRC[i]?SRC[i].t:'')}">[${i}]</span>`).join(' ');
+/* A citation number is a button: click it for the full citation, a link to the resource and a copy button. */
+const refBtn=i=>`<button type="button" class="sref" data-src="${i}" aria-haspopup="dialog" aria-expanded="false" title="${esc(SRC[i]?SRC[i].t:'Source '+i)} (click for the citation and link)">[${i}]</button>`;
+const refs=ids=>(ids||[]).map(refBtn).join(' ');
+/* turns plain "[12]" mentions in fixed prose into clickable citations (only for ids that exist) */
+const linkRefs=html=>html.replace(/\[(\d{1,3})\](?![^<]*<\/button>)/g,(m,n)=>SRC[+n]?refBtn(+n):m);
+const citeText=i=>{const s=SRC[i];return s?`${s.t}. ${s.k}. ${s.u?s.u:'No URL available.'} [source ${i}, Shrimp Welfare Footprint model]`:'';};
 const confCls=c=>({'High':'c-high','Moderate':'c-mod','Low':'c-low','Very low':'c-vlow'}[c]||'c-low');
 const chipC=c=>`<span class="chip ${confCls(c)}">${c}</span>`;
 const chipB=b=>`<span class="chip b ${b==='ph'?'ph':''}">${BASIS[b]||b}</span>`;
@@ -1165,6 +1184,7 @@ function tornado(items,unit){
 /* ---------- main render ---------- */
 let LAST=null;
 function render(){
+  closePop();
   const cust=st.custom;
   const perT=!!(cust&&!(cust.prodKt>0)); /* a typed country with no production figure is reported per 1,000 tonnes */
   const cfg={method:st.method,country:st.country,iv:new Set(st.iv),share:perT?1:st.share/100,baseline:st.baseline,prodKt:cust?(cust.prodKt>0?cust.prodKt/1000:1):null};
@@ -1432,11 +1452,11 @@ function render(){
 
   /* sources used */
   const used=new Set();reg.forEach(r=>(r[5]||[]).forEach(i=>used.add(i)));THREATS.forEach(t=>t.sent.forEach(i=>used.add(i)));cty.conds.forEach(c=>c[2].forEach(i=>used.add(i)));
-  const srcLi=ids=>ids.filter(i=>SRC[i]).map(i=>{const s=SRC[i];const tag=s.i==='ind'?'independent':s.i==='rp'?'RP':'advocacy / SWP-linked';return `<li class="${s.u?'':'nourl'}"><span class="id">[${i}]</span><span>${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${s.t}</a>`:s.t} <span class="muted">· ${s.k} · ${tag}${s.u?'':' · no URL available'}</span></span></li>`;}).join('');
+  const srcLi=ids=>ids.filter(i=>SRC[i]).map(i=>{const s=SRC[i];const tag=s.i==='ind'?'independent':s.i==='rp'?'RP':'advocacy / SWP-linked';return `<li class="${s.u?'':'nourl'}"><span class="id">[${i}]</span><span>${s.u?`<a href="${s.u}" target="_blank" rel="noopener">${s.t}</a>`:s.t} <span class="muted">· ${s.k} · ${tag}${s.u?'':' · no URL available'}</span><button type="button" class="cp" data-cite="${i}">Copy citation</button></span></li>`;}).join('');
   const usedIds=[...used].sort((a,b)=>a-b),allIds=Object.keys(SRC).map(Number).sort((a,b)=>a-b);
   const nInd=usedIds.filter(i=>SRC[i]&&SRC[i].i==='ind').length,nRp=usedIds.filter(i=>SRC[i]&&SRC[i].i==='rp').length,nAdv=usedIds.filter(i=>SRC[i]&&SRC[i].i==='adv').length;
   const srcHtml=`<div class="card"><h3>Sources used for this result</h3>
-    <p class="sub">${usedIds.length} sources behind this result: ${nInd} independent of Shrimp Welfare Project, ${nRp} from Rethink Priorities (which uses SWP survey and stunner data as inputs), ${nAdv} advocacy or SWP-linked. Numbers in square brackets are source IDs; 1 to 26 follow the draft’s numbering. Hover a bracket anywhere for the title. Sources with no URL are highlighted in light red (${usedIds.filter(i=>SRC[i]&&!SRC[i].u).length} of them here); they could not be linked and should be located before the result is cited.</p>
+    <p class="sub">${usedIds.length} sources behind this result: ${nInd} independent of Shrimp Welfare Project, ${nRp} from Rethink Priorities (which uses SWP survey and stunner data as inputs), ${nAdv} advocacy or SWP-linked. Numbers in square brackets are source IDs; 1 to 26 follow the draft’s numbering. Click a bracket anywhere on the page for the full citation, a link to the resource and a button to copy the citation. Sources with no URL are highlighted in light red (${usedIds.filter(i=>SRC[i]&&!SRC[i].u).length} of them here); they could not be linked and should be located before the result is cited.</p>
     <ul class="srcs">${srcLi(usedIds)}</ul>
     <details data-k="allsrc" ${openSet.has('allsrc')?'open':''} style="margin-top:12px"><summary class="small" style="cursor:pointer">All ${allIds.length} sources in the model</summary><ul class="srcs" style="margin-top:8px">${srcLi(allIds)}</ul></details></div>`;
 
@@ -1544,7 +1564,7 @@ function render(){
     <p class="sub">Arguments a sceptical reviewer could make, stated as forcefully as the evidence allows, with the effect on the current result where the model can show one. Your selections change which ones appear.</p>
     <div class="objs">${O.map((o,i)=>`<article class="obj"><h4>${i+1}. ${o.t}</h4><p>${o.a}</p><p class="small"><b>What it does to this result.</b> ${o.e}</p><p class="small muted"><b>What would answer it.</b> ${o.r}</p></article>`).join('')}</div></div>`;
 
-  $('#out').innerHTML=fold(ch1,'intensity')+fold(ch2,'methods')+fold(ch3,'cons')+fold(ch4,'country')+fold(ch5,'scale')+fold(ch6,'sens')+fold(ch7,'check')+fold(regHtml,'claims')+fold(srcHtml,'sources')+fold(chCollect,'collect')+fold(notes,'notes')+fold(objHtml,'objections');
+  $('#out').innerHTML=fold(ch1,'intensity')+fold(ch2,'methods')+fold(ch3,'cons')+fold(ch4,'country')+fold(ch5,'scale')+fold(ch6,'sens')+fold(ch7,'check')+fold(regHtml,'claims')+fold(srcHtml,'sources')+fold(chCollect,'collect')+fold(linkRefs(notes),'notes')+fold(linkRefs(objHtml),'objections');
   LAST={scn,txt:verdictTxt.replace(/<[^>]+>/g,''),mlabel};
 }
 
@@ -1651,6 +1671,50 @@ function setAll(open){
 }
 $('#showAll').addEventListener('click',()=>setAll(true));
 $('#hideAll').addEventListener('click',()=>setAll(false));
+
+/* ---------- citation card: click any [n] for the full citation, a link, and a copy button ---------- */
+let POP=null,POPBTN=null;
+function closePop(){if(POP){POP.remove();POP=null;}if(POPBTN){POPBTN.setAttribute('aria-expanded','false');POPBTN=null;}}
+function showTextFallback(btn,txt){
+  const host=btn.closest('.pop')||btn.parentElement;
+  let ta=host.querySelector('textarea.fb');
+  if(!ta){ta=document.createElement('textarea');ta.className='fb';ta.readOnly=true;ta.setAttribute('aria-label','Citation text, selected for copying');host.appendChild(ta);}
+  ta.value=txt;ta.focus();ta.select();
+}
+function copyCite(id,btn){
+  const txt=citeText(id);if(!txt)return;
+  const done=()=>{const o=btn.textContent;btn.textContent='Copied';setTimeout(()=>{btn.textContent=o;},1500);};
+  const fb=()=>showTextFallback(btn,txt);
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb);}else fb();
+}
+function openPop(btn){
+  if(POPBTN===btn){closePop();return;}
+  closePop();
+  const id=+btn.dataset.src,s=SRC[id];
+  const tag=s?(s.i==='ind'?'independent of SWP':s.i==='rp'?'Rethink Priorities':'advocacy / SWP-linked'):'';
+  const d=document.createElement('div');d.className='pop';d.setAttribute('role','dialog');d.setAttribute('aria-label','Citation '+id);
+  d.innerHTML=`<div class="pid"><span>[${id}]${tag?' · '+tag:''}</span><button type="button" class="pc" aria-label="Close citation">×</button></div>
+    <div class="pt">${s?esc(s.t):'This source is not in the list.'}</div>
+    ${s?`<div class="pk">${esc(s.k)}${s.u?'':' · no URL available'}</div>`:''}
+    <div class="pa">${s&&s.u?`<a class="btn" href="${esc(s.u)}" target="_blank" rel="noopener">Open source ↗</a>`:'<span class="chip c-vlow">No URL available</span>'}${s?`<button type="button" class="btn" data-pcopy="${id}">Copy citation</button>`:''}</div>`;
+  document.body.appendChild(d);
+  const se=document.scrollingElement||document.documentElement;
+  const r=btn.getBoundingClientRect(),w=d.offsetWidth,vw=document.documentElement.clientWidth||window.innerWidth;
+  let left=r.left+se.scrollLeft;
+  left=Math.max(se.scrollLeft+16,Math.min(left,se.scrollLeft+vw-w-16));
+  d.style.left=left+'px';d.style.top=(r.bottom+se.scrollTop+6)+'px';
+  btn.setAttribute('aria-expanded','true');POP=d;POPBTN=btn;
+}
+document.addEventListener('click',e=>{
+  const sr=e.target.closest('.sref');
+  if(sr){e.preventDefault();e.stopPropagation();openPop(sr);return;}
+  const cp=e.target.closest('[data-pcopy],[data-cite]');
+  if(cp){e.preventDefault();copyCite(+(cp.dataset.pcopy||cp.dataset.cite),cp);return;}
+  if(e.target.closest('.pc')){const b=POPBTN;closePop();if(b)b.focus();return;}
+  if(POP&&!e.target.closest('.pop'))closePop();
+},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&POP){const b=POPBTN;closePop();if(b)b.focus();}});
+window.addEventListener('resize',closePop);
 
 buildInputs();updateInputInfo();render();
 </script>
