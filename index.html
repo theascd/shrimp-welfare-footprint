@@ -38,11 +38,25 @@ button,select,input{font:inherit;color:inherit}
 .muted{color:var(--muted)}
 .small{font-size:13px}
 
-header.top{display:grid;gap:14px;margin-bottom:24px;max-width:860px}
+header.top{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-bottom:24px;max-width:860px;align-content:start}
 .eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 h1{font:500 clamp(34px,5vw,52px)/1.05 var(--f-display);letter-spacing:-.01em}
 .lede{font-size:17px;max-width:68ch}
 details.status-box{border:1px solid var(--line);border-left:4px solid var(--i2);background:var(--surface);padding:12px 14px;font-size:14px;max-width:84ch}
+details.howto{border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--surface);border-radius:6px;padding:12px 14px;font-size:14px}
+details.howto>summary{font-weight:600;cursor:pointer;list-style:none;display:flex;gap:8px;align-items:baseline}
+details.howto>summary::-webkit-details-marker{display:none}
+details.howto>summary::before{content:"\25B8";color:var(--muted);flex:none;transition:transform .15s;width:12px}
+details.howto[open]>summary::before{transform:rotate(90deg)}
+details.howto[open]>summary{margin-bottom:8px}
+details.howto ol{margin:0;padding-left:20px;display:grid;gap:7px}
+details.howto li::marker{color:var(--accent);font-weight:600}
+details.howto .small{margin-top:8px}
+@media (min-width:1200px){
+  header.top{max-width:none;grid-template-columns:minmax(0,860px) minmax(320px,400px);grid-template-rows:repeat(5,auto) 1fr;column-gap:32px;justify-content:space-between}
+  header.top>*{grid-column:1}
+  header.top>details.howto{grid-column:2;grid-row:1/span 6}
+}
 
 .layout{display:grid;grid-template-columns:minmax(0,1fr);gap:24px}
 @media (min-width:1060px){
@@ -243,6 +257,17 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padd
   <div class="eyebrow">Welfare Footprint Framework · working model</div>
   <h1>Shrimp Welfare Footprint</h1>
   <p class="lede">Choose a farming method, a country and any welfare interventions. The page estimates cumulative pain per shrimp by intensity, compares it with the same system under current practice, and shows the range, the sources and the confidence behind each number.</p>
+  <details class="howto" open><summary>How to use this page</summary>
+    <ol>
+      <li><b>Pick a farming method</b> in step 1 (left): extensive, semi-intensive, intensive, super-intensive or indoor RAS, or &ldquo;Typical mix for this country&rdquo; to weight the systems by the country&rsquo;s production.</li>
+      <li><b>Choose a country</b> in step 2. Ten are modelled with their own conditions. For any other country pick &ldquo;Other country&hellip;&rdquo; and type its name: the closest modelled country is used. Optionally enter your production in tonnes.</li>
+      <li><b>Tick welfare interventions</b> in step 3, or none to see today&rsquo;s baseline. Ticked ones are treated as fully adopted; where the country already uses one, only the remaining gap counts.</li>
+      <li><b>Read the results</b> on the right. They update at once: pain hours per shrimp with a 90% range, the change from baseline, the split by intensity, and totals scaled to national output.</li>
+      <li><b>Change what counts as pain</b> with the &ldquo;Count pain at&rdquo; buttons above the results (any intensity up to excruciating, or disabling-equivalent hours), and the scale and sentience adjustments under Assumptions.</li>
+      <li><b>Check the evidence.</b> Each number carries a confidence label; click a bracket such as [101] for the full citation, a link and a copy button. The sensitivity tables and the strongest objections are further down.</li>
+    </ol>
+    <p class="small muted">Every figure is an estimate with a range, not a measurement. Use Show all / Hide all below to open or close sections.</p>
+  </details>
   <div class="foldbar"><span class="lab">Page sections</span>
     <button type="button" class="btn" id="showAll">Show all</button>
     <button type="button" class="btn" id="hideAll">Hide all</button></div>
@@ -1680,7 +1705,7 @@ document.addEventListener('toggle',e=>{
   if(d.c)e.target.open?closedSet.delete(d.c):closedSet.add(d.c);
 },true);
 function setAll(open){
-  document.querySelectorAll('details.step,details.adv,details.status-box').forEach(d=>{d.open=open;});
+  document.querySelectorAll('details.step,details.adv,details.status-box,details.howto').forEach(d=>{d.open=open;});
   open?closedSet.clear():SECS.forEach(k=>closedSet.add(k));
   document.querySelectorAll('details.sec').forEach(d=>{d.open=open;});
 }
