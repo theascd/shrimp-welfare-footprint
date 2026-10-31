@@ -260,7 +260,7 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padd
   <details class="howto" open><summary>How to use this page</summary>
     <ol>
       <li><b>Pick a farming method</b> in step 1 (left): extensive, semi-intensive, intensive, super-intensive or indoor RAS, or &ldquo;Typical mix for this country&rdquo; to weight the systems by the country&rsquo;s production.</li>
-      <li><b>Choose a country</b> in step 2. Ten are modelled with their own conditions. For any other country pick &ldquo;Other country&hellip;&rdquo; and type its name: the closest modelled country is used. Optionally enter your production in tonnes.</li>
+      <li><b>Choose a country</b> in step 2. Ten are modelled with their own conditions. For any other country pick &ldquo;Other country&hellip;&rdquo; and type its name: it is matched to the modelled country with the most similar farm types. Optionally enter your production in tonnes.</li>
       <li><b>Tick welfare interventions</b> in step 3, or none to see today&rsquo;s baseline. Ticked ones are treated as fully adopted; where the country already uses one, only the remaining gap counts.</li>
       <li><b>Read the results</b> on the right. They update at once: pain hours per shrimp with a 90% range, the change from baseline, the split by intensity, and totals scaled to national output.</li>
       <li><b>Change what counts as pain</b> with the &ldquo;Count pain at&rdquo; buttons above the results (any intensity up to excruciating, or disabling-equivalent hours), and the scale and sentience adjustments under Assumptions.</li>
@@ -290,7 +290,7 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padd
       <label for="cname"><span>Your country</span><input type="text" id="cname" list="worldlist" autocomplete="off" placeholder="Type a country name, e.g. Brazil"></label>
       <datalist id="worldlist"></datalist>
       <label for="cprod"><span>Annual shrimp production in tonnes (optional)</span><input type="number" id="cprod" min="0" step="1000" placeholder="Leave blank for results per 1,000 tonnes"></label>
-      <div class="small muted" id="cnote">The form picks the geographically closest of the ten modelled countries and applies its conditions.</div>
+      <div class="small muted" id="cnote">The form compares the country</div>
     </div>
     <div class="cinfo" id="cinfo"></div>
   </details>
@@ -508,7 +508,7 @@ S_(208,'Huang et al. (2022), Effects of substrate on shrimp growth, water qualit
 S_(209,'Moss and Moss (2004), nursery tank trial of artificial substrate at three stocking densities, Journal of the World Aquaculture Society 35(4):536-542 (title not confirmed; abstract level)','Peer-reviewed','ind','https://doi.org/10.1111/j.1749-7345.2004.tb00121.x');
 S_(210,'Bratvold and Browdy (2001), effects of sand sediment and vertical surfaces on intensive shrimp production, Global Aquaculture Advocate (trade summary of Aquaculture 195; title taken from the URL)','Trade article (academic content)','ind','https://www.globalseafood.org/advocate/effects-of-sand-sediment-vertical-surfaces-on-intensive-shrimp-production/');
 S_(213,'Castillo-Ochoa and Velasquez-Lopez (2021), Manejo estacional de los sistemas de produccion de camaron en el Ecuador, Revista Sociedad & Tecnologia 4(3):447-461 (one El Oro farm, two seasons)','Peer-reviewed (regional journal)','ind','https://institutojubones.edu.ec/ojs/index.php/societec/article/download/151/439');
-S_(214,'World Aquaculture Magazine (March 2018, p. 33), Ecuador pond systems: about 2% of area assumed extensive (authors and article title not shown on the fetched page)','Trade magazine','ind','https://www.was.org/Magazine/2018/01/31/');
+S_(214,'World Aquaculture Magazine (March 2018, p. 33), Ecuador pond systems (about 2% of area assumed extensive) and Philippine BFAR 2017 farm areas (authors and article title not shown on the fetched page)','Trade magazine','ind','https://www.was.org/Magazine/2018/01/31/');
 S_(215,'Boyd et al. (2021), Resource use in whiteleg shrimp Litopenaeus vannamei farming in Ecuador, Journal of the World Aquaculture Society (101 farms)','Peer-reviewed','ind','https://doi.org/10.1111/jwas.12818');
 S_(216,'Osborne (2018), Pushing Vietnam’s shrimp industry in the direction of sustainability, Mongabay via Eco-Business (intensive farms about 80% of output)','News','ind','https://www.eco-business.com/news/pushing-vietnams-shrimp-industry-in-the-direction-of-sustainability/');
 S_(217,'Republika (23 Feb 2022), KKP Director General on Indonesian shrimp pond shares: 82% traditional, 15% semi-intensive, 3% intensive of 300,500 ha (news report of an official statement)','News on official data','ind','https://ekonomi.republika.co.id/berita/r7qkl7349/pataka-revitalisasi-tambak-udang-tradisional-mendesak');
@@ -522,6 +522,41 @@ S_(226,'Global Seafood Alliance (27 Aug 2025), BAP-certified shrimp producers mu
 S_(227,'Aquaculture Stewardship Council (8 Aug 2025), Shrimp eyestalk ablation statement: phase-out within four years (whiteleg) or six (black tiger)','Certifier statement','ind','https://asc-aqua.org/statements/shrimp-eyestalk-ablation/');
 S_(228,'Nicholls (20 May 2024), What is the path to viable alternatives to shrimp eyestalk ablation?, Responsible Seafood Advocate (GSA survey interview)','Trade article','ind','https://www.globalseafood.org/advocate/what-is-the-path-to-viable-alternatives-to-shrimp-eyestalk-ablation/');
 S_(229,'Chowdhury et al. (2024), WSSV and AHPND PCR positivity in 72 southwest Bangladesh ponds, January to June 2023, Comparative Immunology Reports 7:200178','Peer-reviewed','ind','https://doi.org/10.1016/j.cirep.2024.200178');
+/* farm-type sources for countries that are not modelled (added with the farm-type matching) */
+S_(230,'Blue Life Hub (2023), Methods for shrimp farming: a challenge for blue economy in Egypt and Africa (secondary source; Egyptian farmed shrimp 155 t in 2018 and 2,146 t in 2020)','Trade / advocacy blog','ind','https://www.bluelifehub.com/2023/04/19/methods-for-shrimp-farming-a-challenge-for-blue-economy-in-egypt-and-africa/');
+S_(231,'Egyptian Journal for Aquaculture (2020), vannamei grow-out trial at Eldebba (Port Said) and a Suez Canal farm, 70,000 and 150,000 PL per feddan (seen through a search summary)','Peer-reviewed (regional journal)','ind','https://eja.journals.ekb.eg/article_121390.html');
+S_(232,'TheFishSite: Egypt’s desert shrimp farming pioneer (lined ponds on groundwater at Wadi El Natrun)','Trade press','ind','https://thefishsite.com/articles/egypts-desert-shrimp-farming-pioneer');
+S_(233,'FAO aquaculture newsletter: Damietta coastal farms, 4,600 ha at 20 to 40 ppt, stocked mainly with mullet (seen through a search summary)','Intergovernmental','ind','https://www.fao.org/4/w3666e/W3666e04.htm');
+S_(234,'Aqua Culture Asia Pacific (29 Apr 2025), Six years on at a farm in Mexico (Sinaloa farm: semi-intensive, 15 to 20 PL/m², 202-day crop)','Trade magazine','ind','https://aquaasiapac.com/2025/04/29/six-years-on-at-a-farm-in-mexico/');
+S_(235,'Brazilian shrimp farming study, Sistemas & Gestão (most farms semi-intensive at 10 to 30 shrimp/m²; seen through a search excerpt, title not confirmed)','Peer-reviewed (regional journal)','ind','https://revistasg.uff.br/sg/article/download/1643/1291?inline=1');
+S_(236,'SeafoodSource: Peruvian shrimp industry decries lack of government support during industry crisis (seen through a search excerpt)','Trade press','ind','https://www.seafoodsource.com/news/aquaculture/peruvian-shrimp-industry-decries-lack-of-government-support-during-industry-crisis');
+S_(237,'SeafoodSource: SeaJoy seeking to expand shrimp industry in Central America (ponds of 15 to 30 ha at 8 to 10/m² in Honduras and Nicaragua; seen through a search excerpt)','Trade press','ind','https://www.seafoodsource.com/news/aquaculture/seajoy-seeking-to-expand-shrimp-industry-in-central-america');
+S_(238,'Global Seafood Alliance (2018), Shrimp farming in Guatemala has gone intensive','Trade article','ind','https://www.globalseafood.org/advocate/shrimp-farming-guatemala-has-gone-intensive/');
+S_(239,'TheFishSite: Insights from Venezuela’s trailblazing top shrimp producer, Grupo Lamar (about 13 shrimp/m², 17 g harvest, five crops a year)','Trade press','ind','https://thefishsite.com/articles/insights-from-venezuelas-trailblazing-top-shrimp-producer-grupo-lamar-jose-rincon');
+S_(240,'Mongabay (May 2024), Venezuela’s shrimp farms push for sustainability against hardship and oil spills','News','ind','https://news.mongabay.com/2024/05/venezuelas-shrimp-farms-push-for-sustainability-against-hardship-and-oil-spills/');
+S_(241,'Greater Belize (31 Aug 2026), Belize shrimp output about 2.7 million lb in 2025, shift to smaller more intensive ponds','News','ind','https://www.greaterbelize.com/?p=117658');
+S_(242,'FAO newsroom: Stepping boldly into Guyana’s aquaculture space (traditional, tide-filled, wild-seeded shrimp ponds; 958 t in 2023)','Intergovernmental','ind','https://www.fao.org/newsroom/story/stepping-boldly-into-guyanas-aquaculture-space/en');
+S_(243,'Agronegocios (9 Jul 2015), Camarones, un negocio que gana adeptos (Colombia: about 2,000 ha, 40 animals/m² claimed by an industry director)','News','ind','https://www.agronegocios.co/ganaderia/camarones-un-negocio-que-gana-adeptos-2620702');
+S_(245,'Global Seafood Alliance, Estimating global shrimp pond area (extensive area by country; Philippines, Myanmar, Sri Lanka)','Trade article','ind','https://www.globalseafood.org/advocate/estimating-global-shrimp-pond-area/');
+S_(246,'Sri Lanka National Aquaculture Development Authority report tabled in Parliament (shrimp output 14,077 t in 2022; seen through a search summary)','National agency','ind','https://www.parliament.lk/uploads/documents/paperspresented/1716275486069446.pdf');
+S_(247,'Queensland Government: Black tiger prawn aquaculture (25 to 40 PL/m², paddlewheels, 120 to 150 days)','Government','ind','https://business.qld.gov.au/industries/farms-fishing-forestry/fisheries/aquaculture/species/black-tiger-prawn');
+S_(248,'Lang and Sothea (2016), shrimp farming in Cambodia, SEAFDEC (extensive 0.5 to 2 PL/m², intensive 30 to 50 PL/m²; seen through a search summary)','Institutional report','ind','https://repository.seafdec.org.ph/handle/10862/3086');
+S_(249,'Taipei Times (17 Mar 2023), Taiwan shrimp farming (about 11,000 t)','News','ind','https://www.taipeitimes.com/News/taiwan/archives/2023/03/17/2003796254');
+S_(250,'Global Seafood Alliance: Power move, Japanese energy firm getting in on RAS shrimp (Japan about 1,500 t a year, mostly kuruma prawn)','Trade article','ind','https://www.globalseafood.org/advocate/power-move-japanese-energy-firm-getting-in-on-ras-shrimp/');
+S_(251,'Korea Times (2016), biofloc shrimp farming in Korea (indoor and greenhouse biofloc since 2011)','News','ind','https://www.koreatimes.co.kr/www/news/biz/2016/02/123_196826.html');
+S_(252,'TheFishSite: Oman’s Natural Shrimp announces first commercial harvest (500 ha, 220 grow-out ponds, vannamei)','Trade press','ind','https://thefishsite.com/articles/omans-natural-shrimp-announces-first-commercial-harvest');
+S_(253,'The National (1 Jul 2021), inside the UAE’s only shrimp farm (Al Jaraf, P. indicus in outdoor ponds)','News','ind','https://thenationalnews.com/uae/environment/2021/07/01/watch-inside-the-uaes-only-shrimp-farm');
+S_(254,'Global Seafood Alliance (2002), Shrimp farming in Madagascar (semi-extensive under 10/m²; intensive up to 20/m²; 2001 pond areas)','Trade article','ind','https://www.globalseafood.org/advocate/shrimp-farming-in-madagascar/');
+S_(255,'Food Business Africa (2025), Madagascar’s shrimp export revenue declines as production drops (about 3,500 t)','News','ind','https://www.foodbusinessmea.com/madagascars-shrimp-export-revenue-decline-amid-production-drop-hits-us22-5m/');
+S_(256,'Global Seafood Alliance (2002), Shrimp farming in Italy: status and perspectives (kuruma prawn at 200 to 300 kg/ha)','Trade article','ind','https://www.globalseafood.org/advocate/shrimp-farming-in-italy-status-and-perspectives/');
+S_(257,'TheFishSite: Local, antibiotic-free and automated, inside HanseGarnelen’s shrimp RAS (Germany)','Trade press','ind','https://thefishsite.com/articles/local-antibiotic-free-and-automated-inside-hansegarnelens-shrimp-ras');
+S_(258,'Eurofish: Is this the start of Turkey’s shrimp farming industry? (recirculating system, 120 t capacity)','Intergovernmental','ind','https://eurofish.dk/is-this-the-start-of-turkey-s-shrimp-farming-industry/');
+S_(259,'The Peninsula Qatar (17 Dec 2020), Ministry harvests first batch of farmed shrimps (biofloc trial)','News','ind','https://thepeninsulaqatar.com/article/17/12/2020/MME-harvests-first-batch-of-farmed-shrimps');
+S_(260,'Kuwait Times: KISR experts farm whiteleg shrimp in Kuwait desert (low-salinity pilot)','News','ind','https://kuwaittimes.com/kisr-experts-farm-whiteleg-shrimp-in-kuwait-desert/');
+S_(261,'TheFishSite: Nigeria’s flagship black tiger prawn farm (Atlantic Shrimpers, Badagry; 160 ha)','Trade press','ind','https://thefishsite.com/es/articles/nigerias-flagship-black-tiger-prawn-farm');
+S_(262,'Singapore Food Agency: giving shrimp, mushroom and other farms an added boost (six-tier indoor system, about 36 t a year capacity)','Government','ind','https://www.sfa.gov.sg/food-for-thought/article/detail/giving-shrimp-mushroom-and-other-farms-an-added-boost');
+S_(263,'Diario El Mundo (2025), El Salvador produces 5.2 million pounds of shrimp (census; about 2,360 t)','News on official data','ind','https://diario.elmundo.sv/economia/en-el-salvador-se-producen-5-2-millones-de-libras-de-camaron-y-8-1-millones-de-tilapia');
+S_(264,'FAO fisheries country profile: Cuba (1,900 t in 2002 from four state farms; seen through a search excerpt)','Intergovernmental','ind','https://www.fao.org/fishery/docs/DOCUMENT/fcp/es/FI_CP_CU.pdf');
 
 /* ============================== THREATS (Rethink Priorities, 2024) ============================== */
 /* Per system [extensive, semi-intensive, intensive, super-intensive]. p = share of shrimp affected [min, most likely, max].
@@ -910,14 +945,101 @@ const COUNTRIES=[
    ['Data gap','No source gives system shares, area, aerator use or slaughter method.',[]]]}
 ];
 const CMAP={};COUNTRIES.forEach(c=>CMAP[c.id]=c);
-/* Representative farming-region coordinates (latitude, longitude) used to find the closest modelled country. */
-const LL={cn:[23,113],ec:[-2.2,-80],in:[16.5,80.5],vn:[9.8,105.5],th:[13,100.5],id:[-7,112.5],bd:[22.5,89.5],sa:[20,40],ir:[28.9,50.8],my:[3.5,101.5]};
-COUNTRIES.forEach(c=>{c.ll=LL[c.id];});
-/* Countries a visitor can type, with a representative point (capital or main aquaculture coast). */
+
+
+
+/* Countries a visitor can type (the coordinates are no longer used: matching is by farm type, not distance). */
 const WORLD=[['Afghanistan',34.5,69.2],['Albania',41.3,19.8],['Algeria',36.8,3],['Angola',-8.8,13.2],['Argentina',-34.6,-58.4],['Australia',-20,148],['Austria',48.2,16.4],['Bahrain',26.2,50.6],['Belgium',50.8,4.4],['Belize',17.3,-88.2],['Benin',6.4,2.4],['Bhutan',27.5,89.6],['Bolivia',-16.5,-68.1],['Brazil',-5,-38],['Brunei',4.9,114.9],['Cambodia',11.6,104.9],['Cameroon',4,9.7],['Canada',45.4,-75.7],['Chile',-33.4,-70.6],['Colombia',10.4,-75.5],['Costa Rica',10,-84.1],['Cote d’Ivoire',5.3,-4],['Croatia',45.8,16],['Cuba',23.1,-82.4],['Denmark',55.7,12.6],['Dominican Republic',18.5,-69.9],['Egypt',31.2,29.9],['El Salvador',13.7,-89.2],['Ethiopia',9,38.7],['Fiji',-18.1,178.4],['France',48.9,2.4],['Germany',52.5,13.4],['Ghana',5.6,-0.2],['Greece',37.98,23.7],['Guatemala',14.6,-90.5],['Guyana',6.8,-58.2],['Haiti',18.5,-72.3],['Honduras',13.3,-87.2],['Hong Kong',22.3,114.2],['India',16.5,80.5],['Iraq',30.5,47.8],['Ireland',53.3,-6.3],['Israel',32.1,34.8],['Italy',41.9,12.5],['Jamaica',18,-76.8],['Japan',34.7,135.5],['Jordan',29.5,35],['Kenya',-4,39.7],['Kuwait',29.4,47.98],['Laos',17.97,102.6],['Lebanon',33.9,35.5],['Libya',32.9,13.2],['Madagascar',-15.7,46.3],['Maldives',4.2,73.5],['Mauritius',-20.2,57.5],['Mexico',25,-108],['Morocco',33.6,-7.6],['Mozambique',-18,35],['Myanmar',16.8,96.2],['Nepal',27.7,85.3],['Netherlands',52.4,4.9],['New Zealand',-36.8,174.8],['Nicaragua',12.4,-87],['Nigeria',6.5,3.4],['North Korea',39,125.7],['Norway',59.9,10.7],['Oman',23.6,58.6],['Pakistan',24.9,67],['Panama',8.9,-79.5],['Papua New Guinea',-9.4,147.2],['Paraguay',-25.3,-57.6],['Peru',-8.1,-79],['Philippines',10.3,123.9],['Poland',52.2,21],['Portugal',38.7,-9.1],['Qatar',25.3,51.5],['Russia',55.8,37.6],['Saudi Arabia',20,40],['Senegal',14.7,-17.5],['Singapore',1.35,103.8],['South Africa',-26.2,28],['South Korea',35.2,129],['Spain',37.4,-6],['Sri Lanka',7,79.9],['Sudan',15.6,32.5],['Sweden',59.3,18.1],['Taiwan',23,120.2],['Tanzania',-6.8,39.3],['Timor-Leste',-8.6,125.6],['Trinidad and Tobago',10.7,-61.5],['Tunisia',36.8,10.2],['Turkey',38.4,27.1],['Uganda',0.3,32.6],['Ukraine',50.4,30.5],['United Arab Emirates',25.2,55.3],['United Kingdom',51.5,-0.1],['United States',28,-97],['Uruguay',-34.9,-56.2],['Venezuela',10.5,-66.9],['Yemen',15.4,44.2],['Zambia',-15.4,28.3],['Zimbabwe',-17.8,31]];
 const ALIAS={'viet nam':'vn','vietnam':'vn','china':'cn','prc':'cn','ecuador':'ec','india':'in','thailand':'th','indonesia':'id','bangladesh':'bd','saudi arabia':'sa','ksa':'sa','iran':'ir','malaysia':'my','usa':'United States','us':'United States','u.s.':'United States','uk':'United Kingdom','britain':'United Kingdom','great britain':'United Kingdom','uae':'United Arab Emirates','ivory coast':'Cote d’Ivoire','korea':'South Korea','burma':'Myanmar','holland':'Netherlands'};
-function haversine(a,b){const R=6371,t=x=>x*Math.PI/180,dl=t(b[0]-a[0]),dn=t(b[1]-a[1]);const h=Math.sin(dl/2)**2+Math.cos(t(a[0]))*Math.cos(t(b[0]))*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h));}
-/* Resolve a typed name: a modelled country, or the closest modelled country to a recognised one. */
+
+/* Farm-type profiles for countries that are not one of the ten modelled. mix: share of production by system [low, likely, high];
+   vann: vannamei share [low, likely, high]; basis: 'stated' (a source gives the farm types) or 'inferred'; srcs: source ids.
+   A country with farming:'none', or without an entry, uses RP's global farm-type shares and generic conditions. */
+const P=(farming,mix,vann,basis,srcs,note)=>({farming,mix,vann,basis,srcs,note});
+const NONE=(note)=>({farming:'none',note:note||'',srcs:[]});
+const FARMPROF={
+ /* Americas */
+ 'Mexico':P('commercial',{ext:[0,.05,.1],semi:[.6,.75,.9],int:[.1,.2,.3]},[.95,.99,1],'inferred',[234],'A Sinaloa farm manager describes Mexican culture as "generally semi-intensive": 15 to 20 PL/m², a 202-day crop and one crop a year at that farm. No national split by system was found, so the shares are inferred.'),
+ 'Brazil':P('commercial',{ext:[0,.05,.1],semi:[.6,.8,.9],int:[.05,.15,.3]},[.95,.99,1],'inferred',[235],'A Brazilian study says most farms are semi-intensive at 10 to 30 shrimp/m²; small farms are most of the output. Biofloc and intensive farms exist but no share was found, and national tonnage figures conflict (127,000 to 220,000 t).'),
+ 'Peru':P('commercial',{ext:[0,.03,.1],semi:[.7,.85,.95],int:[.03,.12,.25]},[.95,.99,1],'inferred',[236],'Ecuador-style ponds in Tumbes, with a small greenhouse and intensive minority. Evidence is two single-farm items, and tonnage figures are inconsistent.'),
+ 'Honduras':P('commercial',{ext:[0,.1,.2],semi:[.7,.85,.95],int:[0,.05,.1]},[.95,.99,1],'inferred',[237],'SeaJoy describes ponds of 15 to 30 ha stocked at 8 to 10/m², about 2 t/ha a year, regionally for Honduras and Nicaragua. Shares by system are inferred from that.'),
+ 'Nicaragua':P('commercial',{ext:[0,.1,.2],semi:[.7,.85,.95],int:[0,.05,.1]},[.95,.99,1],'inferred',[237],'Same SeaJoy regional description as Honduras: large ponds at 8 to 10/m², about 2 t/ha a year. Output fell from about 31,500 t (2022) to about 19,100 t (2023) in central-bank data.'),
+ 'El Salvador':P('commercial',{ext:[.1,.2,.4],semi:[.6,.8,.9]},[.95,.99,1],'inferred',[263],'Small cooperative farms stocked at 12/m² or less, about 2,360 t in the 2025 census. Shares by system are inferred from the stocking densities.'),
+ 'Costa Rica':P('commercial',{semi:[.8,.9,1],int:[0,.1,.2]},[.95,.99,1],'inferred',[],'Gulf of Nicoya studies report 10 to 15 shrimp/m² and about 2.1 to 2.6 t/ha a year (2012 to 2014 data); shares are inferred.'),
+ 'Panama':P('commercial',{semi:[.8,.9,1],int:[0,.1,.2]},[.95,.99,1],'inferred',[],'A 2000 trade article says the industry "relies mostly on semi-intensive technology"; dated, and no tonnage was found.'),
+ 'Colombia':P('commercial',{semi:[.4,.6,.8],int:[.2,.4,.6]},[.95,.99,1],'inferred',[243],'An industry director claimed 40 animals/m² and 10 t/ha a year in 2015; earlier notes give about 20 PL/m². The claim is not a measured average.'),
+ 'Venezuela':P('commercial',{ext:[0,.05,.1],semi:[.65,.8,.9],int:[.05,.15,.3]},[.8,.95,1],'inferred',[239,240],'The main producer averages about 13 shrimp/m² with a 17 g harvest and five crops a year; ponds stock 5 to 30 shrimp/m² and are intensifying. The two sources come from the largest operator.'),
+ 'Guatemala':P('commercial',{semi:[0,.1,.25],int:[.5,.75,.9],super:[0,.15,.35]},[.95,.99,1],'stated',[238],'A 2018 trade article says "over 100 intensive farms" operate on about 1,650 ha, with yields of 15 t/ha a year or more and densities of 100 to over 200/m².'),
+ 'Belize':P('commercial',{semi:[0,.15,.3],int:[.55,.75,.9],super:[0,.1,.2]},[.95,.99,1],'stated',[241],'Production is shifting from large ponds to smaller, more intensive ponds, including zero-exchange systems; density was not found.'),
+ 'Cuba':P('commercial',{ext:[0,.15,.3],semi:[.7,.85,1]},[.3,.5,.8],'inferred',[264],'State farms, 1,900 t in 2002 and constrained by feed shortages since; species are native L. schmitti and vannamei. System shares are inferred.'),
+ 'Guyana':P('commercial',{ext:[.7,.85,.95],semi:[.05,.15,.3]},[0,.02,.1],'stated',[242],'FAO describes "traditional" ponds with little to no feeding, tide-filled and stocked with wild larvae, plus an "improved" system with supplementary feed; the share is not given. Native Penaeus subtilis and P. schmitti, 958 t in 2023.'),
+ 'Dominican Republic':P('minimal',null,null,'',[],'Two farms produce shrimp (press report seen through a search excerpt); no system data.'),
+ 'United States':P('minimal',null,null,'',[],'About 900 t in Texas in 2023 plus a small indoor RAS fringe (trade press); no usable split by system.'),
+ /* Asia-Pacific */
+ 'Australia':P('commercial',{semi:[.85,.97,1],int:[0,.03,.15]},[0,.05,.15],'stated',[247],'Queensland states 25 to 40 PL/m² in earthen ponds with paddlewheels, 25 to 35 g in 120 to 150 days; the species is mainly black tiger prawn.'),
+ 'Philippines':P('commercial',{ext:[.3,.5,.7],semi:[.1,.25,.4],int:[.1,.25,.4]},[.1,.15,.3],'inferred',[214,245],'BFAR 2017 (registered farms): 3,537 ha extensive monodon and 2,719 ha intensive vannamei. GSA suspects most pond area is unregistered extensive monodon; output shares by system were not found.'),
+ 'Myanmar':P('commercial',{ext:[.85,.9,.97],semi:[.02,.08,.12],int:[0,.02,.05]},[0,.05,.15],'stated',[245],'About 100,000 of 120,000 ha of ponds are extensive wild-stocked monodon at under 0.5 t/ha a year (GSA); older FAO data put extensive above 85%. Official tonnage is considered questionable.'),
+ 'Sri Lanka':P('commercial',{ext:[.05,.1,.15],semi:[.55,.7,.8],int:[.1,.2,.3]},[.1,.3,.6],'inferred',[245,246],'A Sri Lankan study says most grow-out farms are semi-intensive and GSA lists only 500 of 5,000 ha as extensive; the industry is moving from monodon to vannamei, and output fell from 14,077 t (2022) to about 7,300 t (2024).'),
+ 'Cambodia':P('minimal',{ext:[.8,.9,.95],int:[.03,.08,.15],ras:[0,.02,.05]},[.05,.2,.5],'inferred',[248],'Extensive monodon at 0.5 to 2 PL/m² gives under 100 kg/ha a year; a few intensive vannamei farms (30 to 50/m²) and one RAS farm exist. Output is under 100 t.'),
+ 'Hong Kong':P('minimal',{ext:[.9,1,1]},[0,0,.05],'stated',[],'Only the heritage tidal gei wai ponds at Mai Po (Metapenaeus ensis), with negligible output.'),
+ 'Taiwan':P('commercial',null,[.7,.9,1],'',[249],'About 11,000 t, mostly vannamei in coastal ponds with a small indoor RAS share; no split by system was found.'),
+ 'Japan':P('commercial',null,[0,.05,.2],'',[250],'About 1,200 to 1,500 t a year, almost all kuruma prawn, plus small indoor vannamei RAS; no split by system was found.'),
+ 'South Korea':P('commercial',null,[.9,1,1],'',[251],'Small (3,785 t in 2013, the latest found), vannamei, mainly in greenhouse and indoor biofloc tanks; no split by system was found.'),
+ 'Singapore':P('minimal',{ras:[.9,1,1]},[.9,1,1],'stated',[262],'A six-tier indoor controlled-environment system with about 36 t a year of capacity.'),
+ 'Pakistan':P('minimal',null,null,'',[],'Pilot-stage farming (about 125 t from 2015 to 2020 trials) with vannamei as the main species; no usable split by system.'),
+ /* Middle East, Africa, Europe */
+ 'Egypt':P('minimal',{ext:[.05,.1,.2],semi:[.6,.7,.8],int:[.1,.17,.2],super:[0,.03,.05]},[.6,.8,.95],'inferred',[230,231,232,233],'Small private earthen coastal ponds (Deeba Triangle, Port Said, Damietta), often sharing water with mullet and seabass farms, with a summer-only season and feed and seed problems; about 2,146 t farmed in 2020. Vannamei trials stocked about 17 and 36 PL/m² (70,000 and 150,000 per feddan, converted), earlier P. semisulcatus trials 3 to 15 PL/m², plus a few lined desert ponds on groundwater. No source gives a split by system.'),
+ 'Oman':P('commercial',{semi:[.3,.5,.7],int:[.3,.5,.7]},[.95,1,1],'inferred',[252],'Natural Shrimp (500 ha, 220 grow-out ponds, vannamei) lifted harvests to 2,673 t in 2023; harvest sizes of 31 to 60 g imply long crops. Density and salinity were not stated, so the split is inferred from capacity per hectare.'),
+ 'United Arab Emirates':P('minimal',{int:[.6,.8,1],ras:[0,.2,.4]},[0,0,.1],'inferred',[253],'Al Jaraf grows Indian white shrimp (P. indicus) in 58 outdoor ponds at roughly 50 to 60/m² (converted); RAS projects were planned.'),
+ 'Qatar':P('minimal',{super:[.4,.6,.8],ras:[.2,.4,.6]},[.95,1,1],'inferred',[259],'Ministry biofloc trials and planned super-intensive indoor farms; no confirmed commercial output.'),
+ 'Kuwait':P('minimal',{super:[.7,1,1]},[.95,1,1],'inferred',[260],'A research desert pilot with low-salinity water and a planned greenhouse raceway farm.'),
+ 'Iraq':P('minimal',null,null,'',[],'Only a Basra pilot (one 2,500 m² pond and three tanks) copied from an Iranian company; species not named.'),
+ 'Israel':P('minimal',null,[.9,1,1],'',[],'Niche vannamei in RAS and covered ponds on brackish geothermal water in the Negev; no usable split by system.'),
+ 'Turkey':P('minimal',{ras:[.8,1,1]},[.95,1,1],'stated',[258],'A start-up recirculating farm with about 120 t a year of capacity.'),
+ 'Algeria':P('minimal',{super:[.7,1,1]},[.95,1,1],'stated',[],'An inland biofloc pilot on brackish groundwater (Ouargla); tiny output.'),
+ 'Morocco':P('minimal',{ras:[.8,1,1]},[.95,1,1],'stated',[],'A start-up indoor farm (Novaton); output unconfirmed.'),
+ 'Tunisia':P('minimal',null,[.5,.8,1],'',[],'A vannamei pilot of about 2 to 5 t a year; seabass and seabream are about 96% of aquaculture.'),
+ 'Madagascar':P('commercial',{semi:[.6,.7,.75],int:[.25,.3,.4]},[0,.05,.2],'stated',[254,255],'Semi-extensive ponds under 10/m² and intensive ponds up to 20/m² with aerators; about 74% / 26% by pond area in 2001 (computed). Mostly black tiger prawn; output about 3,500 t in 2025, down from 8,000 t in 2013.'),
+ 'Nigeria':P('minimal',null,[0,.05,.2],'',[261],'One corporate monodon farm (Atlantic Shrimpers, 160 ha); current output not given.'),
+ 'Mozambique':P('minimal',null,[0,.05,.2],'',[],'A few semi-intensive monodon farms in the 2000s that were hit by white spot; no current production found.'),
+ 'Tanzania':P('minimal',null,null,'',[],'A small Mafia Island prawn farm; no tonnage found.'),
+ 'South Africa':P('minimal',null,null,'',[],'A 2006 plan for a closed indoor farm at Coega; no production found.'),
+ 'Italy':P('minimal',{ext:[.9,1,1]},[0,0,.05],'stated',[256],'Kuruma prawn in earthen ponds and lagoons at 200 to 300 kg/ha with low survival (2002 article, dated).'),
+ 'Germany':P('commercial',{ras:[.9,1,1]},[.95,1,1],'stated',[257],'About 14 vannamei farms in 2020 (largest about 100 t a year), all indoor recirculating systems.'),
+ 'Austria':P('minimal',{ras:[.9,1,1]},[.9,1,1],'stated',[],'One indoor farm (White Panther), 35 t last year, switched from biofloc to clear-water RAS.'),
+ 'United Kingdom':P('minimal',{ras:[.9,1,1]},[.95,1,1],'stated',[],'Start-up indoor RAS vannamei farms (for example Great British Prawns); little output.'),
+ 'Netherlands':P('minimal',{super:[.7,1,1]},[.95,1,1],'stated',[],'A biofloc, zero-discharge vannamei farm (company site); no tonnage.'),
+ 'Spain':P('minimal',{ras:[.6,.8,1]},[.5,.8,1],'inferred',[192],'Land-based RAS vannamei start-ups (Noray); EU farmed Penaeus was only 604 t in 2023, with some extensive coastal pond output of other species.'),
+ 'France':P('minimal',null,null,'',[192],'Extensive kuruma prawn in oyster ponds, and overseas production (New Caledonia, French Polynesia); no usable split by system.'),
+ 'Sweden':P('minimal',{super:[.7,1,1]},[.95,1,1],'stated',[],'A land-based biofloc vannamei farm (company site); no tonnage.'),
+ 'Russia':P('minimal',{super:[.7,1,1]},[.95,1,1],'inferred',[],'A small biofloc vannamei farm in the Kaluga region (about 30 t a year of capacity).'),
+ /* none found in the sources searched (absence of evidence, not proof) */
+ 'Argentina':NONE(),'Uruguay':NONE(),'Chile':NONE(),'Haiti':NONE(),'Paraguay':NONE(),'Bolivia':NONE(),'Trinidad and Tobago':NONE(),'Canada':NONE(),
+ 'Jamaica':NONE('Only a giant freshwater prawn (Macrobrachium) pilot was found, which is not a penaeid shrimp.'),
+ 'Papua New Guinea':NONE(),'Timor-Leste':NONE(),'Laos':NONE(),'Nepal':NONE(),'Bhutan':NONE(),'Maldives':NONE(),'New Zealand':NONE('Only a freshwater Macrobrachium prawn park was found, not penaeid shrimp.'),'North Korea':NONE(),'Afghanistan':NONE(),'Fiji':NONE(),
+ 'Bahrain':NONE(),'Jordan':NONE(),'Lebanon':NONE(),'Yemen':NONE(),'Libya':NONE(),'Sudan':NONE(),'Kenya':NONE(),'Senegal':NONE(),'Ghana':NONE(),'Cameroon':NONE(),'Benin':NONE(),'Cote d’Ivoire':NONE(),'Mauritius':NONE(),'Angola':NONE(),'Ethiopia':NONE(),'Uganda':NONE(),'Zambia':NONE(),'Zimbabwe':NONE(),
+ 'Portugal':NONE(),'Greece':NONE(),'Norway':NONE(),'Denmark':NONE(),'Ireland':NONE(),'Croatia':NONE(),'Albania':NONE(),'Poland':NONE(),'Ukraine':NONE('A large farm closed in 2022 after four months of operation.'),'Belgium':NONE()
+};
+const normV=a=>{const s=a.reduce((x,y)=>x+y,0)||1;return a.map(x=>x/s);};
+/* Rank the ten modelled countries by how similar they are. mis = share of output that would have to move between farm types
+   for the two mixes to be identical (0 to 1); the difference score adds half the gap in vannamei share (0 = identical). */
+function rankByFarmType(p){
+  const pv=normV(SYS.map(s=>p.mix[s]?p.mix[s][1]:0));
+  return COUNTRIES.map(c=>{
+    const cv=normV(SYS.map(s=>c.mix[s].tri[1]));
+    const mis=pv.reduce((a,x,i)=>a+Math.abs(x-cv[i]),0)/2;
+    const dv=p.vann?Math.abs(p.vann[1]-c.vann.tri[1]):0;
+    return{c,mis,dv,score:mis+.5*dv};
+  }).sort((a,b)=>a.score-b.score);
+}
+const MISMATCH_MAX=.5; /* above this share of output in different farm types, no modelled country is treated as a match */
+const GLOBAL_MIX={ext:.112,semi:.164,int:.714,super:.01,ras:0};
+function farmTypesText(p){
+  if(!p||!p.mix)return 'no farm-type data';
+  const parts=SYS.filter(s=>p.mix[s]&&p.mix[s][1]>=.05).map(s=>SYSSHORT[s].toLowerCase().replace('ras','RAS').replace('bft','biofloc')+' about '+Math.round(p.mix[s][1]*100)+'%');
+  return parts.join(', ')+(p.basis==='stated'?' (stated by a source)':' (inferred from the sources listed)');
+}
+/* Resolve a typed name: a modelled country, or a country matched to the modelled one with the most similar farm types. */
 function resolveCountry(raw){
   const q=(raw||'').trim().toLowerCase();if(!q)return null;
   const al=ALIAS[q];
@@ -926,8 +1048,43 @@ function resolveCountry(raw){
   let w=WORLD.find(x=>x[0].toLowerCase()===q)||(al&&WORLD.find(x=>x[0]===al));
   if(!w){const m=WORLD.filter(x=>x[0].toLowerCase().startsWith(q));if(m.length===1)w=m[0];}
   if(!w)return{unknown:true};
-  const ranked=COUNTRIES.map(c=>({c,d:haversine([w[1],w[2]],c.ll)})).sort((a,b)=>a.d-b.d);
-  return{name:w[0],proxy:ranked[0].c,dist:ranked[0].d,next:ranked[1]};
+  const prof=FARMPROF[w[0]]||null;
+  if(prof&&prof.farming!=='none'&&prof.mix){
+    const rk=rankByFarmType(prof);
+    if(rk[0].mis<=MISMATCH_MAX){rk.forEach(x=>{x.sc=Math.round(x.score*100);});return{name:w[0],kind:'matched',prof,base:rk[0].c,mis:rk[0].mis,sc:rk[0].sc,next:rk[1]};}
+  }
+  return{name:w[0],kind:'generic',prof,near:prof&&prof.mix?rankByFarmType(prof)[0]:null};
+}
+/* Why a typed country got RP's generic conditions instead of a matched country's figures. */
+function genericWhy(sc){
+  const p=sc.prof;
+  if(p&&p.farming==='none')return 'no commercial shrimp farming was found in the sources read, so the page uses RP’s global farm-type shares and generic conditions';
+  if(p&&p.mix&&sc.near)return 'its farm types ('+farmTypesText(p)+') are not close to any modelled country (the nearest, '+sc.near.c.name+', would need '+pctf(sc.near.mis)+' of output to move between farm types), so the page uses its own farm-type profile with RP’s generic conditions';
+  return 'no farm-type data were found, so the page uses RP’s global farm-type shares and generic conditions';
+}
+/* Build the country object used for a typed country. System shares, species and any own figures come from its profile;
+   harvest size, cycle, density, aeration and disease figures are borrowed from the matched country; climate modifiers and stunner counts are not. */
+function deriveCountry(info,prodKt){
+  const p=info.prof,name=info.name,base=info.kind==='matched'?info.base:null;
+  const d=base?Object.assign({},base):{wt:null,cyc:null,dens:{},aer:{},dz:null};
+  delete d._dzc;
+  const srcs=(p&&p.srcs)||[];
+  Object.assign(d,{id:'x_'+name.toLowerCase().replace(/[^a-z0-9]+/g,'_'),name,rank:0,derived:true,baseId:base?base.id:null,baseName:base?base.name:null,ll:null,stunN:0,salF:null,thiF:null,tloF:null});
+  d.prod=p&&p.prod?rec([E(p.prod[0],srcs,p.prod[1]||'Production reported by the source')]):J(1,1,1,'Per 1,000 tonnes unless you enter production');
+  d.mix={};SYS.forEach(s=>{
+    if(p&&p.mix)d.mix[s]=p.mix[s]?J(p.mix[s][0],p.mix[s][1],p.mix[s][2],p.mixWhy||'Farm-type profile for this country'):J(0,0,0,'None reported');
+    else d.mix[s]=J(Math.max(0,GLOBAL_MIX[s]-.05),GLOBAL_MIX[s],Math.min(1,GLOBAL_MIX[s]+.1),'RP global share of shrimp by system (no country data)');
+  });
+  d.vann=p&&p.vann?rec([E(p.vann[1],srcs,p.vannWhy||'Vannamei share in the country profile',p.vann[0],p.vann[2])],[0,1]):J(.5,.8,.95,'Vannamei is over half of farmed shrimp worldwide (Albalat 2022); no country figure was found');
+  d.ownWt=false;
+  if(p&&p.wt){d.wt=rec([E(p.wt[0],srcs,p.wtWhy||'Harvest weight in the country profile',p.wt[1],p.wt[2])]);d.ownWt=true;}
+  if(p&&p.cyc){d.cyc=rec([E(p.cyc[0],srcs,p.cycWhy||'Cycle length in the country profile',p.cyc[1],p.cyc[2])]);d.ownWt=true;}
+  d.docs=SYS.filter(s=>d.mix[s].tri[1]>0);
+  d.conds=[];
+  if(p&&p.note)d.conds.push(['Farm types',p.note,srcs]);
+  if(base)d.conds.push(['Borrowed parameters','Harvest weight, cycle length, stocking density by system, aeration in use and disease prevalence are '+base.name+'’s figures. '+base.name+' was chosen because it is the closest of the ten modelled countries in farm-type mix and species (difference score '+info.sc+', where 0 means identical). They are not measurements for '+name+'. Climate modifiers, stunner commitments and certification shares are not borrowed.',[]]);
+  else d.conds.push(['No close match',name+': '+genericWhy(info)+'. Treat the result as a what-if.',[]]);
+  return d;
 }
 /* Shrimp on the farm per shrimp harvested. RP's pain figures average over every shrimp on the farm, including those that die before harvest. */
 /* RP's 608 billion deaths on ongrowing farms already include the shrimp that are slaughtered, so the ratio to the ~440 billion slaughtered is 608/440 (earlier version wrongly added them). Both pairs mix a penaeid-only and an all-shrimp base. The last-stage-only figure (17% stage mortality, 1/0.83 = 1.2) is not comparable and is not used. */
@@ -1166,9 +1323,9 @@ function updateInputInfo(){
   const c=CMAP[st.country],mix=st.method==='mix';
   $('#customBox').hidden=!($('#country').value==='other');
   const cn=$('#cnote');
-  if(st.custom)cn.innerHTML=`<b>${esc(st.custom.name)}</b> is modelled as <b>${c.name}</b>, the closest modelled country (${Math.round(st.custom.dist).toLocaleString('en-US')} km; next closest ${st.custom.next.c.name}, ${Math.round(st.custom.next.d).toLocaleString('en-US')} km). Distance is a crude proxy for similar farming practice.`;
+  if(st.custom){const sc=st.custom;cn.innerHTML=sc.kind==='matched'?`<b>${esc(sc.name)}</b> farm types: ${farmTypesText(sc.prof)}. Closest modelled country by farm types: <b>${sc.base.name}</b> (difference score ${sc.sc}; next closest ${sc.next.c.name}, ${sc.next.sc}). Its harvest, density, aeration and disease figures are borrowed.`:`<b>${esc(sc.name)}</b>: ${genericWhy(sc)}. Treat the result as a what-if.`;}
   else if(st.customMsg)cn.textContent=st.customMsg;
-  else cn.textContent='The form picks the geographically closest of the ten modelled countries and applies its conditions.';
+  else cn.textContent='The form compares the country’s dominant farm types with the ten modelled countries and borrows figures from the closest match.';
   IVS.forEach(i=>{
     const w=mix?null:i.appl[SYSI[st.method]];
     const el=document.querySelector('[data-ap="'+i.id+'"]');
@@ -1183,7 +1340,7 @@ function updateInputInfo(){
   if(!mix)h+=`<div class="row"><span class="k">${SYSSHORT[st.method]}</span>${documented?'<span class="chip c-mod">documented here</span>':'<span class="chip c-low">not documented</span>'}</div>`;
   if(!documented)h+=`<div class="muted">No source documents ${SYSSHORT[st.method].toLowerCase()} farming in ${c.name}. The country’s other conditions still apply, but treat the result as a what-if.</div>`;
   h+=`<div class="muted">Full conditions and every source value are in the results below.</div>`;
-  if(st.custom)h=`<div class="row"><span class="k">Conditions from</span><b>${c.name}</b><span class="chip c-low">proxy for ${esc(st.custom.name)}</span></div>`+h;
+  if(st.custom)h=(st.custom.kind==='matched'?`<div class="row"><span class="k">Farm-type match</span><b>${st.custom.base.name}</b><span class="chip c-low">borrowed figures</span></div>`:`<div class="row"><span class="k">Conditions</span><b>RP global profile</b><span class="chip c-low">no country match</span></div>`)+h;
   $('#cinfo').innerHTML=h;
 }
 
@@ -1252,7 +1409,7 @@ function render(){
    :`With no interventions, the model estimates <b>${fmt(bS.mean)} hours</b> of ${mlabel} pain per shrimp over its life, with a 90% interval of ${ciS(bS)}, for ${baseLab}. Select interventions to see the change from this baseline.`;
   const confTxt=`<p class="txt" style="margin-top:10px"><b>Confidence:</b> baseline magnitude ${chipC('Low')} because Rethink Priorities’ inputs are expert credible intervals, not measurements. ${hasIv?`Size of the intervention effects ${chipC('Very low')} because no source quantifies them in welfare terms; the direction is better supported than the size.`:''}</p>
   <p class="small muted" style="margin-top:6px">Interval labels: ${TAGS.rp} published expert credible interval; ${TAGS.lit} range across several published values; ${TAGS.est} analyst estimate.</p>`;
-  const docWarn=(mix||cty.docs.includes(cfg.method))?'':`<p class="small" style="margin-top:8px"><span class="chip c-low">Note</span> No source documents ${SYSSHORT[cfg.method].toLowerCase()} farming in ${cty.name}. The scenario applies that system’s published profile with the country’s other conditions.${cust?' '+cust.name+' borrows all of '+cty.name+'’s conditions.':''}</p>`;
+  const docWarn=(mix||cty.docs.includes(cfg.method))?'':`<p class="small" style="margin-top:8px"><span class="chip c-low">Note</span> No source documents ${SYSSHORT[cfg.method].toLowerCase()} farming in ${cty.name}. The scenario applies that system’s published profile with the country’s other conditions.</p>`;
   const rasWarn=(cfg.method==='ras'&&st.iv.has('sludge'))?`<p class="small" style="margin-top:8px"><span class="chip c-low">Note</span> Sludge removal does not apply to indoor RAS; it is selected but has no effect.</p>`:'';
   const rasNote=(cfg.method==='ras')?`<p class="small" style="margin-top:8px"><span class="chip c-low">Note</span> RP gives no RAS-specific figures, so indoor RAS uses the super-intensive values and cannot be told apart from biofloc.</p>`:'';
   const bothAbl=(st.iv.has('noabl')&&st.iv.has('altabl'))?`<p class="small" style="margin-top:8px"><span class="chip c-low">Note</span> Both ablation options are selected. They address the same threat, so the stronger one applies and they do not stack.</p>`:'';
@@ -1352,7 +1509,7 @@ function render(){
   cr+=crow('Electrical stunning already in use',cty.stunN?`${cty.stunN} producer${cty.stunN>1?'s':''} in the SWP stunner scheme, each committing to stun at least 1,900 t a year, is about <span class="mono">${pctf(stunAd)}</span> of output. A commitment, not realised volume.`:'None found.');
   cr+=crow('Other conditions',cty.conds.map(c=>`<b>${c[0]}.</b> ${c[1]} ${refs(c[2])}`).join('<br>'));
   const ch4=`<div class="card"><h3>Country conditions applied: ${cty.name}</h3>
-    ${cust?`<div class="warnbox"><b>${esc(cust.name)} is not modelled.</b> The closest modelled country is ${cty.name} (${Math.round(cust.dist).toLocaleString('en-US')} km between representative farming regions; next closest ${cust.next.c.name}, ${Math.round(cust.next.d).toLocaleString('en-US')} km). Every condition below is ${cty.name}’s, not ${esc(cust.name)}’s. Distance is a crude proxy for similar farming practice: replace these values with national statistics for ${esc(cust.name)} where you have them.</div>`:''}
+    ${cust?`<div class="warnbox"><b>${esc(cust.name)} is not one of the ten modelled countries.</b> ${cust.kind==='matched'?`Its farm types (${farmTypesText(cust.prof)}) were compared with each modelled country, and <b>${cust.base.name}</b> is the closest (difference score ${cust.sc}, where 0 means identical: the share of output that would have to move between farm types plus half the gap in vannamei share; next closest ${cust.next.c.name}, ${cust.next.sc}). System shares and species below come from the sources listed under "Other conditions". Harvest size, cycle length, stocking density, aeration and disease figures are ${cust.base.name}’s, not measurements for ${esc(cust.name)}; replace them with national statistics where you have them.`:`${esc(cust.name)}: ${genericWhy(cust)}. Treat the result as a what-if.`}</div>`:''}
     <p class="sub">These country figures change the result. Each value is the average of the source values found, with the lowest to the highest as its range; open the list under any value to see every source. Rows tagged ${TAGS.est} are estimates because no source gives a number.</p>
     <div class="scroll"><table><thead><tr><th>Condition</th><th>Value used and sources</th></tr></thead><tbody>${cr}</tbody></table></div></div>`;
 
@@ -1372,7 +1529,7 @@ function render(){
       <div class="small muted">How much could change quickly? For reference: ${refPts.join('; ')}.</div></div>`;
   const ch5=`<div class="card"><h3>${perT?'Per 1,000 tonnes harvested':'Scaled to '+esc(cshort)}</h3>
     ${shareBar}
-    <p class="sub">Illustrative. ${perT?'The unit is 1,000 tonnes of harvested shrimp.':'Assumes '+st.share+'% of '+esc(cshort)+'’s annual output follows this scenario.'} Animal numbers come from the tonnage ${cust&&cust.prodKt>0?'you entered':'(reconciled across sources) '+TAGS.lit}, divided by the country’s harvest weight ${cty.wt?TAGS.lit:TAGS.est} and multiplied by the shrimp on the farm per shrimp harvested, ${ONFARM.tri[1].toFixed(1)} (${ONFARM.tri[0].toFixed(1)}–${ONFARM.tri[2].toFixed(1)}) ${TAGS.lit}. RP’s per-shrimp figures average over every shrimp on the farm, including those that die before harvest. The two RP-derived estimates of that ratio disagree.</p>
+    <p class="sub">Illustrative. ${perT?'The unit is 1,000 tonnes of harvested shrimp.':'Assumes '+st.share+'% of '+esc(cshort)+'’s annual output follows this scenario.'} Animal numbers come from the tonnage ${cust&&cust.prodKt>0?'you entered':'(reconciled across sources) '+TAGS.lit}, divided by the country’s harvest weight ${(cty.wt&&(!cty.derived||cty.ownWt))?TAGS.lit:TAGS.est} and multiplied by the shrimp on the farm per shrimp harvested, ${ONFARM.tri[1].toFixed(1)} (${ONFARM.tri[0].toFixed(1)}–${ONFARM.tri[2].toFixed(1)}) ${TAGS.lit}. RP’s per-shrimp figures average over every shrimp on the farm, including those that die before harvest. The two RP-derived estimates of that ratio disagree.</p>
     <div class="big">
       <div><div class="lab">${perT?'Shrimp on the farm per 1,000 tonnes harvested':'Shrimp on farms per year in scope'}</div><div class="num">${big(aS.mean)}</div><div class="rng">90% interval ${big(aS.p5)}–${big(aS.p95)} ${TAGS.lit}</div></div>
       <div><div class="lab">Baseline, ${mlabel} pain</div><div class="num">${big(popB.mean)} <small>${unitY}</small></div><div class="rng">${big(popB.p5)}–${big(popB.p95)} ${TAGS.mix}</div></div>
@@ -1509,7 +1666,7 @@ function render(){
     <h4>Uncertainty and labels</h4>
     <p>Each input is a triangular distribution over its minimum, most likely value and maximum, and the model draws ${N.toLocaleString('en-US')} sets of inputs. RP’s ranges are used as published; for country figures the most likely value is the average of all source values found and the range runs from the lowest to the highest. A single source, or sources that agree exactly, get an assumed ±15% range and are tagged as estimates. A 90% interval is the 5th to 95th percentile of the draws; it reflects the input ranges and is not a statistical confidence interval. Inputs are drawn independently, which understates the spread if real parameters move together.</p>
     <h4>What the country changes</h4>
-    <p>Production and harvest weight (population totals), vannamei share (substrate pain and how well ablation-free broodstock works), cycle length (all chronic threats), stocking density (hurtful share of crowding), aeration already in use (oxygen threat and the room left for aeration), disease prevalence (averaged with RP), low-salinity and temperature prevalence (estimates from water conditions), stunning already in use, and the system mix. Where a source gave no number for a country, RP’s generic system profile applies and the table says so. A country typed under "Other country" is modelled as the closest of the ten by great-circle distance between representative farming regions, which is a crude proxy; its own production figure, if entered, replaces the proxy’s for the population totals.</p>
+    <p>Production and harvest weight (population totals), vannamei share (substrate pain and how well ablation-free broodstock works), cycle length (all chronic threats), stocking density (hurtful share of crowding), aeration already in use (oxygen threat and the room left for aeration), disease prevalence (averaged with RP), low-salinity and temperature prevalence (estimates from water conditions), stunning already in use, and the system mix. Where a source gave no number for a country, RP’s generic system profile applies and the table says so. A country typed under "Other country" is matched to one of the ten by farm type, not by distance: its farm-type profile (the share of production in extensive, semi-intensive, intensive, super-intensive and indoor systems, and its species) is compared with each modelled country’s, and the closest is used (the difference score is the share of output that would have to move between farm types plus half the gap in vannamei share). System shares and species come from the typed country’s own profile; harvest size, cycle, stocking density, aeration and disease figures are borrowed from the match and labelled as borrowed. If no modelled country is close, or no commercial shrimp farming was found, RP’s global farm-type shares and generic conditions apply. A production figure entered by the visitor replaces the profile’s for the population totals.</p>
     <h4>Affective-capacity adjustment</h4>
     <p>Kept separate, as the framework recommends. Main figures are unadjusted; the adjustment appears only as an optional multiplier and in the robustness table.</p>
     <h4>Known issues in the draft and the sources</h4>
@@ -1527,9 +1684,9 @@ function render(){
 
   /* statistics to collect */
   const chCollect=`<div class="card"><h3>Statistics to collect to replace trade-press figures</h3>
-    <p class="sub">National and international statistics to read directly, with the figures they would replace. The row for ${esc(cty.name)}${cust?', the proxy for '+esc(cust.name)+',':''} is highlighted. For a country that is not modelled, look for the same items from its fisheries and statistics agencies.</p>
+    <p class="sub">National and international statistics to read directly, with the figures they would replace. The row for ${esc(cust?cust.base?cust.base.name:'the closest match':cty.name)}${cust?', the modelled country matched to '+esc(cust.name)+',':''} is highlighted. For a country that is not modelled, look for the same items from its fisheries and statistics agencies.</p>
     <div class="scroll"><table><thead><tr><th>Country</th><th>Publisher</th><th>What to collect</th><th>What it would settle</th></tr></thead><tbody>
-    ${COLLECT.map(q=>{const c=CMAP[q.id];return `<tr${q.id===cty.id?' style="background:var(--accent-soft)"':''}><td><b>${c.name}</b></td><td>${q.u?`<a href="${q.u}" target="_blank" rel="noopener">${q.who}</a>`:q.who}</td><td>${q.what}</td><td>${q.fix}</td></tr>`;}).join('')}
+    ${COLLECT.map(q=>{const c=CMAP[q.id];return `<tr${q.id===(cty.baseId||cty.id)?' style="background:var(--accent-soft)"':''}><td><b>${c.name}</b></td><td>${q.u?`<a href="${q.u}" target="_blank" rel="noopener">${q.who}</a>`:q.who}</td><td>${q.what}</td><td>${q.fix}</td></tr>`;}).join('')}
     </tbody></table></div>
     <h4 style="font:600 15px var(--f-body);margin:16px 0 6px">Across all countries</h4>
     <div class="scroll"><table><tbody>${COLLECT_ALL.map(q=>`<tr><td><a href="${q[2]}" target="_blank" rel="noopener">${q[0]}</a></td><td>${q[1]}</td></tr>`).join('')}</tbody></table></div>
@@ -1565,10 +1722,10 @@ function render(){
    a:'Production figures differ by 1.3 to nearly 5 times between sources (Indonesia 0.24 to 1.13 Mt; Vietnam 0.67 to 1.29 Mt, partly because some figures count vannamei only), and an average of conflicting numbers is not a measurement. System shares by country are mostly estimates. Disease prevalence comes from different years, crops and definitions (farms, ponds, area, infection or clinical disease). Salinity and temperature factors are judgement from qualitative water data. No source gave ablation prevalence or slaughter-method shares for any country.',
    e:`For ${cty.name}, ${nConf} of the four headline figures show source disagreement. ${gen?`Removing all country conditions changes the scenario from ${fmt(vres[0].s)} to ${fmt(gen.s)} ${unitH} (${sh(gen.s,vres[0].s)}).`:''} Production for ${cty.name} spans ${fK(cty.prod.tri[0])} to ${fK(cty.prod.tri[2])}.`,
    r:'Official country statistics read directly, farm-level surveys with one disease definition, and published ablation and slaughter practices by country.'});
-  if(cust)O.push({t:`${cust.name} is modelled as ${cty.name}, and distance is a weak reason to expect similar farms`,
-   a:`The form chose ${cty.name} because it is the nearest of ten modelled countries (${Math.round(cust.dist).toLocaleString('en-US')} km between representative farming regions). Shrimp farming does not follow geography: neighbours can differ by system, species, disease history and regulation, and a country with no shrimp industry has nothing to borrow from. Every production, species, density, aeration, disease and water figure on the page is ${cty.name}’s.`,
-   e:`The next closest modelled country is ${cust.next.c.name} (${Math.round(cust.next.d).toLocaleString('en-US')} km). ${cust.prodKt>0?'Production is the figure you entered.':'No production figure was entered, so results are per 1,000 tonnes harvested.'}`,
-   r:`National statistics, farm surveys and disease reports for ${cust.name}, entered in place of ${cty.name}’s values (see the list of statistics to collect).`});
+  if(cust)O.push({t:`${cust.name}’s farm types are matched to ${cust.kind==='matched'?cust.base.name:'no modelled country'}, and the match rests on thin evidence`,
+   a:cust.kind==='matched'?`The form compared the farm types in ${cust.name} (${farmTypesText(cust.prof)}) with the ten modelled countries and chose ${cust.base.name}, whose mix differs least. A similar farm-type mix does not make two countries alike: species, disease history, climate, water, feed and regulation can still differ, and the farm-type split for ${cust.name} is itself ${cust.prof&&cust.prof.basis==='stated'?'taken from sources that describe it only loosely':'inferred from partial evidence'}. Harvest size, cycle length, stocking density, aeration and disease prevalence on this page are ${cust.base.name}’s figures, not ${cust.name}’s.`:`For ${cust.name}, ${genericWhy(cust)}. RP’s generic conditions describe an average world shrimp farm rather than anything in ${cust.name}.`,
+   e:cust.kind==='matched'?`The next closest modelled country is ${cust.next.c.name} (difference score ${cust.next.sc} against ${cust.sc} for ${cust.base.name}). ${cust.prodKt>0?'Production is the figure you entered.':'No production figure was entered, so results are per 1,000 tonnes harvested.'}`:`${cust.prodKt>0?'Production is the figure you entered.':'No production figure was entered, so results are per 1,000 tonnes harvested.'}`,
+   r:`National statistics, farm surveys and disease reports for ${cust.name}, entered in place of the borrowed values (see the list of statistics to collect).`});
   O.push({t:'The sources are not independent and several are secondary',
    a:'The concern ratings come from one organisation, and several cited posts restate its position. RP uses SWP data. Some country figures come from trade summaries of other trade summaries, and about half of the peer-reviewed figures were read from abstracts or summaries. A citation-by-citation audit found that most figures are supported by the page cited, but a minority were misattributed, unsupported or out of date; those have been corrected, re-sourced or removed, and the notes below list the main ones.',
    e:`Of the ${usedIds.length} sources behind this result, ${nInd} are independent of SWP, ${nRp} are from Rethink Priorities and ${nAdv} are advocacy or SWP-linked. Confidence ratings on the page are mine and are not independent checks either.`,
@@ -1653,14 +1810,14 @@ const XCHECK={
 /* ============================== EVENTS ============================== */
 let timer=null;
 const rerender=()=>{updateInputInfo();clearTimeout(timer);timer=setTimeout(render,0);};
-/* typed country: use it directly if modelled, otherwise model it as the closest modelled country */
+/* typed country: use it directly if modelled, otherwise match it to the modelled country with the most similar farm types */
 function applyCustomName(fromSelect){
   const raw=$('#cname').value,prod=+$('#cprod').value;
   const r=resolveCountry(raw);st.customMsg='';
   if(!r){st.custom=null;if(!fromSelect)st.customMsg='';}
   else if(r.modelled){st.country=r.modelled.id;st.custom=null;$('#country').value=r.modelled.id;}
   else if(r.unknown){st.custom=null;st.customMsg='That name is not in the list. Pick one from the suggestions, or choose one of the ten modelled countries.';}
-  else{st.country=r.proxy.id;st.custom={name:r.name,dist:r.dist,next:r.next,prodKt:prod>0?prod:0};}
+  else{const d=deriveCountry(r);CMAP[d.id]=d;st.country=d.id;st.custom={name:r.name,kind:r.kind,base:r.base||null,mis:r.mis,sc:r.sc,next:r.next||null,near:r.near||null,prof:r.prof,prodKt:prod>0?prod:0};}
   rerender();
 }
 let cTimer=null;
