@@ -42,7 +42,9 @@ header.top{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-bott
 .eyebrow{font:500 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 h1{font:500 clamp(34px,5vw,52px)/1.05 var(--f-display);letter-spacing:-.01em}
 .lede{font-size:17px;max-width:68ch}
-details.status-box{border:1px solid var(--line);border-left:4px solid var(--i2);background:var(--surface);padding:12px 14px;font-size:14px;max-width:84ch}
+details.status-box{border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--surface);padding:12px 14px;font-size:14px;max-width:84ch}
+/* Sections above the Show all / Hide all bar (who, how, what the numbers rest on) are blue; every section below it is orange. */
+details.step{border:1px solid var(--line);border-left:4px solid var(--i2);background:var(--surface);border-radius:6px;padding:12px 14px}
 details.howto{border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--surface);border-radius:6px;padding:12px 14px;font-size:14px}
 details.howto>summary{font-weight:600;cursor:pointer;list-style:none;display:flex;gap:8px;align-items:baseline}
 details.howto>summary::-webkit-details-marker{display:none}
@@ -251,6 +253,11 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padd
 .srcs li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;font-size:13.5px}
 .srcs .id{font:500 12.5px var(--f-mono);color:var(--accent)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+details.adv{border-left:4px solid var(--i2)}
+.card.sec,.card.sec.verdict{border-left:4px solid var(--i2)}
+.card.sec.verdict{border-color:var(--i2)}
+/* third colour: sensitivity checks and everything after it */
+.card.sec[data-c="sens"],.card.sec[data-c="check"],.card.sec[data-c="claims"],.card.sec[data-c="sources"],.card.sec[data-c="collect"],.card.sec[data-c="notes"],.card.sec[data-c="objections"]{border-left-color:var(--i4)}
 </style>
 
 <div class="wrap">
@@ -259,7 +266,7 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padd
   <h1>Shrimp Welfare Footprint</h1>
   <p class="lede">Choose a farming method, a country and any welfare interventions. The page estimates cumulative pain per shrimp by intensity, compares it with the same system under current practice, and shows the range, the sources and the confidence behind each number.</p>
   <div class="side">
-  <details class="howto" open><summary>Who is this page for</summary>
+  <details class="howto"><summary>Who is this page for</summary>
     <ul class="forwho">
       <li><b>Animal welfare researchers and advocates</b> comparing farming systems, countries and interventions on one scale.</li>
       <li><b>Funders and analysts</b> deciding which interventions or countries deserve attention first.</li>
@@ -267,7 +274,7 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padd
     </ul>
     <p class="small muted">Not for farm audits, compliance or a final decision on its own: the figures are estimates with wide ranges, built on Rethink Priorities&rsquo; expert intervals.</p>
   </details>
-  <details class="howto" open><summary>How to use this page</summary>
+  <details class="howto"><summary>How to use this page</summary>
     <ol>
       <li><b>Pick a farming method</b> in step 1 (left): extensive, semi-intensive, intensive, super-intensive or indoor RAS, or &ldquo;Typical mix for this country&rdquo; to weight the systems by the country&rsquo;s production.</li>
       <li><b>Choose a country</b> in step 2. Ten are modelled with their own conditions. For any other country pick &ldquo;Other country&hellip;&rdquo; and type its name: it is matched to the modelled country with the most similar farm types. Optionally enter your production in tonnes.</li>
@@ -279,22 +286,23 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padd
     <p class="small muted">Every figure is an estimate with a range, not a measurement. Use Show all / Hide all below to open or close sections.</p>
   </details>
   </div>
-  <div class="foldbar"><span class="lab">Page sections</span>
-    <button type="button" class="btn" id="showAll">Show all</button>
-    <button type="button" class="btn" id="hideAll">Hide all</button></div>
-  <details class="status-box" open><summary>What the numbers rest on</summary><div role="note">
+
+  <details class="status-box"><summary>What the numbers rest on</summary><div role="note">
     <p><b>Baseline pain.</b> Prevalence, daily durations and intensity splits per farming system come from Rethink Priorities (2024), the only published quantitative source for farmed shrimp. They are expert credible intervals, not measurements. The page checks itself against that report&rsquo;s published total.</p>
     <p style="margin-top:6px"><b>Country conditions.</b> Production, species mix, harvest size, cycle length, stocking density, aeration and disease prevalence come from national statistics, peer-reviewed surveys, Seafood Watch assessments and trade data. Where sources disagree, the page uses their average and shows the spread and every source value.</p>
     <p style="margin-top:6px"><b>Intervention effects.</b> No source quantifies how much an intervention reduces each threat in affective terms. Those effect sizes are analyst estimates, marked <span class="chip tag est">est</span>, and the supporting experiments are listed beside each one.</p></div></details>
+  <div class="foldbar"><span class="lab">Page sections</span>
+    <button type="button" class="btn" id="showAll">Show all</button>
+    <button type="button" class="btn" id="hideAll">Hide all</button></div>
 </header>
 
 <div class="layout">
 <aside class="q" aria-label="Questionnaire">
-  <details class="step" open>
+  <details class="step">
     <summary><h2><span class="n">1</span> Farming method</h2></summary>
     <div class="opts" id="methods"></div>
   </details>
-  <details class="step" open>
+  <details class="step">
     <summary><h2><span class="n">2</span> Country</h2></summary>
     <select id="country" aria-label="Country"></select>
     <div class="customBox" id="customBox" hidden>
@@ -305,7 +313,7 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padd
     </div>
     <div class="cinfo" id="cinfo"></div>
   </details>
-  <details class="step" open>
+  <details class="step">
     <summary><h2><span class="n">3</span> Welfare interventions</h2></summary>
     <p class="small muted" style="margin-bottom:6px">Select none to see the baseline. Selected interventions are assumed fully adopted. Where a country already uses one, only the remaining gap counts.</p>
     <div class="opts" id="ivs"></div>
@@ -346,7 +354,7 @@ code{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);padd
       <button type="button" data-m="de" aria-pressed="true">Disabling-equivalent</button>
     </div>
   </div>
-  <details class="adv mhelp" open><summary>What the intensity buttons do</summary><div id="mhelp"></div></details>
+  <details class="adv mhelp"><summary>What the intensity buttons do</summary><div id="mhelp"></div></details>
   <div id="out" style="display:grid;gap:18px"></div>
 </section>
 </div>
@@ -1297,6 +1305,7 @@ const openSet=new Set();
 const closedSet=new Set();
 const SECS=['verdict','intensity','methods','cons','country','scale','sens','check','claims','sources','collect','notes','objections'];
 const FOLLOWS=['verdict','methods','cons','scale','sens','objections'];
+SECS.forEach(k=>closedSet.add(k)); /* every section starts collapsed, as after Hide all */
 const FCHIP='<span class="chip b" title="These numbers change with the intensity buttons">follows intensity buttons</span>';
 function fold(html,key){
   const m=html.match(/^<div class="card"><h3>(.*?)<\/h3>/);
